@@ -1,0 +1,356 @@
+* {
+  font-family: "Inter", sans-serif;
+}
+:root {
+  --base-color: #ffffff;
+  --teracota: #ee4e39;
+  --teracota-hover: #f06654;
+  --base-gray: #f4f5f7;
+  --black-font: #000000;
+  --gray-font: #414141;
+  --lightgrey-font: #929292;
+}
+/* STYLE NAVBAR */
+.navbar {
+  position: fixed !important;
+  padding-left: 60px !important;
+  padding-right: 60px !important;
+  width: 100% !important;
+  height: 90px;
+  margin: 0 !important;
+  z-index: 10;
+}
+.bg-body-tertiary {
+  background-color: var(--base-color) !important;
+}
+.navbar-nav a.active {
+  position: relative; /* Tambahkan baris ini */
+}
+.navbar-nav a.active::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--black-font);
+}
+.navbar-nav a {
+  color: var(--black-font) !important;
+  margin: 5px 25px 5px 25px;
+  padding: 10px 0;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  text-decoration: none;
+  gap: 10px;
+  display: inline-block;
+  position: relative;
+}
+
+.navbar-nav a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--black-font);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+.navbar-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* STYLE HEADER HOMEPAGE */
+
+.header {
+  background: conic-gradient(
+    from 154deg at 74.55% 50%,
+    #ffebd8 109.62931752204895deg,
+    #edebe8 193.59360694885254deg,
+    #d8d8d6 360deg
+  );
+  display: flex;
+  align-items: center;
+}
+.homepage .header-box h1 {
+  color: var(--gray-font);
+  font-family: PF Handbook Pro;
+  font-size: 64px;
+  font-weight: 900;
+}
+.homepage .header-box p {
+  font-family: PF Handbook Pro;
+  color: var(--gray-font);
+  font-size: 24px;
+  font-weight: 400;
+}
+.centered-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.end-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  /* margin-right: -200px; */
+}
+.header-box {
+  display: flex;
+}
+.homepage .header-box img {
+  width: 900px;
+}
+.btn-wlc {
+  display: flex;
+  /* width: 262px; */
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--teracota) !important;
+  color: var(--base-color) !important;
+  margin: 5px 0;
+}
+.btn-wlc:hover {
+  background: var(--teracota-hover) !important;
+}
+
+/* OUR SERVICES */
+.our-services {
+  margin-top: 100px;
+}
+.text-title {
+  color: var(--gray-font);
+  font-size: 32px;
+  font-weight: 700;
+}
+.line-text {
+  width: 100px;
+  height: 3px;
+  background-color: var(--teracota);
+  align-self: center;
+}
+.service-name {
+  color: var(--gray-font);
+  max-width: 124px;
+  padding: 20px 0;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+}
+
+.service-list {
+  padding: 50px 0 0 0;
+  gap: 40px 110px;
+  flex-wrap: wrap;
+}
+.img-service {
+  width: 90%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+.service-card {
+  flex-direction: column;
+}
+/*  PHILOSOPHY*/
+.img-philosophy {
+  width: 573px !important;
+}
+.title-philosophy {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.desc-philosophy {
+  font-size: 20px;
+  font-weight: 500;
+}
+.philosophy {
+  margin-top: 100px;
+}
+
+/* PORTOFOLIO */
+.portfolio {
+  margin-top: 100px;
+}
+.btn-portfolio {
+  display: flex;
+  justify-content: end;
+}
+.title-portfolio {
+  padding-top: 10px;
+  color: var(--gray-font);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.desc-portfolio {
+  color: var(--gray-font);
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.my-masonry-grid {
+  margin-top: 50px;
+  display: -webkit-box; /* Not needed if autoprefixing */
+  display: -ms-flexbox; /* Not needed if autoprefixing */
+  display: flex;
+  margin-left: -30px; /* gutter size offset */
+  width: auto;
+  align-self: center;
+}
+.card-porto img {
+  max-width: 360px;
+}
+.my-masonry-grid_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+.my-masonry-grid_column > div {
+  margin-bottom: 30px;
+}
+
+/* OUR TALENTS */
+.slider-title {
+  color: var(--gray-font);
+  font-size: 22px;
+  font-weight: 600;
+}
+.slider-desc {
+  color: #929292;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+  filter: invert(100%);
+  bottom: 100px !important;
+}
+.carousel-indicators button {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 100%;
+}
+.carousel-indicators {
+  bottom: 0 !important;
+  align-items: center;
+  filter: invert(100%);
+}
+.carousel-control-next,
+.carousel-control-prev {
+  z-index: 0 !important;
+}
+.carousel {
+  height: 600px;
+}
+.carousel-inner > .carousel-item {
+  z-index: -1 !important;
+}
+@media screen and (max-width: 1200px) {
+  .card-porto img {
+    max-width: 300px;
+  }
+}
+@media screen and (max-width: 992px) {
+  .header-box {
+    margin-top: 8rem !important;
+  }
+  .header {
+    background: linear-gradient(to right, #ffebd8, #edebe8, #d8d8d6);
+  }
+  .homepage .header-box img {
+    width: 100%;
+    display: block;
+    margin-inline: auto;
+  }
+  .img-service {
+    width: 70%;
+    margin-right: 20px;
+  }
+  .text-title {
+    font-size: 30px;
+  }
+  .btn-portfolio {
+    justify-content: center;
+    padding: 20px;
+  }
+  .card-3 {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+}
+@media screen and (max-width: 576px) {
+  .homepage .header-box h1 {
+    font-size: 55px;
+  }
+  .homepage .header-box p {
+    font-size: 22px;
+  }
+  .service-list {
+    gap: 20px 100px;
+  }
+  .text-title {
+    font-size: 30px;
+  }
+  .card-porto img {
+    max-width: 250px;
+  }
+  .card-3,
+  .card-2 {
+    display: none;
+  }
+}
+@media screen and (max-width: 475px) {
+  .homepage .header-box p {
+    font-size: 20px;
+  }
+  .navbar {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  .service-list {
+    gap: 30px 400px;
+  }
+  .img-service {
+    width: 60%;
+    padding-right: 20px;
+  }
+  .service-card {
+    flex-direction: row;
+  }
+  .service-name {
+    text-align: start;
+  }
+  .text-title {
+    font-size: 27px;
+  }
+  .title-philosophy {
+    font-size: 30px;
+  }
+  .desc-philosophy {
+    font-size: 18px;
+  }
+  .portfolio {
+    margin-top: 50px;
+  }
+  .card-porto img {
+    max-width: 100%;
+  }
+}

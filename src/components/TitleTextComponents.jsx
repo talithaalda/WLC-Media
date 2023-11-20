@@ -1,5 +1,6 @@
 // import React from "react";
 
+// eslint-disable-next-line react/prop-types
 const TitleTextComponents = ({ textTitle }) => {
   return (
     <div className="d-flex flex-column text-center px-2">

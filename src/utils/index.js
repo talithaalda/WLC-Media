@@ -27,3 +27,10 @@ export const serviceList = [
   { id: 4, path: "/images/marketing-plan.png", name: "Event Management" },
   { id: 5, path: "/images/company.png", name: "Company’s Branding" },
 ];
+
+export const aboutList = [
+  { id: 1, count: 100, name: "Project Completed" },
+  { id: 2, count: 100, name: "Working Hours" },
+  { id: 3, count: 100, name: "Positive Reviews" },
+  { id: 4, count: 100, name: "Happy Clients" },
+];

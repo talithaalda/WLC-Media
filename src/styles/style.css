@@ -68,7 +68,7 @@
 
 /* STYLE HEADER HOMEPAGE */
 
-.header {
+.header-home {
   background: conic-gradient(
     from 154deg at 74.55% 50%,
     #ffebd8 109.62931752204895deg,
@@ -178,9 +178,6 @@
   font-size: 20px;
   font-weight: 500;
 }
-.philosophy {
-  margin-top: 100px;
-}
 
 /* PORTOFOLIO */
 .portfolio {
@@ -236,30 +233,159 @@
   font-weight: 500;
 }
 
-.carousel-control-next,
-.carousel-control-prev /*, .carousel-indicators */ {
-  filter: invert(100%);
-  bottom: 100px !important;
+.slider-container {
+  position: relative;
 }
-.carousel-indicators button {
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 100%;
+
+/* Custom Dots Container */
+.custom-dots-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-.carousel-indicators {
-  bottom: 0 !important;
+
+/* Style for individual dot */
+.custom-dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #bbb; /* Color for inactive dots */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Style for active dot */
+.custom-dots-container .custom-dot.slick-active {
+  background-color: var(--gray-font); /* Color for active dot */
+}
+.btn-next {
+  background-image: url("https://img.icons8.com/ios/30/forward--v1.png");
+  width: 30px;
+  height: 30px;
+  border: transparent;
+  background-color: transparent;
+}
+.btn-prev {
+  background-image: url("https://img.icons8.com/ios/30/back--v1.png");
+  width: 30px;
+  height: 30px;
+  border: transparent;
+  background-color: transparent;
+  z-index: 10;
+}
+.carousel-btn {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  z-index: -9;
+}
+.btn-prev-next {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  bottom: 300px;
+  flex-direction: row;
+}
+.custom-dots-container {
+  bottom: -40px;
+}
+.card-slider img {
+  max-width: 300px;
+}
+/* FOOTER */
+.footer-desc {
+  color: var(--base-color);
+  font-size: 18px;
+  font-weight: 500;
+}
+.footer {
+  background: var(--teracota);
+}
+.footer-title {
+  color: var(--base-color);
+  font-size: 20px;
+  font-weight: 700;
+}
+.footer-center-1 {
+  padding: 0 70px !important;
+  display: flex;
+  justify-content: center;
+}
+.footer-center {
+  display: flex;
+  justify-content: center;
+}
+.copyright {
+  width: 100%;
+  height: 50px;
+  background: var(--teracota);
+  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
   align-items: center;
-  filter: invert(100%);
+  justify-content: center;
 }
-.carousel-control-next,
-.carousel-control-prev {
-  z-index: 0 !important;
+.copyright div {
+  color: var(--base-color);
+  font-size: 14px;
+  font-weight: 600px;
 }
-.carousel {
-  height: 600px;
+/* ABOUT US */
+.header-box p {
+  font-family: PF Handbook Pro;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 0 !important;
 }
-.carousel-inner > .carousel-item {
-  z-index: -1 !important;
+.header-box h1 {
+  font-family: PF Handbook Pro;
+  font-size: 96px;
+  font-weight: 400;
+}
+.header-aboutus {
+  background: linear-gradient(154deg, #f4f5f7 0%, #e3eaee 50%, #cacecf 100%);
+  display: flex;
+  align-items: center;
+}
+.img-header-aboutus {
+  width: 100;
+}
+.aboutlist h1 {
+  font-size: 48px;
+  font-weight: 400;
+}
+.aboutlist p {
+  color: #6d6d6d;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.aboutlist {
+  margin: 0 3rem;
+}
+.bg-grey {
+  background: #f4f5f7;
+}
+.title-contact {
+  font-size: 32px;
+  font-weight: 700;
+}
+.icon-contact {
+  color: var(--lightgrey-font);
+  font-size: 25px;
+}
+.desc-contact {
+  color: #414141;
+  font-size: 16px;
+  font-weight: 500;
+}
+.img-contact {
+  width: 531px;
+  height: 300px;
+  border-radius: 10px;
 }
 @media screen and (max-width: 1200px) {
   .card-porto img {
@@ -270,7 +396,7 @@
   .header-box {
     margin-top: 8rem !important;
   }
-  .header {
+  .header-home {
     background: linear-gradient(to right, #ffebd8, #edebe8, #d8d8d6);
   }
   .homepage .header-box img {
@@ -289,12 +415,38 @@
     justify-content: center;
     padding: 20px;
   }
-  .card-3 {
-    display: none;
+  .width-col {
+    width: 60px !important;
+    /* padding-left: 20px !important; */
+    /* padding: 0 1px; */
+  }
+  .footer-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contactus {
+    margin-left: 70px;
+  }
+  .company {
+    margin-right: 45px;
+  }
+  .footer-center-1 {
+    text-align: center;
+  }
+  .footer-title {
+    text-align: center;
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (max-width: 768px) {
+  .width-col {
+    width: 50px !important;
+    padding: 0 30px;
+  }
+  .card-slider img {
+    max-width: 100%;
+  }
 }
 @media screen and (max-width: 576px) {
   .homepage .header-box h1 {
@@ -312,9 +464,17 @@
   .card-porto img {
     max-width: 250px;
   }
-  .card-3,
-  .card-2 {
-    display: none;
+  .width-col {
+    width: 50px !important;
+    padding: 0 30px;
+  }
+  .header-box h1 {
+    font-size: 80px;
+    text-align: center;
+  }
+  .header-box p {
+    font-size: 30px;
+    text-align: center;
   }
 }
 @media screen and (max-width: 475px) {
@@ -352,5 +512,9 @@
   }
   .card-porto img {
     max-width: 100%;
+  }
+  .width-col {
+    width: 50px !important;
+    padding: 0 30px;
   }
 }

@@ -1,6 +1,5 @@
 // import React from "react";
 import { useState } from "react";
-import TitleTextComponents from "./TitleTextComponents";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,6 +33,7 @@ function SliderComponents() {
     };
   }, [currentSlide]);
 
+  // eslint-disable-next-line no-unused-vars
   const CustomDots = (props) => {
     return (
       <div className="custom-dots-container">
@@ -117,112 +117,106 @@ function SliderComponents() {
   };
 
   return (
-    <div>
-      <div className="mt-5">
-        <TitleTextComponents textTitle="Our Talents" />
-      </div>
-
-      <Container className="mt-4">
-        <div className="carousel-btn">
-          <Slider {...settings} ref={sliderRef} arrows={true}>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
+    <Container className="mt-4">
+      <div className="carousel-btn">
+        <Slider {...settings} ref={sliderRef} arrows={true}>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
               </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-            <div className="card-slider d-flex justify-content-center">
-              <div>
-                <img src="/images/img-talens.png" alt="img-talens" />
-                <div className="mt-3">
-                  <div className="slider-title">Jenny Wilson</div>
-                  <div className="slider-desc">@jennywilson</div>
-                </div>
-              </div>
-            </div>
-          </Slider>
-          <div className="row btn-prev-next">
-            <div className="col-lg-1 width-col">
-              {showPrevArrow && (
-                <button className="btn-prev" onClick={handlePrevClick}></button>
-              )}
-            </div>
-            {/* <div className="col-lg-10"></div> */}
-            <div className="col-lg-1 d-flex justify-content-end width-col">
-              {showNextArrow && (
-                <button className="btn-next" onClick={handleNextClick}></button>
-              )}
             </div>
           </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+          <div className="card-slider d-flex justify-content-center">
+            <div>
+              <img src="/images/img-talens.png" alt="img-talens" />
+              <div className="mt-3">
+                <div className="slider-title">Jenny Wilson</div>
+                <div className="slider-desc">@jennywilson</div>
+              </div>
+            </div>
+          </div>
+        </Slider>
+        <div className="row btn-prev-next">
+          <div className="col-lg-1 width-col">
+            {showPrevArrow && (
+              <button className="btn-prev" onClick={handlePrevClick}></button>
+            )}
+          </div>
+          {/* <div className="col-lg-10"></div> */}
+          <div className="col-lg-1 d-flex justify-content-end width-col">
+            {showNextArrow && (
+              <button className="btn-next" onClick={handleNextClick}></button>
+            )}
+          </div>
         </div>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
 

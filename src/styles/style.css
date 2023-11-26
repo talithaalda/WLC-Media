@@ -3,7 +3,7 @@
 }
 :root {
   --base-color: #ffffff;
-  --teracota: #ee4e39;
+  --teracota: #c64b38;
   --teracota-hover: #f06654;
   --base-gray: #f4f5f7;
   --black-font: #000000;
@@ -20,11 +20,10 @@
   margin: 0 !important;
   z-index: 10;
 }
-.bg-body-tertiary {
-  background-color: var(--base-color) !important;
-}
+
 .navbar-nav a.active {
   position: relative; /* Tambahkan baris ini */
+  color: var(--teracota) !important;
 }
 .navbar-nav a.active::before {
   content: "";
@@ -33,7 +32,7 @@
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: var(--black-font);
+  background-color: var(--teracota);
 }
 .navbar-nav a {
   color: var(--black-font) !important;
@@ -57,7 +56,7 @@
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: var(--black-font);
+  background-color: var(--teracota);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }
@@ -65,7 +64,12 @@
   transform: scaleX(1);
   transform-origin: bottom left;
 }
-
+.custom-collapse {
+  background-color: var(--base-color);
+  border-radius: 10px;
+  align-items: center;
+  /* Ganti dengan warna teks yang diinginkan */
+}
 /* STYLE HEADER HOMEPAGE */
 
 .header-home {
@@ -155,7 +159,7 @@
   flex-wrap: wrap;
 }
 .img-service {
-  width: 90%;
+  width: 90px;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -300,7 +304,7 @@
 .footer-desc {
   color: var(--base-color);
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
 }
 .footer {
   background: var(--teracota);
@@ -308,7 +312,7 @@
 .footer-title {
   color: var(--base-color);
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .footer-center-1 {
   padding: 0 70px !important;
@@ -387,6 +391,88 @@
   height: 300px;
   border-radius: 10px;
 }
+
+/* PORTOFOLIO */
+.header-portfolio {
+  background: conic-gradient(
+    from 154deg at 74.55% 50%,
+    #f5ebe1 109.62931752204895deg,
+    #edebe8 193.59360694885254deg,
+    #d8d8d6 360deg
+  );
+  display: flex;
+  align-items: center;
+}
+.category-portfolio {
+  padding: 3rem 3rem 0 3rem;
+  font-size: 24px;
+  font-weight: 400;
+  font-family: PF Handbook Pro;
+}
+.list-category {
+  gap: 50px;
+}
+.img-detail {
+  padding: 100px 0;
+}
+
+/* DETAIL TALENT */
+.detail-title {
+  color: var(--gray-font);
+  font-size: 48px;
+  font-weight: 700;
+}
+.detail-category {
+  color: var(--gray-font);
+  font-size: 30px;
+  font-weight: 500;
+}
+.card-sosmed {
+  width: 300.452px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+.username {
+  color: var(--teracota);
+  font-size: 20px;
+  font-weight: 600;
+}
+.count-foll {
+  font-size: 32px;
+  font-weight: 500;
+}
+.desc-foll {
+  color: #6d6d6d;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.line-price {
+  width: 400px;
+  height: 2px;
+  background-color: var(--teracota);
+  align-self: center;
+  margin-top: 15px;
+}
+.pricelist-card {
+  /* max-width: 287.452px; */
+  padding: 20px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+.img-gallery {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.img-container-gallery {
+  width: 373px;
+  height: 447px;
+  overflow: hidden;
+  position: relative;
+}
 @media screen and (max-width: 1200px) {
   .card-porto img {
     max-width: 300px;
@@ -405,7 +491,7 @@
     margin-inline: auto;
   }
   .img-service {
-    width: 70%;
+    width: 70px;
     margin-right: 20px;
   }
   .text-title {
@@ -437,6 +523,15 @@
   .footer-title {
     text-align: center;
   }
+  .header-portfolio {
+    background: linear-gradient(154deg, #f5ebe1 0%, #edebe8 50%, #d8d8d6 100%);
+  }
+  .list-category {
+    gap: 0px;
+  }
+  .custom-collapse {
+    padding-bottom: 20px;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -446,6 +541,11 @@
   }
   .card-slider img {
     max-width: 100%;
+  }
+
+  .category-portfolio {
+    padding: 3rem 2rem 0 2rem;
+    font-size: 20px;
   }
 }
 @media screen and (max-width: 576px) {
@@ -476,6 +576,17 @@
     font-size: 30px;
     text-align: center;
   }
+  .category-portfolio {
+    padding: 3rem 1rem 0 1rem;
+  }
+  .detail-title {
+    color: var(--gray-font);
+    font-size: 33px;
+    font-weight: 700;
+  }
+  .container-sosmed {
+    flex-wrap: wrap;
+  }
 }
 @media screen and (max-width: 475px) {
   .homepage .header-box p {
@@ -489,7 +600,7 @@
     gap: 30px 400px;
   }
   .img-service {
-    width: 60%;
+    width: 60px;
     padding-right: 20px;
   }
   .service-card {
@@ -516,5 +627,12 @@
   .width-col {
     width: 50px !important;
     padding: 0 30px;
+  }
+  .category-portfolio {
+    padding: 3rem 10px 0 10px;
+  }
+  .line-price {
+    width: auto;
+    max-width: 400px;
   }
 }

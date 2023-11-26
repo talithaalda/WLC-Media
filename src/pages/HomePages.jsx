@@ -112,7 +112,12 @@ const HomePages = () => {
       </div>
 
       {/* OUR TALENTS */}
-      <SliderComponents></SliderComponents>
+      <div>
+        <div className="mt-5">
+          <TitleTextComponents textTitle="Our Talents" />
+        </div>
+        <SliderComponents></SliderComponents>
+      </div>
     </div>
   );
 };

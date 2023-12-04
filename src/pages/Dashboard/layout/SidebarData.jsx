@@ -1,41 +1,78 @@
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
 export const SidebarData = [
   {
-    title: "Dasboard",
-    path: "/dasboard",
-    icon: <AiIcons.AiFillHome />,
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/c64b38/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
+        alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
+      />
+    ),
+    hovericon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/ffffff/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
+        alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
+      />
+    ),
     cName: "nav-text",
   },
   {
-    title: "Reports",
-    path: "/reports",
-    icon: <IoIcons.IoIosPaper />,
+    title: "Talents",
+    path: "/dashboard/talents",
+    icon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/ios-glyphs/30/c64b38/conference-call--v1.png"
+        alt="conference-call--v1"
+      />
+    ),
+    hovericon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/ios-glyphs/30/ffffff/conference-call--v1.png"
+        alt="conference-call--v1"
+      />
+    ),
     cName: "nav-text",
   },
   {
-    title: "Products",
-    path: "/products",
-    icon: <FaIcons.FaCartPlus />,
+    title: "Portfolio",
+    path: "/dashboard/portfolio",
+    icon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/fluency-systems-filled/48/c64b38/media.png"
+        alt="conference-call--v1"
+      />
+    ),
+    hovericon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/fluency-systems-filled/48/ffffff/media.png"
+        alt="conference-call--v1"
+      />
+    ),
     cName: "nav-text",
   },
   {
-    title: "Team",
-    path: "/team",
-    icon: <IoIcons.IoMdPeople />,
-    cName: "nav-text",
-  },
-  {
-    title: "Messages",
-    path: "/messages",
-    icon: <FaIcons.FaEnvelopeOpenText />,
-    cName: "nav-text",
-  },
-  {
-    title: "Support",
-    path: "/support",
-    icon: <IoIcons.IoMdHelpCircle />,
+    title: "Profile",
+    path: "/dashboard/profile",
+    icon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/ios-glyphs/30/c64b38/client-company.png"
+        alt="conference-call--v1"
+      />
+    ),
+    hovericon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/ios-glyphs/30/ffffff/client-company.png"
+        alt="conference-call--v1"
+      />
+    ),
     cName: "nav-text",
   },
 ];

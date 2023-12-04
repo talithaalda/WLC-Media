@@ -4,7 +4,7 @@
 :root {
   --base-color: #ffffff;
   --teracota: #c64b38;
-  --teracota-hover: #f06654;
+  --teracota-hover: #a12616;
   --base-gray: #f4f5f7;
   --black-font: #000000;
   --gray-font: #414141;
@@ -16,7 +16,7 @@
   padding-left: 60px !important;
   padding-right: 60px !important;
   width: 100% !important;
-  height: 90px;
+  height: 75px;
   margin: 0 !important;
   z-index: 10;
 }
@@ -124,6 +124,7 @@
   background: var(--teracota) !important;
   color: var(--base-color) !important;
   margin: 5px 0;
+  border: none !important;
 }
 .btn-wlc:hover {
   background: var(--teracota-hover) !important;
@@ -197,6 +198,7 @@
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
+  line-height: 20px;
 }
 .desc-portfolio {
   color: var(--gray-font);
@@ -305,6 +307,7 @@
   color: var(--base-color);
   font-size: 18px;
   font-weight: 400;
+  padding-left: 0;
 }
 .footer {
   background: var(--teracota);
@@ -454,7 +457,7 @@
   height: 2px;
   background-color: var(--teracota);
   align-self: center;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 .pricelist-card {
   /* max-width: 287.452px; */
@@ -473,9 +476,19 @@
   overflow: hidden;
   position: relative;
 }
+.text-price {
+  color: var(--teracota);
+  font-size: 20px;
+  font-weight: 700;
+}
+.clients img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
 @media screen and (max-width: 1200px) {
   .card-porto img {
-    max-width: 300px;
+    max-width: 200px;
   }
 }
 @media screen and (max-width: 992px) {
@@ -491,7 +504,7 @@
     margin-inline: auto;
   }
   .img-service {
-    width: 70px;
+    width: 80px;
     margin-right: 20px;
   }
   .text-title {
@@ -514,9 +527,6 @@
   .contactus {
     margin-left: 70px;
   }
-  .company {
-    margin-right: 45px;
-  }
   .footer-center-1 {
     text-align: center;
   }
@@ -532,6 +542,9 @@
   .custom-collapse {
     padding-bottom: 20px;
   }
+  /* .clients img {
+    max-width: 15%;
+  } */
 }
 
 @media screen and (max-width: 768px) {
@@ -546,6 +559,12 @@
   .category-portfolio {
     padding: 3rem 2rem 0 2rem;
     font-size: 20px;
+  }
+  .title-portfolio {
+    font-size: 14px;
+  }
+  .desc-portfolio {
+    font-size: 12px;
   }
 }
 @media screen and (max-width: 576px) {
@@ -587,6 +606,9 @@
   .container-sosmed {
     flex-wrap: wrap;
   }
+  /* .clients img {
+    max-width: 20%;
+  } */
 }
 @media screen and (max-width: 475px) {
   .homepage .header-box p {
@@ -600,7 +622,7 @@
     gap: 30px 400px;
   }
   .img-service {
-    width: 60px;
+    width: 80px;
     padding-right: 20px;
   }
   .service-card {
@@ -634,5 +656,8 @@
   .line-price {
     width: auto;
     max-width: 400px;
+  }
+  .clients img {
+    width: 200px;
   }
 }

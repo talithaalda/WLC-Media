@@ -118,6 +118,33 @@ const HomePages = () => {
         </div>
         <SliderComponents></SliderComponents>
       </div>
+
+      {/* Brand */}
+      <Container>
+        <div className="mt-5 pt-5">
+          <TitleTextComponents textTitle="Our clients" />
+        </div>
+        <div
+          className="d-flex flex-wrap justify-content-center clients mt-5"
+          style={{ gap: "60px" }}
+        >
+          <img src="/images/brand1.png" alt="brand" />
+          <img src="/images/brand2.png" alt="brand" />
+          <img src="/images/brand3.png" alt="brand" />
+          <img src="/images/brand4.png" alt="brand" />
+          <img src="/images/brand5.png" alt="brand" />
+          <img src="/images/brand6.png" alt="brand" />
+          <img src="/images/brand7.png" alt="brand" />
+          <img src="/images/brand8.png" alt="brand" />
+          <img src="/images/brand9.png" alt="brand" />
+          <img src="/images/brand10.png" alt="brand" />
+          <img src="/images/brand11.png" alt="brand" />
+          <img src="/images/brand12.png" alt="brand" />
+          <img src="/images/brand13.png" alt="brand" />
+          <img src="/images/brand14.png" alt="brand" />
+          <img src="/images/brand15.png" alt="brand" />
+        </div>
+      </Container>
     </div>
   );
 };

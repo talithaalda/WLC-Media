@@ -22,9 +22,9 @@ const FooterComponents = () => {
             <div>
               <div className="footer-title mb-3 ">Company</div>
               <ul className="footer-desc company">
-                <li className="mb-3">Portfolio</li>
-                <li className="mb-3">Talens</li>
-                <li className="mb-3">About Us</li>
+                <li className="mb-3">- Portfolio</li>
+                <li className="mb-3">- Talens</li>
+                <li className="mb-3">- About Us</li>
               </ul>
             </div>
           </Col>

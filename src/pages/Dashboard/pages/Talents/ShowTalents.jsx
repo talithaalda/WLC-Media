@@ -1,15 +1,35 @@
-// import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import TitleTextComponents from "../components/TitleTextComponents";
-const DetailTalentsPage = () => {
+import { Col, Container, Row } from "react-bootstrap";
+import TitleTextComponents from "../../../../components/TitleTextComponents";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+
+const ShowTalents = () => {
   return (
     <Container className="">
-      <Row className="img-detail">
+      <div className="d-flex justify-content-center gap-2">
+        <Link to={"/dashboard/talents/edit"}>
+          <button className="btn btn-primary" href="">
+            <i>
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </i>
+            <span> Edit</span>
+          </button>
+        </Link>
+        <Link to={"/dashboard/talents/delete"}>
+          <button className="btn btn-danger" href="">
+            <i>
+              <FontAwesomeIcon icon={faTrash} />
+            </i>
+            <span> Delete</span>
+          </button>
+        </Link>
+      </div>
+      <Row className="py-5 px-5 mb-5">
         <Col lg="5" className="justify-content-center d-flex">
           <img src="/images/img-detail.png" alt="img-detail" />
         </Col>
-        <Col lg="7" className="px-5 mt-lg-0 mt-5">
-          <div style={{ fontSize: "24px", color: "#929292" }}>Hello I am </div>
+        <Col lg="7" className="px-2 mt-lg-0 mt-5">
           <h1 className="detail-title">Jenny Wilson Allen</h1>
           <h3 className="detail-category">Sport</h3>
           <div
@@ -50,7 +70,6 @@ const DetailTalentsPage = () => {
           </div>
         </Col>
       </Row>
-
       <TitleTextComponents textTitle="Price List"></TitleTextComponents>
       <div className="d-flex d-flex gap-5 flex-wrap justify-content-center m-5">
         <div className="pricelist-card">
@@ -112,34 +131,8 @@ const DetailTalentsPage = () => {
           </div>
         </div>
       </div>
-      <div style={{ padding: "50px 0" }}>
-        <TitleTextComponents textTitle="Gallery"></TitleTextComponents>
-      </div>
-      <div className="d-flex gap-5 justify-content-center container-sosmed">
-        <div className="img-container-gallery">
-          <img
-            src="/images/img-detail.png"
-            alt="img-gallery"
-            className="img-gallery"
-          />
-        </div>
-        <div className="img-container-gallery">
-          <img
-            src="/images/img-detail.png"
-            alt="img-gallery"
-            className="img-gallery"
-          />
-        </div>
-        <div className="img-container-gallery">
-          <img
-            src="/images/img-detail.png"
-            alt="img-gallery"
-            className="img-gallery"
-          />
-        </div>
-      </div>
     </Container>
   );
 };
 
-export default DetailTalentsPage;
+export default ShowTalents;

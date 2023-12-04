@@ -6,8 +6,15 @@ import AbouUsPage from "./pages/AbouUsPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import TalentsPage from "./pages/TalentsPage";
 import DetailTalentsPage from "./pages/DetailTalentsPage";
-import SideBar from "./pages/Dashboard/layout/SideBar";
 import DashboardAdmin from "./pages/Dashboard/pages/DashboardAdmin";
+import DashboardTalents from "./pages/Dashboard/pages/Talents/DashboardTalents";
+import SideBar from "./pages/Dashboard/layout/SideBar";
+import DashboardPortfolio from "./pages/Dashboard/pages/Portfolio/DashboardPortfolio";
+import DashboardProfile from "./pages/Dashboard/pages/DashboardProfile";
+import ShowTalents from "./pages/Dashboard/pages/Talents/ShowTalents";
+import EditTalents from "./pages/Dashboard/pages/Talents/EditTalents";
+import ShowPortfolio from "./pages/Dashboard/pages/Portfolio/ShowPortfolio";
+import EditPortfolio from "./pages/Dashboard/pages/Portfolio/EditPortfolio";
 
 function App() {
   const location = useLocation();
@@ -32,10 +39,79 @@ function App() {
       )}
       {isDashboardRoute && (
         <div>
-          <SideBar />
+          {/* <Row className="g-0">
+            <Col className="col-auto"> */}
+
+          {/* </Col> */}
+          {/* <Col> */}
           <Routes>
-            <Route path="/dashboard" element={<DashboardAdmin />} />
+            <Route
+              path="/dashboard"
+              element={
+                <SideBar>
+                  <DashboardAdmin />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/talents"
+              element={
+                <SideBar>
+                  <DashboardTalents />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/talents/show"
+              element={
+                <SideBar>
+                  <ShowTalents />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/talents/edit"
+              element={
+                <SideBar>
+                  <EditTalents />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/portfolio"
+              element={
+                <SideBar>
+                  <DashboardPortfolio />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/portfolio/show"
+              element={
+                <SideBar>
+                  <ShowPortfolio />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/portfolio/edit"
+              element={
+                <SideBar>
+                  <EditPortfolio />
+                </SideBar>
+              }
+            />
+            <Route
+              path="/dashboard/profile"
+              element={
+                <SideBar>
+                  <DashboardProfile />
+                </SideBar>
+              }
+            />
           </Routes>
+          {/* </Col>
+          </Row> */}
         </div>
       )}
     </div>

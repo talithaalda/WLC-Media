@@ -15,6 +15,8 @@ import ShowTalents from "./pages/Dashboard/pages/Talents/ShowTalents";
 import EditTalents from "./pages/Dashboard/pages/Talents/EditTalents";
 import ShowPortfolio from "./pages/Dashboard/pages/Portfolio/ShowPortfolio";
 import EditPortfolio from "./pages/Dashboard/pages/Portfolio/EditPortfolio";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   const location = useLocation();
@@ -39,11 +41,6 @@ function App() {
       )}
       {isDashboardRoute && (
         <div>
-          {/* <Row className="g-0">
-            <Col className="col-auto"> */}
-
-          {/* </Col> */}
-          {/* <Col> */}
           <Routes>
             <Route
               path="/dashboard"
@@ -109,9 +106,9 @@ function App() {
                 </SideBar>
               }
             />
+            <Route path="/dashboard/login" element={<LoginPage />} />
+            <Route path="/dashboard/register" element={<RegisterPage />} />
           </Routes>
-          {/* </Col>
-          </Row> */}
         </div>
       )}
     </div>

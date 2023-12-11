@@ -67,12 +67,10 @@ const Sidebar = ({ children }) => {
     <div>
       <section id="sidebar" className={sidebarHidden ? "hide" : ""}>
         <Link href="/" className="brand ps-2">
-          <div>
-            <i>
-              <img src="/images/logo-icon.png" width={"50px"} alt="logo" />
-            </i>
-            Dashboard
-          </div>
+          <i>
+            <img src="/images/logo-icon.png" width={"50px"} alt="logo" />
+          </i>
+          Dashboard
         </Link>
         <ul className="side-menu  ">
           {SidebarData.map((item, index) => (

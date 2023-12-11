@@ -1,7 +1,6 @@
 import FooterComponents from "@/components/FooterComponents";
 import NavbarComponents from "@/components/NavbarComponents";
 import SideBar from "@/components/dashboardLayouts/SideBar";
-import ShowPortfolio from "@/pages/dashboard/portfolio/show";
 import { useRouter } from "next/router";
 import React from "react";
 const AppShell = ({ children }) => {

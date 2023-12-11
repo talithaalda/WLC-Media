@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import FooterComponents from "../components/FooterComponents";
 
 export default function Document() {
   return (

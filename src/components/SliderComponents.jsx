@@ -8,19 +8,19 @@ import { useRef } from "react";
 import { useEffect } from "react";
 function SliderComponents() {
   const getSlidesToShow = () => {
-    // Check if window is defined (to avoid server-side rendering issues)
+    // Check if window is defined (to avoid SSR issues)
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
 
       if (width < 480) return 1;
       if (width < 768) return 1;
-      // Add more conditions as needed
+      if (width < 1024) return 2;
+      if (width < 1290) return 3;
     }
 
-    // Default value if window is not defined (e.g., during server-side rendering)
+    // Default value if window is not defined (SSR)
     return 3;
   };
-
   const [currentSlide, setCurrentSlide] = useState(0);
   const [numSlidesToShow, setNumSlidesToShow] = useState(getSlidesToShow());
   const sliderRef = useRef(null);

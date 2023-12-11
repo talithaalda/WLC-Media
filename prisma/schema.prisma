@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Porto{
+  id Int @id @default(autoincrement())
+  title String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+  categoryId Int
+  category CategoryPorto @relation(fields: [categoryId], references: [id])
+}
+
+model CategoryPorto{
+  id Int @id @default(autoincrement())
+  name String
+  porto Porto[]
+}
+
+model Talent{
+  id Int @id @default(autoincrement())
+  name String 
+  userIG String 
+  follIG Int 
+  ERIG Float 
+  startfromIG Int 
+  userTikTok String 
+  follTikTok Int 
+  ERTikTok Float 
+  startfromTikTok Int 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+  categoryId Int
+  category CategoryTalent @relation(fields: [categoryId], references: [id])
+}
+
+model CategoryTalent{
+  id Int @id @default(autoincrement())
+  name String
+  talent Talent[]
+}
+
+model Profile{
+  id Int @id @default(autoincrement())
+  companyName String
+  location String
+  email String
+  instagram String
+  linkMaps String
+}

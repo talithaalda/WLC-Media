@@ -16,6 +16,8 @@ model Porto{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
   categoryId Int
+  path String  
+  filename String 
   category CategoryPorto @relation(fields: [categoryId], references: [id])
 }
 
@@ -39,6 +41,8 @@ model Talent{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
   categoryId Int
+  path String  
+  filename String 
   category CategoryTalent @relation(fields: [categoryId], references: [id])
 }
 
@@ -55,4 +59,6 @@ model Profile{
   email String
   instagram String
   linkMaps String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
 }

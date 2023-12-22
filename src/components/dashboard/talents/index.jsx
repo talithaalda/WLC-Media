@@ -45,6 +45,9 @@ const DashboardTalents = () => {
         <Link href={"/dashboard/talents/create"} className="p-3">
           <ButtonComponents textButton="Add New" />
         </Link>
+        <Link href={"/dashboard/talents/addcategory"} className="p-3">
+          <button className="btn btn-success"> + Add New Category</button>
+        </Link>
         <div className="container-fluid mt-3">
           {deleteSuccess && (
             <CustomAlert

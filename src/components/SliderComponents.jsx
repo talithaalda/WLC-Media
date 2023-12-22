@@ -55,7 +55,7 @@ function SliderComponents() {
             }}
           />
         ))}
-        <div>{setCurrentSlide}</div>
+        {/* <div>{setCurrentSlide}</div> */}
       </div>
     );
   };

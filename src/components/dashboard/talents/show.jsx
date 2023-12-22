@@ -3,8 +3,52 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import TitleTextComponents from "@/components/TitleTextComponents";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import formatToRupiah from "../../FormatToRp";
 
 const ShowTalents = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [talent, setTalent] = useState([]);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  useEffect(() => {
+    const fetchDataById = async () => {
+      try {
+        if (!id) {
+          return;
+        }
+        const rute = `/api/talent/${id}`;
+        const response = await fetch(rute);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setTalent(data);
+      } catch (error) {
+        console.error("Error fetching talent data:", error);
+      }
+    };
+    fetchDataById();
+  }, [id, talent]);
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`/api/talent/${id}`, {
+        method: "DELETE",
+      });
+      setDeleteSuccess(true);
+      router.push("/dashboard/talents");
+      if (!response.ok) {
+        throw new Error("Failed to delete data");
+      }
+
+      // Update the state to reflect the changes
+      setTalent((prevTalent) => prevTalent.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting talent data:", error);
+    }
+  };
   return (
     <Container className="">
       <div className="d-flex justify-content-center gap-2">
@@ -17,7 +61,10 @@ const ShowTalents = () => {
           </button>
         </Link>
         <Link href="/dashboard/talents/delete" legacyBehavior>
-          <button className="btn btn-danger" href="">
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDelete(talent.id)}
+          >
             <i>
               <FontAwesomeIcon icon={faTrash} />
             </i>
@@ -30,8 +77,8 @@ const ShowTalents = () => {
           <img src="/images/img-detail.png" alt="img-detail" />
         </Col>
         <Col lg="7" className="px-2 mt-lg-0 mt-5">
-          <h1 className="detail-title">Jenny Wilson Allen</h1>
-          <h3 className="detail-category">Sport</h3>
+          <h1 className="detail-title">{talent.name}</h1>
+          <h3 className="detail-category">{talent.category?.name}</h3>
           <div
             className="mt-5 pt-5 pb-3"
             style={{ fontSize: "20px", color: "#414141", fontWeight: 700 }}
@@ -42,28 +89,28 @@ const ShowTalents = () => {
             <div className="card-sosmed">
               <div className="d-flex justify-content-center gap-2 pb-2">
                 <img src="/images/logo-instagram.svg" alt="instagram" />
-                <div className="username">@jennywilson</div>
+                <div className="username">@{talent.userIG}</div>
               </div>
               <div className="p-3">
-                <h1 className="count-foll">60.192k</h1>
+                <h1 className="count-foll">{talent.follIG}k</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>
-                <h1 className="count-foll">1,45%</h1>
-                <div className="desc-foll">ENGAGEMENTS</div>
+                <h1 className="count-foll">{talent.ERIG}%</h1>
+                <div className="desc-foll">ENGAGEMENT</div>
               </div>
             </div>
             <div className="card-sosmed">
               <div className="d-flex justify-content-center gap-2">
                 <img src="/images/logo-tt.svg" alt="tiktok" />
-                <div className="username">@jennywilson</div>
+                <div className="username">@{talent.userTikTok}</div>
               </div>
               <div className="p-3">
-                <h1 className="count-foll">60.192k</h1>
+                <h1 className="count-foll">{talent.follTikTok}k</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>
-                <h1 className="count-foll">1,45%</h1>
+                <h1 className="count-foll">{talent.ERTikTok}%</h1>
                 <div className="desc-foll">ENGAGEMENTS</div>
               </div>
             </div>
@@ -79,7 +126,9 @@ const ShowTalents = () => {
               <img src="/images/price.svg" alt="price" />
               Start From
             </div>
-            <div className="text-price">Rp1.000.000</div>
+            <div className="text-price">
+              {formatToRupiah(talent.startfromIG)}
+            </div>
           </div>
           <div className="line-price"></div>
           <div className="pt-3 d-flex flex-column gap-2">
@@ -108,7 +157,9 @@ const ShowTalents = () => {
               <img src="/images/price.svg" alt="price" />
               Start From
             </div>
-            <div className="text-price">Rp1.000.000</div>
+            <div className="text-price">
+              {formatToRupiah(talent.startfromTikTok)}
+            </div>
           </div>
           <div className="line-price"></div>
           <div className="pt-3 d-flex flex-column gap-2">

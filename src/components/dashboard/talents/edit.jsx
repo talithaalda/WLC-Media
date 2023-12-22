@@ -4,50 +4,117 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import * as formik from "formik";
 import * as yup from "yup";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import CustomAlert from "../../AlertComponents";
+import axios from "axios";
 function EditTalents() {
-  // const [validated, setValidated] = useState(false);
-
-  // const handleSubmit = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //   }
-
-  //   setValidated(true);
-  // };
   const { Formik } = formik;
+  const [talent, setTalent] = useState([]);
+  const [category, setCategory] = useState([]);
+  const router = useRouter();
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const { id } = router.query;
+  useEffect(() => {
+    const fetchDataById = async () => {
+      try {
+        if (!id) {
+          return;
+        }
+        const rute = `/api/talent/${id}`;
+        const response = await fetch(rute);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
 
+        const data = await response.json();
+        setTalent(data);
+      } catch (error) {
+        console.error("Error fetching talent data:", error);
+      }
+    };
+    fetchDataById();
+  }, [id, talent]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/category-talent");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCategory(data);
+      } catch (error) {
+        console.error("Error fetching talent data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const handleUpdate = async (values, { setSubmitting, resetForm }) => {
+    console.log("hai");
+    try {
+      const response = await axios.put(`/api/talent/${id}`, {
+        name: values.name,
+        categoryId: Number(values.categoryId),
+        userIG: values.userIG,
+        userTikTok: values.userTikTok,
+        startfromIG: Number(values.startfromIG),
+        startfromTikTok: Number(values.startfromTikTok),
+        follIG: Number(values.follIG),
+        follTikTok: Number(values.follTikTok),
+        ERIG: Number(values.ERIG),
+        ERTikTok: Number(values.ERTikTok),
+      });
+
+      if (response.status === 200) {
+        console.log("Data updated successfully");
+        setUpdateSuccess(true);
+        resetForm();
+        const updatedDataResponse = await fetch(`/api/talent/${id}`);
+        const updatedData = await updatedDataResponse.json();
+        setTalent(updatedData);
+      } else {
+        throw new Error("Failed to update data");
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   const schema = yup.object().shape({
-    name: yup.string().required(),
-    category: yup.string().required(),
-    userIG: yup.string().required(),
-    userTikTok: yup.string().required(),
-    startfromIG: yup.string().required(),
-    startfromTikTok: yup.string().required(),
-    follIG: yup.string().required(),
-    follTikTok: yup.string().required(),
-    ERIG: yup.string().required(),
-    ERTikTok: yup.string().required(),
-    file: yup.mixed().required(),
+    name: yup.string().required("Field is required"),
+    categoryId: yup.string().required("Field is required"),
+    userIG: yup.string().required("Field is required"),
+    userTikTok: yup.string().required("Field is required"),
+    startfromIG: yup.number().required("Field is required"),
+    startfromTikTok: yup.number().required("Field is required"),
+    follIG: yup.number().required("Field is required"),
+    follTikTok: yup.number().required("Field is required"),
+    ERIG: yup.number().required("Field is required"),
+    ERTikTok: yup.number().required("Field is required"),
+    // file: yup.mixed().required(),
   });
 
   return (
     <>
       <Formik
+        enableReinitialize={true}
         validationSchema={schema}
-        onSubmit={console.log}
+        onSubmit={handleUpdate}
         initialValues={{
-          name: "",
-          category: "",
-          userIG: "",
-          userTikTok: "",
-          startfromIG: "",
-          startfromTikTok: "",
-          follIG: "",
-          follTikTok: "",
-          ERIG: "",
-          ERTikTok: "",
+          name: talent.name || "",
+          categoryId: talent.categoryId || "",
+          userIG: talent.userIG || "",
+          userTikTok: talent.userTikTok || "",
+          startfromIG: talent.startfromIG || "",
+          startfromTikTok: talent.startfromTikTok || "",
+          follIG: talent.follIG || "",
+          follTikTok: talent.follTikTok || "",
+          ERIG: talent.ERIG || "",
+          ERTikTok: talent.ERTikTok || "",
           file: null,
         }}
       >
@@ -55,6 +122,13 @@ function EditTalents() {
           <main>
             <Container className="container-form">
               <h4 className="pb-3">Edit Talent</h4>
+              {updateSuccess && (
+                <CustomAlert
+                  variant="success"
+                  message="Data updated successfully!"
+                  onClose={() => setUpdateSuccess(false)}
+                />
+              )}
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-4" controlId="validationCustom01">
                   <Form.Label>Name</Form.Label>
@@ -74,15 +148,20 @@ function EditTalents() {
 
                 <Form.Group className="mb-4" controlId="validationCustom02">
                   <Form.Label>Category</Form.Label>
-                  <Form.Control
+                  <Form.Select
                     required
-                    type="text"
-                    placeholder="Category"
-                    name="category"
-                    value={values.category}
+                    name="categoryId"
+                    value={values.categoryId}
                     onChange={handleChange}
-                    isInvalid={!!errors.category}
-                  />
+                    isInvalid={!!errors.categoryId}
+                  >
+                    <option value="">Select a category</option>
+                    {category.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     {errors.category}
                   </Form.Control.Feedback>

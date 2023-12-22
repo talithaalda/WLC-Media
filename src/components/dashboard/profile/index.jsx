@@ -4,47 +4,103 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import * as formik from "formik";
 import * as yup from "yup";
+import { useEffect, useState } from "react";
+import CustomAlert from "../../AlertComponents";
+import axios from "axios";
 function DashboardProfile() {
-  // const [validated, setValidated] = useState(false);
+  const [profile, setProfile] = useState([]);
+  const profileId = profile && profile.length > 0;
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/profile/1");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
 
-  // const handleSubmit = (event) => {
-  //   const form = event.currentTarget;
-  //   if (form.checkValidity() === false) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-  //   }
+        const data = await response.json();
+        setProfile(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
 
-  //   setValidated(true);
-  // };
+    fetchData();
+  }, []);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      // console.log(profile);
+      if (profile !== null) {
+        // Jika data sudah ada, lakukan update
+        const response = await axios.put(`/api/profile/1`, {
+          // Ganti dengan properti id yang sesuai
+          companyName: values.company,
+          location: values.location,
+          linkMaps: values.linkMaps,
+          email: values.email,
+          instagram: values.instagram,
+        });
+        console.log("Data berhasil diupdate:", response.data);
+      } else {
+        // Jika data belum ada, lakukan create
+        const response = await axios.post("/api/profile/create", {
+          companyName: values.company,
+          location: values.location,
+          linkMaps: values.linkMaps,
+          email: values.email,
+          instagram: values.instagram,
+        });
+        console.log("Data berhasil ditambahkan:", response.data);
+      }
+
+      setUpdateSuccess(true);
+    } catch (error) {
+      console.error("Gagal mengelola data:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   const { Formik } = formik;
 
   const schema = yup.object().shape({
     company: yup.string().required(),
     location: yup.string().required(),
     linkMaps: yup.string().url().required(),
-    phone: yup.number().required(),
+    // phone: yup.number().required(),
     email: yup.string().email().required(),
     instagram: yup.string().required(),
+    linkMaps: yup.string().url().required(),
   });
 
   return (
     <>
       <Formik
+        enableReinitialize={true}
         validationSchema={schema}
-        onSubmit={console.log}
+        onSubmit={handleSubmit}
         initialValues={{
-          company: "",
-          location: "",
-          linkMaps: "",
-          phone: "",
-          email: "",
-          instagram: "",
+          company: profile.companyName || "",
+          location: profile.location || "",
+          linkMaps: profile.companyName || "",
+          // phone: profile.companyName || "",
+          email: profile.email || "",
+          instagram: profile.email || "",
+          linkMaps: profile.linkMaps || "",
         }}
       >
         {({ handleSubmit, handleChange, values, errors }) => (
           <main>
             <Container className="container-form">
               <h4 className="pb-3">Edit Profile</h4>
+              {updateSuccess && (
+                <CustomAlert
+                  variant="success"
+                  message="Data updated successfully!"
+                  onClose={() => setUpdateSuccess(false)}
+                />
+              )}
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-4" controlId="validationCustom01">
                   <Form.Label>Company</Form.Label>

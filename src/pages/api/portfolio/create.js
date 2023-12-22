@@ -1,16 +1,20 @@
+// /api/portfolio/create.js
+
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-export default async function createPorto(req, res) {
+
+export default async function handler(req, res) {
+  const prisma = new PrismaClient();
   if (req.method === "POST") {
-    const { title, categoryId } = req.body;
+    const { title, categoryId, path, filename } = req.body;
 
     try {
-      // Simpan data portfolio ke database
+      // Simpan data portfolio ke database menggunakan Prisma
       const newPortfolio = await prisma.porto.create({
         data: {
           title,
-          categoryId,
-          // file: filePath, // Gantilah ini dengan path atau URL file yang sesuai
+          categoryId: parseInt(categoryId),
+          path,
+          filename,
         },
       });
 

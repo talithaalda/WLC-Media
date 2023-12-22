@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   } else if (req.method === "PUT") {
     // Handle PUT request to update portfolio data
     try {
-      const { title, categoryId } = req.body;
+      const { title, categoryId, filename, path } = req.body;
 
       // Validate that title and categoryId are present in the request body
       if (!title || !categoryId) {
@@ -48,6 +48,8 @@ export default async function handler(req, res) {
         data: {
           title,
           categoryId: parseInt(categoryId, 10),
+          filename,
+          path,
         },
         include: {
           category: true,

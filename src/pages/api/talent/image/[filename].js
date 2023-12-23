@@ -7,7 +7,7 @@ export default function handler(req, res) {
   const { filename } = req.query;
 
   // Construct the absolute path to the image file
-  const imagePath = path.join(process.cwd(), "images/portfolio", filename);
+  const imagePath = path.join(process.cwd(), "images/talent", filename);
 
   try {
     // Read the image file asynchronously

@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 // Specify the destination folder for file uploads
-const uploadDestination = path.join(process.cwd(), "images/portfolio");
+const uploadDestination = path.join(process.cwd(), "images/talent");
 
 // Multer configuration
 const upload = multer({
@@ -26,7 +26,7 @@ export const config = {
 export default async function handler(req, res) {
   const { id } = req.query;
   if (req.method === "POST") {
-    const fileInfo = await prisma.porto.findUnique({
+    const fileInfo = await prisma.talent.findUnique({
       where: {
         id: parseInt(id, 10),
       },
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           encoding: file.encoding,
           mimetype: file.mimetype,
           filename: file.filename,
-          path: `/images/portfolio/${file.filename}`, // Add the path to the response
+          path: `/images/talent/${file.filename}`, // Add the path to the response
         });
       } else {
         // Handle the case where file or file.buffer is undefined
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "DELETE") {
     try {
-      const fileInfo = await prisma.porto.findUnique({
+      const fileInfo = await prisma.talent.findUnique({
         where: {
           id: parseInt(id, 10),
         },

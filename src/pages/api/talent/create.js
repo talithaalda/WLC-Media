@@ -13,6 +13,8 @@ export default async function createTalent(req, res) {
       follTikTok,
       ERTikTok,
       startfromTikTok,
+      path,
+      filename,
     } = req.body;
 
     try {
@@ -29,6 +31,8 @@ export default async function createTalent(req, res) {
           follTikTok,
           ERTikTok,
           startfromTikTok,
+          path,
+          filename,
           // file: filePath, // Gantilah ini dengan path atau URL file yang sesuai
         },
       });

@@ -10,6 +10,7 @@ import axios from "axios";
 function CreateTalents() {
   const [category, setCategory] = useState([]);
   const router = useRouter();
+  const [createSuccess, setCreateSuccess] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +31,6 @@ function CreateTalents() {
   }, []);
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      console.log("hai");
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("categoryId", values.categoryId);
@@ -42,7 +42,19 @@ function CreateTalents() {
       formData.append("follTikTok", values.follTikTok);
       formData.append("ERIG", values.ERIG);
       formData.append("ERTikTok", values.ERTikTok);
+      formData.append("file", values.file);
       try {
+        const responseUpload = await axios.post(
+          "/api/talent/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Dapatkan path dan filename dari respons upload
+        const { path, filename } = responseUpload.data;
         const response = await axios.post("/api/talent/create", {
           name: formData.get("name"),
           categoryId: Number(formData.get("categoryId")),
@@ -54,13 +66,17 @@ function CreateTalents() {
           follTikTok: Number(formData.get("follTikTok")),
           ERIG: Number(formData.get("ERIG")),
           ERTikTok: Number(formData.get("ERTikTok")),
+          path,
+          filename,
         });
-        console.log("Data berhasil ditambahkan:", response.data);
       } catch (error) {
         console.error("Axios error:", error);
       }
 
-      router.push("/dashboard/talents");
+      router.push({
+        pathname: "/dashboard/talents",
+        query: { createSuccess: true },
+      });
     } catch (error) {
       console.error("Gagal menambahkan data:", error);
     } finally {
@@ -80,7 +96,25 @@ function CreateTalents() {
     follTikTok: yup.number().required("Field is required"),
     ERIG: yup.number().required("Field is required"),
     ERTikTok: yup.number().required("Field is required"),
-    // file: yup.mixed().required("Field is required"),
+    file: yup
+      .mixed()
+      .required("Photo is required")
+      .test(
+        "fileFormat",
+        "Invalid file format. Please upload a JPEG, PNG, or GIF file.",
+        (value) => {
+          // Jika tidak ada berkas, validasi dilewati
+          if (!value) {
+            return true;
+          }
+
+          // Tentukan tipe file yang diizinkan
+          const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+
+          // Periksa tipe file berdasarkan "type" property pada berkas
+          return allowedImageTypes.includes(value.type);
+        }
+      ),
   });
 
   return (
@@ -99,10 +133,10 @@ function CreateTalents() {
           follTikTok: "",
           ERIG: "",
           ERTikTok: "",
-          file: null,
+          file: "",
         }}
       >
-        {({ handleSubmit, handleChange, values, errors }) => (
+        {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
               <h4 className="pb-3">Create Talent</h4>
@@ -286,8 +320,11 @@ function CreateTalents() {
                   <Form.Control
                     type="file"
                     required
-                    name="file"
-                    onChange={handleChange}
+                    name="file" // This should match the argument in upload.single("file")
+                    onChange={(event) => {
+                      handleChange(event);
+                      setFieldValue("file", event.currentTarget.files[0]);
+                    }}
                     isInvalid={!!errors.file}
                   />
                   <Form.Control.Feedback type="invalid">

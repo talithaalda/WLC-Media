@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -33,9 +33,7 @@ function EditTalents() {
         console.error("Error fetching talent data:", error);
       }
     };
-    fetchDataById();
-  }, [id, talent]);
-  useEffect(() => {
+
     const fetchData = async () => {
       try {
         const response = await fetch("/api/category-talent");
@@ -49,32 +47,58 @@ function EditTalents() {
         console.error("Error fetching talent data:", error);
       }
     };
-
+    fetchDataById();
     fetchData();
-  }, []);
+  }, [id]);
   const handleUpdate = async (values, { setSubmitting, resetForm }) => {
-    console.log("hai");
-    try {
-      const response = await axios.put(`/api/talent/${id}`, {
-        name: values.name,
-        categoryId: Number(values.categoryId),
-        userIG: values.userIG,
-        userTikTok: values.userTikTok,
-        startfromIG: Number(values.startfromIG),
-        startfromTikTok: Number(values.startfromTikTok),
-        follIG: Number(values.follIG),
-        follTikTok: Number(values.follTikTok),
-        ERIG: Number(values.ERIG),
-        ERTikTok: Number(values.ERTikTok),
-      });
+    let responseCreate = "";
 
-      if (response.status === 200) {
-        console.log("Data updated successfully");
+    try {
+      if (values.file) {
+        const formData = new FormData();
+        formData.append("file", values.file);
+        const responseUpload = await axios.post(
+          `/api/talent/image/edit/${id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        // Dapatkan path dan filename dari respons upload
+        const { path, filename } = responseUpload.data;
+        responseCreate = await axios.put(`/api/talent/${id}`, {
+          name: values.name,
+          categoryId: Number(values.categoryId),
+          userIG: values.userIG,
+          userTikTok: values.userTikTok,
+          startfromIG: Number(values.startfromIG),
+          startfromTikTok: Number(values.startfromTikTok),
+          follIG: Number(values.follIG),
+          follTikTok: Number(values.follTikTok),
+          ERIG: Number(values.ERIG),
+          ERTikTok: Number(values.ERTikTok),
+          path: path,
+          filename: filename,
+        });
+      } else {
+        responseCreate = await axios.put(`/api/talent/${id}`, {
+          name: values.name,
+          categoryId: Number(values.categoryId),
+          userIG: values.userIG,
+          userTikTok: values.userTikTok,
+          startfromIG: Number(values.startfromIG),
+          startfromTikTok: Number(values.startfromTikTok),
+          follIG: Number(values.follIG),
+          follTikTok: Number(values.follTikTok),
+          ERIG: Number(values.ERIG),
+          ERTikTok: Number(values.ERTikTok),
+        });
+      }
+      if (responseCreate.status === 200) {
         setUpdateSuccess(true);
-        resetForm();
-        const updatedDataResponse = await fetch(`/api/talent/${id}`);
-        const updatedData = await updatedDataResponse.json();
-        setTalent(updatedData);
+        setTalent(responseCreate.data);
       } else {
         throw new Error("Failed to update data");
       }
@@ -95,7 +119,24 @@ function EditTalents() {
     follTikTok: yup.number().required("Field is required"),
     ERIG: yup.number().required("Field is required"),
     ERTikTok: yup.number().required("Field is required"),
-    // file: yup.mixed().required(),
+    file: yup
+      .mixed()
+      .test(
+        "fileFormat",
+        "Invalid file format. Please upload a JPEG, PNG, or GIF file.",
+        (value) => {
+          // Jika tidak ada berkas, validasi dilewati
+          if (!value) {
+            return true;
+          }
+
+          // Tentukan tipe file yang diizinkan
+          const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+
+          // Periksa tipe file berdasarkan "type" property pada berkas
+          return allowedImageTypes.includes(value.type);
+        }
+      ),
   });
 
   return (
@@ -115,10 +156,9 @@ function EditTalents() {
           follTikTok: talent.follTikTok || "",
           ERIG: talent.ERIG || "",
           ERTikTok: talent.ERTikTok || "",
-          file: null,
         }}
       >
-        {({ handleSubmit, handleChange, values, errors }) => (
+        {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
               <h4 className="pb-3">Edit Talent</h4>
@@ -307,11 +347,22 @@ function EditTalents() {
                 </Form.Group>
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo Talent</Form.Label>
+                  <div className="mb-3" style={{ width: "30%" }}>
+                    {talent.path && (
+                      <Card.Img
+                        variant="top"
+                        src={`/api/talent/image/${talent.filename}`}
+                      />
+                    )}
+                  </div>
                   <Form.Control
                     type="file"
                     required
-                    name="file"
-                    onChange={handleChange}
+                    name="file" // This should match the argument in upload.single("file")
+                    onChange={(event) => {
+                      handleChange(event);
+                      setFieldValue("file", event.currentTarget.files[0]);
+                    }}
                     isInvalid={!!errors.file}
                   />
                   <Form.Control.Feedback type="invalid">

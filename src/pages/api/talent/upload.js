@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 
 // Specify the destination folder for file uploads
-const uploadDestination = path.join(process.cwd(), "images/portfolio");
+const uploadDestination = path.join(process.cwd(), "images/talent");
 
 // Multer configuration
 const upload = multer({
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         encoding: file.encoding,
         mimetype: file.mimetype,
         filename: file.filename,
-        path: `/images/portfolio/${file.filename}`, // Add the path to the response
+        path: `/images/talent/${file.filename}`, // Add the path to the response
       });
     } else {
       // Handle the case where file or file.buffer is undefined

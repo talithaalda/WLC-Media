@@ -2,11 +2,27 @@ import ButtonComponents from "@/components/ButtonComponents";
 import Link from "next/link";
 import CustomAlert from "../../AlertComponents";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const DashboardTalents = () => {
   const [talents, setTalents] = useState([]);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  let [createSuccess, setCreateSuccess] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
+    setDeleteSuccess(router.query.deleteSuccess === "true");
+    setCreateSuccess(router.query.createSuccess === "true");
+    if (
+      router.query.createSuccess === "true" ||
+      router.query.deleteSuccess === "true"
+    ) {
+      const { pathname, query } = router;
+      const newQuery = { ...query };
+      delete newQuery.createSuccess;
+      delete newQuery.deleteSuccess;
+      router.replace({ pathname, query: newQuery });
+    }
     const fetchData = async () => {
       try {
         const response = await fetch("/api/talent");
@@ -25,12 +41,19 @@ const DashboardTalents = () => {
   }, []);
   const handleDelete = async (id) => {
     try {
+      const deleteImageResponse = await fetch(`/api/talent/image/edit/${id}`, {
+        method: "DELETE",
+      });
+      if (!deleteImageResponse.ok) {
+        throw new Error("Failed to delete image");
+      }
       const response = await fetch(`/api/talent/${id}`, {
         method: "DELETE",
       });
-      setDeleteSuccess(true);
       if (!response.ok) {
         throw new Error("Failed to delete data");
+      } else {
+        setDeleteSuccess(true);
       }
 
       // Update the state to reflect the changes
@@ -53,7 +76,14 @@ const DashboardTalents = () => {
             <CustomAlert
               variant="danger"
               message="Data deleted successfully!"
-              onClose={() => setUpdateSuccess(false)}
+              onClose={() => setDeleteSuccess(false)}
+            />
+          )}
+          {createSuccess && (
+            <CustomAlert
+              variant="success"
+              message="Data created successfully!"
+              onClose={() => setCreateSuccess(false)}
             />
           )}
           <div className="row">

@@ -24,7 +24,6 @@ const AddcategoryComponent = () => {
         const response = await axios.post("/api/category-talent/create", {
           name: formData.get("name"),
         });
-        console.log("Data berhasil ditambahkan:", response.data);
         setCategory([...category, response.data]);
         setUpdateSuccess(true);
       } catch (error) {

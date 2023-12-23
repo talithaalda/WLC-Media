@@ -8,7 +8,7 @@ const CustomAlert = ({ message, variant, onClose }) => {
     const timeout = setTimeout(() => {
       setShow(false);
       onClose(); // Optional: You can call onClose after the timeout if you want to perform additional actions.
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timeout); // Clear the timeout if the component is unmounted.
   }, [onClose]); // Include onClose in the dependency array if it may change.

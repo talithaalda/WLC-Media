@@ -12,37 +12,69 @@ const ShowTalents = () => {
   const { id } = router.query;
   const [talent, setTalent] = useState([]);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
+  let isMounted = true;
   useEffect(() => {
-    const fetchDataById = async () => {
-      try {
-        if (!id) {
-          return;
-        }
-        const rute = `/api/talent/${id}`;
-        const response = await fetch(rute);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setTalent(data);
-      } catch (error) {
-        console.error("Error fetching talent data:", error);
-      }
+    // Set isMounted to false when the component is unmounted
+    return () => {
+      isMounted = false;
     };
-    fetchDataById();
-  }, [id, talent]);
+  }, []);
+  useEffect(() => {
+    // Hanya fetch data jika ID ada
+    if (id) {
+      fetchDataById();
+    }
+  }, [id]);
+  const fetchDataById = async () => {
+    try {
+      if (!id) {
+        return;
+      }
+      const rute = `/api/talent/${id}`;
+      const response = await fetch(rute);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+      setTalent(data);
+    } catch (error) {
+      console.error("Error fetching talent data:", error);
+    }
+  };
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/talent/${id}`, {
+      const imageInfoResponse = await fetch(
+        `/api/talent/image/${talent.filename}`
+      );
+      if (imageInfoResponse.ok) {
+        const deleteImageResponse = await fetch(
+          `/api/talent/image/edit/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        if (!deleteImageResponse.ok) {
+          throw new Error("Failed to delete image");
+        }
+      }
+      const deletetalentResponse = await fetch(`/api/talent/${id}`, {
         method: "DELETE",
       });
+      if (!deletetalentResponse.ok) {
+        throw new Error("Failed to delete talent data");
+      }
       setDeleteSuccess(true);
-      router.push("/dashboard/talents");
-      if (!response.ok) {
+      if (isMounted) {
+        setTalent([]);
+      }
+      if (!deletetalentResponse.ok) {
         throw new Error("Failed to delete data");
       }
-
+      router.push({
+        pathname: "/dashboard/talents",
+        query: { deleteSuccess: true },
+      });
       // Update the state to reflect the changes
       setTalent((prevTalent) => prevTalent.filter((item) => item.id !== id));
     } catch (error) {
@@ -52,7 +84,7 @@ const ShowTalents = () => {
   return (
     <Container className="">
       <div className="d-flex justify-content-center gap-2">
-        <Link href="/dashboard/talents/edit" legacyBehavior>
+        <Link href={`/dashboard/talents/${talent.id}/edit`} legacyBehavior>
           <button className="btn btn-primary" href="">
             <i>
               <FontAwesomeIcon icon={faPenToSquare} />
@@ -60,21 +92,26 @@ const ShowTalents = () => {
             <span> Edit</span>
           </button>
         </Link>
-        <Link href="/dashboard/talents/delete" legacyBehavior>
-          <button
-            className="btn btn-danger"
-            onClick={() => handleDelete(talent.id)}
-          >
-            <i>
-              <FontAwesomeIcon icon={faTrash} />
-            </i>
-            <span> Delete</span>
-          </button>
-        </Link>
+        <button
+          className="btn btn-danger"
+          onClick={() => handleDelete(talent.id)}
+        >
+          <i>
+            <FontAwesomeIcon icon={faTrash} />
+          </i>
+          <span> Delete</span>
+        </button>
       </div>
       <Row className="py-5 px-5 mb-5">
         <Col lg="5" className="justify-content-center d-flex">
-          <img src="/images/img-detail.png" alt="img-detail" />
+          {talent.path && (
+            <img
+              src={`/api/talent/image/${talent.filename}`}
+              alt="img-detail"
+              width={"100%"}
+              height={"78%"}
+            />
+          )}
         </Col>
         <Col lg="7" className="px-2 mt-lg-0 mt-5">
           <h1 className="detail-title">{talent.name}</h1>

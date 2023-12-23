@@ -42,6 +42,8 @@ export default async function handler(req, res) {
         ERTikTok,
         startfromTikTok,
         categoryId,
+        filename,
+        path,
       } = req.body;
 
       // Validate that name and categoryId are present in the request body
@@ -76,6 +78,8 @@ export default async function handler(req, res) {
           follTikTok,
           ERTikTok,
           startfromTikTok,
+          filename,
+          path,
         },
         include: {
           category: true,

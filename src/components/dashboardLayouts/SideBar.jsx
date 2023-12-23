@@ -62,6 +62,31 @@ const Sidebar = ({ children }) => {
       return updatedMenuLinksVisible;
     });
   };
+  const handleLogout = async () => {
+    try {
+      // Lakukan permintaan logout ke server
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Hapus token dari local storage atau cookie di sisi klien
+        localStorage.removeItem("token");
+
+        // Redirect ke halaman login atau halaman lain yang sesuai
+        router.push("/admin/login");
+      } else {
+        // Handle error jika diperlukan
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      // Handle error jika diperlukan
+      console.error("Logout failed", error);
+    }
+  };
 
   return (
     <div>
@@ -89,7 +114,10 @@ const Sidebar = ({ children }) => {
             </li>
           ))}
           <li className="" style={{ marginTop: "17rem" }}>
-            <a className={`btn btn-logout ${sidebarHidden ? "hide" : ""}`}>
+            <a
+              className={`btn btn-logout ${sidebarHidden ? "hide" : ""}`}
+              onClick={handleLogout}
+            >
               <FontAwesomeIcon icon={faSignOutAlt} color="white" />
               <span>Sign Out</span>
             </a>

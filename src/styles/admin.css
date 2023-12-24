@@ -586,6 +586,9 @@ main .btn-send:hover {
 .container-form {
   padding-right: 20% !important;
 }
+.container-form-talent {
+  padding-right: 10% !important;
+}
 .card-porto-admin {
   width: 30rem !important;
   border: none !important;

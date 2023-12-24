@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   }
 
   const { name, email, password } = req.body;
-
   // Check if the email already exists
   const existingUser = await getUserByEmail(email);
   if (existingUser) {

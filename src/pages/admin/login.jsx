@@ -9,6 +9,7 @@ import HeaderAuthComponent from "../../components/HeaderAuthComponent.jsx";
 import { useRouter } from "next/router.js";
 import { Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { signIn, useSession } from "next-auth/react";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,7 +21,13 @@ export const RegisterPage = () => {
   let [loginSuccess, setLoginSuccess] = useState(false);
   const [loginError, setLoginError] = useState(null);
   const router = useRouter();
-
+  const { data: session } = useSession();
+  useEffect(() => {
+    // Redirect to dashboard if the user is already authenticated
+    if (session) {
+      router.push("/dashboard/portfolio");
+    }
+  }, [session, router]);
   useEffect(() => {
     setLoginSuccess(router.query.loginSuccess === "true");
     if (router.query.loginSuccess === "true") {
@@ -33,35 +40,20 @@ export const RegisterPage = () => {
 
   const handleLogin = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
+      const result = await signIn("credentials", {
+        ...values,
+        redirect: false,
       });
 
-      if (response.ok) {
-        router.push("/dashboard/portfolio");
-        const data = await response.json();
-        const token = data.token;
-        localStorage.setItem("token", token);
-        console.log("JWT Token:", token);
-        // Additional logic, such as redirecting the user or storing session data
+      if (!result.error) {
+        console.log("Login successful");
       } else {
-        const data = await response.json();
-
-        // Handle specific error messages
-        if (response.status === 401) {
-          if (data.error === "Invalid password") {
-            setLoginError("Invalid password. Please try again.");
-          } else if (data.error === "User not found") {
-            setLoginError(
-              "User not found. Please check your email and try again."
-            );
-          } else {
-            setLoginError(data.error || "Login failed. Please try again.");
-          }
+        // Set loginError based on the error returned by signIn
+        if (
+          result.error === "User not found" ||
+          result.error === "Invalid password"
+        ) {
+          setLoginError(result.error);
         } else {
           setLoginError("Login failed. Please try again.");
         }
@@ -182,15 +174,13 @@ export const RegisterPage = () => {
                             </div>
 
                             <div className="d-flex align-items-center justify-content-center pb-4">
-                              <p className="mb-0 me-2">
-                                Do you have an account?
-                              </p>
+                              <p className="mb-0 me-2">Forgot password?</p>
                               <Link
-                                href="/admin/register"
+                                href="/admin/forgot-password"
                                 type="button"
                                 className="btn btn-outline-danger"
                               >
-                                Create
+                                Forgot
                               </Link>
                             </div>
                           </form>

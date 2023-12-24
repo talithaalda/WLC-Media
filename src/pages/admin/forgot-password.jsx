@@ -1,41 +1,21 @@
-import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import { Alert, Form } from "react-bootstrap";
-import ButtonComponents from "../../components/ButtonComponents.jsx";
-import { useEffect, useState } from "react";
+import ButtonComponents from "@/components/ButtonComponents";
+import HeaderAuthComponent from "@/components/HeaderAuthComponent";
+import { ErrorMessage, Field, Formik } from "formik";
 import Link from "next/link";
-import { BsEye, BsEyeSlash } from "react-icons/bs";
-import HeaderAuthComponent from "../../components/HeaderAuthComponent.jsx";
-import { useRouter } from "next/router";
-import { Formik, Field, ErrorMessage } from "formik";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { useSession } from "next-auth/react";
-
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { Alert, Container, Form, Navbar } from "react-bootstrap";
+const Schema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
-  retypePassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Retype Password is required"),
 });
-
-const RegisterPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRePassword, setShowRePassword] = useState(false);
-  const router = useRouter();
+const Forgot = () => {
+  const [sendSuccess, setSendSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const { data: session } = useSession();
-  useEffect(() => {
-    // Redirect to dashboard if the user is already authenticated
-    if (session) {
-      router.push("/dashboard/portfolio");
-      console.log(session);
-    }
-  }, [session, router]);
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleForgot = async (values, { setSubmitting }) => {
     try {
-      const response = await fetch("/api/register", {
+      // Send a request to your server to handle the forgot password functionality
+      const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,28 +24,15 @@ const RegisterPage = () => {
       });
 
       if (response.ok) {
-        // Registration successful
-        router.push({
-          pathname: "/admin/login",
-          query: { loginSuccess: true },
-        });
-        // Handle success, e.g., redirect to login page
+        // Handle success, e.g., display a success message or redirect
+        console.log("Password reset email sent successfully!");
+        setSendSuccess(true);
       } else {
-        const errorData = await response.json();
-        if (
-          response.status === 400 &&
-          errorData.message === "Email already in use"
-        ) {
-          // Handle email already in use error
-          setError("Email is already in use");
-        } else {
-          // Handle other errors
-          setError("Registration failed. Please try again.");
-        }
+        // Handle errors, e.g., display an error message
+        setError("Email doesn't exist");
       }
     } catch (error) {
-      console.error("Error submitting registration:", error);
-      // Handle other errors
+      setError(error.message);
     } finally {
       setSubmitting(false);
     }
@@ -86,7 +53,7 @@ const RegisterPage = () => {
         </Container>
       </Navbar>
       <section
-        className="h-100 gradient-form"
+        className="h-100 gradient-form "
         style={{ backgroundColor: "#eee" }}
       >
         <div className="container py-5 h-100">
@@ -102,20 +69,15 @@ const RegisterPage = () => {
                           style={{ width: "185px" }}
                           alt="logo"
                         />
-                        <h4 className="mt-1 mb-5 pb-1">
-                          Register Dashboard Admin
-                        </h4>
+                        <h4 className="mt-1 mb-5 pb-1">Forgot Password</h4>
                       </div>
 
                       <Formik
                         initialValues={{
-                          name: "",
                           email: "",
-                          password: "",
-                          retypePassword: "",
                         }}
-                        validationSchema={RegisterSchema}
-                        onSubmit={handleSubmit}
+                        validationSchema={Schema}
+                        onSubmit={handleForgot}
                       >
                         {({
                           values,
@@ -127,21 +89,17 @@ const RegisterPage = () => {
                           isSubmitting,
                         }) => (
                           <form onSubmit={handleSubmit}>
-                            <p>Create your account</p>
-                            <Form.Floating className="form-outline mb-4">
-                              <Field
-                                type="text"
-                                name="name"
-                                className="form-control"
-                                placeholder="Username"
-                              />
-                              <label htmlFor="name">Name</label>
-                              <ErrorMessage
-                                name="name"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </Form.Floating>
+                            {sendSuccess && (
+                              <Alert variant="success">
+                                Password reset email sent successfully!
+                              </Alert>
+                            )}
+                            {error && (
+                              <Alert variant="danger" className="mt-3">
+                                {error}
+                              </Alert>
+                            )}
+                            <p>Enter your email to send link</p>
                             <Form.Floating className="form-outline mb-4">
                               <Field
                                 type="email"
@@ -156,7 +114,8 @@ const RegisterPage = () => {
                                 className="text-danger"
                               />
                             </Form.Floating>
-                            <Form.Floating className="form-outline mb-4 position-relative">
+
+                            {/* <Form.Floating className="form-outline mb-4 position-relative">
                               <Field
                                 type={showPassword ? "text" : "password"}
                                 name="password"
@@ -201,22 +160,24 @@ const RegisterPage = () => {
                                 component="div"
                                 className="text-danger"
                               />
-                            </Form.Floating>
-                            {error && <Alert variant="danger">{error}</Alert>}
+                            </Form.Floating> */}
+
                             <div className="d-flex flex-column text-center pt-1 mb-5 pb-1">
-                              <ButtonComponents textButton="Register" />
+                              <ButtonComponents
+                                textButton="Send Email"
+                                type="submit"
+                                disabled={isSubmitting}
+                              />
                             </div>
 
                             <div className="d-flex align-items-center justify-content-center pb-4">
-                              <p className="mb-0 me-2">
-                                Do you have an account?
-                              </p>
+                              <p className="mb-0 me-2">Forgot password?</p>
                               <Link
-                                href="/admin/login"
+                                href="/admin/forgot-password"
                                 type="button"
                                 className="btn btn-outline-danger"
                               >
-                                Log In
+                                Forgot
                               </Link>
                             </div>
                           </form>
@@ -235,4 +196,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default Forgot;

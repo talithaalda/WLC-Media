@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { SidebarData } from "./SidebarData";
+import { signOut } from "next-auth/react";
 
 const Sidebar = ({ children }) => {
   const [sidebarHidden, setSidebarHidden] = useState(false);
@@ -64,26 +65,9 @@ const Sidebar = ({ children }) => {
   };
   const handleLogout = async () => {
     try {
-      // Lakukan permintaan logout ke server
-      const response = await fetch("/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        // Hapus token dari local storage atau cookie di sisi klien
-        localStorage.removeItem("token");
-
-        // Redirect ke halaman login atau halaman lain yang sesuai
-        router.push("/admin/login");
-      } else {
-        // Handle error jika diperlukan
-        console.error("Logout failed");
-      }
+      await signOut({ redirect: false, callbackUrl: "/admin/logout" });
+      router.push("/admin/login");
     } catch (error) {
-      // Handle error jika diperlukan
       console.error("Logout failed", error);
     }
   };

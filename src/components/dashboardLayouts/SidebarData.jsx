@@ -75,4 +75,23 @@ export const SidebarData = [
     ),
     cName: "nav-text",
   },
+  {
+    title: "User",
+    path: "/dashboard/user",
+    icon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/material-sharp/30/c64b38/commercial-development-management.png"
+        alt="conference-call--v1"
+      />
+    ),
+    hovericon: (
+      <img
+        width="20"
+        src="https://img.icons8.com/material-sharp/30/ffffff/commercial-development-management.png"
+        alt="conference-call--v1"
+      />
+    ),
+    cName: "nav-text",
+  },
 ];

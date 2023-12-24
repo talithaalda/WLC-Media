@@ -1,19 +1,21 @@
 // middleware.js
 import { NextResponse } from "next/server";
-export function middleware(req) {
-  const requestForNextAuth = {
-    headers: {
-      cookie: req.headers.get("cookie"),
-    },
-  };
+import { parse } from "url";
+import { getToken } from "next-auth/jwt";
 
-  console.log(requestForNextAuth);
-  if (requestForNextAuth) {
+export async function middleware(req) {
+  // Retrieve the session to check for a valid token
+  const token = await getToken({
+    req,
+    secret: process.env.NEXT_PUBLIC_SECRET_KEY,
+  });
+  if (token) {
     return NextResponse.next();
   } else {
     return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 }
+
 export const config = {
   matcher: "/dashboard/:path*",
 };

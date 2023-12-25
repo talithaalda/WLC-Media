@@ -28,7 +28,6 @@ function CreateTalents() {
     // General function for formatting fields
     const { name, value } = event.target;
     let numericValue, formattedValue;
-    console.log(name);
     switch (name) {
       case "startfromIG":
         numericValue = value.replace(/\D/g, "");
@@ -37,7 +36,6 @@ function CreateTalents() {
         });
         setStartfromIG(formattedValue);
         setStartfromIGRaw(numericValue);
-        console.log(startfromIGRaw);
         break;
       case "startfromTikTok":
         numericValue = value.replace(/\D/g, "");

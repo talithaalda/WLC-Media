@@ -9,8 +9,13 @@ import CustomAlert from "../../AlertComponents";
 import axios from "axios";
 function DashboardProfile() {
   const [profile, setProfile] = useState([]);
-  const profileId = profile && profile.length > 0;
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [companyName, setCompanyName] = useState("");
+  const [location, setLocation] = useState("");
+  const [linkMaps, setLinkMaps] = useState("");
+  const [email, setEmail] = useState("");
+  const [instagram, setInstagram] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,6 +25,11 @@ function DashboardProfile() {
         }
 
         const data = await response.json();
+        setCompanyName(data.companyName);
+        setLocation(data.location);
+        setLinkMaps(data.linkMaps);
+        setEmail(data.email);
+        setInstagram(data.instagram);
         setProfile(data);
         console.log(data);
       } catch (error) {
@@ -29,10 +39,33 @@ function DashboardProfile() {
 
     fetchData();
   }, []);
+  const handleError = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    switch (name) {
+      case "company":
+        setCompanyName(value);
+        break;
+      case "location":
+        setLocation(value);
+        break;
+      case "linkMaps":
+        setLinkMaps(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "instagram":
+        setInstagram(value);
+        break;
+      default:
+        break;
+    }
+  };
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // console.log(profile);
-      if (profile !== null) {
+      if (profile.length !== 0) {
         // Jika data sudah ada, lakukan update
         const response = await axios.put(`/api/profile/1`, {
           // Ganti dengan properti id yang sesuai
@@ -42,7 +75,6 @@ function DashboardProfile() {
           email: values.email,
           instagram: values.instagram,
         });
-        console.log("Data berhasil diupdate:", response.data);
       } else {
         // Jika data belum ada, lakukan create
         const response = await axios.post("/api/profile/create", {
@@ -52,7 +84,6 @@ function DashboardProfile() {
           email: values.email,
           instagram: values.instagram,
         });
-        console.log("Data berhasil ditambahkan:", response.data);
       }
 
       setUpdateSuccess(true);
@@ -65,13 +96,12 @@ function DashboardProfile() {
   const { Formik } = formik;
 
   const schema = yup.object().shape({
-    company: yup.string().required(),
-    location: yup.string().required(),
-    linkMaps: yup.string().url().required(),
-    // phone: yup.number().required(),
-    email: yup.string().email().required(),
-    instagram: yup.string().required(),
-    linkMaps: yup.string().url().required(),
+    company: yup.string().required("Company is required"),
+    location: yup.string().required("Location is required"),
+    linkMaps: yup.string().url().required("Link Maps is required"),
+    email: yup.string().email().required("Email is required"),
+    instagram: yup.string().required("Instagram is required"),
+    linkMaps: yup.string().url().required("Link Maps is required"),
   });
 
   return (
@@ -81,13 +111,11 @@ function DashboardProfile() {
         validationSchema={schema}
         onSubmit={handleSubmit}
         initialValues={{
-          company: profile.companyName || "",
-          location: profile.location || "",
-          linkMaps: profile.companyName || "",
-          // phone: profile.companyName || "",
-          email: profile.email || "",
-          instagram: profile.email || "",
-          linkMaps: profile.linkMaps || "",
+          company: companyName,
+          location: location,
+          linkMaps: linkMaps,
+          email: email,
+          instagram: instagram,
         }}
       >
         {({ handleSubmit, handleChange, values, errors }) => (
@@ -110,7 +138,9 @@ function DashboardProfile() {
                     name="company"
                     required
                     value={values.company}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.company}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -126,7 +156,9 @@ function DashboardProfile() {
                     placeholder="Location"
                     name="location"
                     value={values.location}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.location}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -142,7 +174,9 @@ function DashboardProfile() {
                     placeholder="Email"
                     name="email"
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.email}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -164,7 +198,9 @@ function DashboardProfile() {
                       required
                       name="instagram"
                       value={values.instagram}
-                      onChange={handleChange}
+                      onChange={(event) => {
+                        handleError(event);
+                      }}
                       isInvalid={!!errors.instagram}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -180,7 +216,9 @@ function DashboardProfile() {
                     placeholder="Link Maps"
                     name="linkMaps"
                     value={values.linkMaps}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.linkMaps}
                   />
                   <Form.Control.Feedback type="invalid">

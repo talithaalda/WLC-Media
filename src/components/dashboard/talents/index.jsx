@@ -9,7 +9,9 @@ const DashboardTalents = () => {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   let [createSuccess, setCreateSuccess] = useState(false);
   const router = useRouter();
-
+  const sortedData = talents.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   useEffect(() => {
     setDeleteSuccess(router.query.deleteSuccess === "true");
     setCreateSuccess(router.query.createSuccess === "true");
@@ -114,7 +116,7 @@ const DashboardTalents = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {talents?.map((talent, index) => (
+                      {sortedData?.map((talent, index) => (
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{talent.name}</td>

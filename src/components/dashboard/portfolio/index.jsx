@@ -10,7 +10,9 @@ const DashboardPortfolio = () => {
   let [deleteSuccess, setDeleteSuccess] = useState(false);
   let [createSuccess, setCreateSuccess] = useState(false);
   const router = useRouter();
-
+  const sortedData = porto.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   useEffect(() => {
     setDeleteSuccess(router.query.deleteSuccess === "true");
     setCreateSuccess(router.query.createSuccess === "true");
@@ -114,7 +116,7 @@ const DashboardPortfolio = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {porto?.map((porto, index) => (
+                      {sortedData?.map((porto, index) => (
                         <tr key={porto.id}>
                           <td>{index + 1}.</td>
                           <td>{porto.title}</td>

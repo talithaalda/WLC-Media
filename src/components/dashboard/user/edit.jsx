@@ -13,6 +13,9 @@ function EditUser() {
   const router = useRouter();
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const { id } = router.query;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   useEffect(() => {
     const fetchDataById = async () => {
       try {
@@ -26,6 +29,9 @@ function EditUser() {
         }
 
         const data = await response.json();
+        setName(data.name);
+        setEmail(data.email);
+        setRole(data.role);
         setUser(data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -34,7 +40,23 @@ function EditUser() {
 
     fetchDataById();
   }, [id]);
-
+  const handleError = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "role":
+        setRole(value);
+        break;
+      default:
+        break;
+    }
+  };
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -67,9 +89,9 @@ function EditUser() {
         validationSchema={schema}
         onSubmit={handleUpdate}
         initialValues={{
-          name: user.name || "",
-          email: user.email || "",
-          role: user.role || "",
+          name: name,
+          email: email,
+          role: role,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
@@ -96,7 +118,9 @@ function EditUser() {
                     name="name"
                     required
                     value={values.name}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.name}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -112,7 +136,9 @@ function EditUser() {
                     name="email"
                     required
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.email}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -126,7 +152,9 @@ function EditUser() {
                     required
                     name="role"
                     value={values.role}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.role}
                   >
                     <option value="user">User</option>

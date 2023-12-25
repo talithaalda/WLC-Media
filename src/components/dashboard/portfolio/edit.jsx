@@ -14,6 +14,8 @@ function EditPortfolio() {
   const router = useRouter();
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const { id } = router.query;
+  const [title, setTitle] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   useEffect(() => {
     const fetchDataById = async () => {
       try {
@@ -27,6 +29,8 @@ function EditPortfolio() {
         }
 
         const data = await response.json();
+        setTitle(data.title);
+        setCategoryId(data.categoryId);
         setPortfolio(data);
       } catch (error) {
         console.error("Error fetching portfolio data:", error);
@@ -49,6 +53,20 @@ function EditPortfolio() {
     fetchCategoryData();
   }, [id]);
 
+  const handleError = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "categoryId":
+        setCategoryId(value);
+        break;
+      default:
+        break;
+    }
+  };
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
     categoryId: yup.number().required("Category is required"),
@@ -118,8 +136,8 @@ function EditPortfolio() {
         validationSchema={schema}
         onSubmit={handleUpdate}
         initialValues={{
-          title: portfolio.title || "",
-          categoryId: portfolio.categoryId || "",
+          title: title,
+          categoryId: categoryId,
           // file: {},
         }}
       >
@@ -147,7 +165,9 @@ function EditPortfolio() {
                     name="title"
                     required
                     value={values.title}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.title}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -161,7 +181,9 @@ function EditPortfolio() {
                     required
                     name="categoryId"
                     value={values.categoryId}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.categoryId}
                   >
                     {category.map((cat) => (

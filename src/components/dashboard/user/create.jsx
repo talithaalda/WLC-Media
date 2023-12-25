@@ -15,6 +15,11 @@ function CreateUser() {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
+  const [role, setRole] = useState("");
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -29,7 +34,29 @@ function CreateUser() {
       .required("Retype Password is required"),
     role: yup.string().required("Role is required"),
   });
-
+  const handleError = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "retypePassword":
+        setRetypePassword(value);
+        break;
+      case "role":
+        setRole(value);
+        break;
+      default:
+        break;
+    }
+  };
   const handleSubmit = async (values) => {
     try {
       const response = await fetch("/api/register", {
@@ -71,14 +98,15 @@ function CreateUser() {
   return (
     <>
       <Formik
+        enableReinitialize={true}
         validationSchema={schema}
         onSubmit={handleSubmit}
         initialValues={{
-          title: "",
-          categoryId: "",
-          password: "",
-          retypePassword: "",
-          role: "",
+          name: name,
+          email: email,
+          password: password,
+          retypePassword: retypePassword,
+          role: role,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
@@ -98,7 +126,9 @@ function CreateUser() {
                     name="name"
                     required
                     value={values.name}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.name}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -114,7 +144,9 @@ function CreateUser() {
                     name="email"
                     required
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.email}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -128,7 +160,9 @@ function CreateUser() {
                     required
                     name="role"
                     value={values.role}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.role}
                   >
                     <option value="" disabled>
@@ -149,7 +183,9 @@ function CreateUser() {
                     name="password"
                     required
                     value={values.password}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.password}
                   />
                   <div
@@ -173,7 +209,9 @@ function CreateUser() {
                     name="retypePassword"
                     required
                     value={values.retypePassword}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.retypePassword}
                   />
                   <div

@@ -10,7 +10,9 @@ const DashboardUser = () => {
   let [deleteSuccess, setDeleteSuccess] = useState(false);
   let [createSuccess, setCreateSuccess] = useState(false);
   const router = useRouter();
-
+  const sortedData = user.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   useEffect(() => {
     setDeleteSuccess(router.query.deleteSuccess === "true");
     setCreateSuccess(router.query.createSuccess === "true");
@@ -102,7 +104,7 @@ const DashboardUser = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {user?.map((user, index) => (
+                      {sortedData?.map((user, index) => (
                         <tr key={user.id}>
                           <td>{index + 1}.</td>
                           <td>{user.name}</td>

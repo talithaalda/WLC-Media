@@ -12,8 +12,8 @@ function CreatePortfolio() {
   const [category, setCategory] = useState([]);
   const router = useRouter();
   const { Formik } = formik;
-  const [createSuccess, setCreateSuccess] = useState(false);
-
+  const [title, setTitle] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +31,20 @@ function CreatePortfolio() {
 
     fetchData();
   }, []);
-
+  const handleError = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "categoryId":
+        setCategoryId(value);
+        break;
+      default:
+        break;
+    }
+  };
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
     categoryId: yup.string().required("Category is required"),
@@ -99,12 +112,12 @@ function CreatePortfolio() {
   return (
     <>
       <Formik
+        enableReinitialize={true}
         validationSchema={schema}
         onSubmit={handleSubmit}
         initialValues={{
-          title: "",
-          categoryId: "",
-          file: "",
+          title: title,
+          categoryId: categoryId,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
@@ -124,7 +137,9 @@ function CreatePortfolio() {
                     name="title"
                     required
                     value={values.title}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.title}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -137,7 +152,9 @@ function CreatePortfolio() {
                   <Form.Select
                     required
                     name="categoryId"
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
                     isInvalid={!!errors.categoryId}
                   >
                     <option value="">Select a category</option>

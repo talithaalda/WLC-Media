@@ -7,10 +7,74 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import currencyFormatter from "currency-formatter";
+
 function CreateTalents() {
   const [category, setCategory] = useState([]);
   const router = useRouter();
-  const [createSuccess, setCreateSuccess] = useState(false);
+  const [startfromTikTok, setStartfromTikTok] = useState("");
+  const [startfromIG, setStartfromIG] = useState("");
+  const [startfromTikTokRaw, setStartfromTikTokRaw] = useState("");
+  const [startfromIGRaw, setStartfromIGRaw] = useState("");
+  const [name, setName] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [userIG, setUserIG] = useState("");
+  const [userTikTok, setUserTikTok] = useState("");
+  const [follIG, setFollIG] = useState("");
+  const [follTikTok, setFollTikTok] = useState("");
+  const [ERIG, setERIG] = useState("");
+  const [ERTikTok, setERTikTok] = useState("");
+  const handleFormat = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    let numericValue, formattedValue;
+    console.log(name);
+    switch (name) {
+      case "startfromIG":
+        numericValue = value.replace(/\D/g, "");
+        formattedValue = currencyFormatter.format(numericValue, {
+          code: "IDR",
+        });
+        setStartfromIG(formattedValue);
+        setStartfromIGRaw(numericValue);
+        console.log(startfromIGRaw);
+        break;
+      case "startfromTikTok":
+        numericValue = value.replace(/\D/g, "");
+        formattedValue = currencyFormatter.format(numericValue, {
+          code: "IDR",
+        });
+        setStartfromTikTok(formattedValue);
+        setStartfromTikTokRaw(numericValue);
+        break;
+      case "name":
+        setName(value);
+        break;
+      case "categoryId":
+        setCategoryId(value);
+        break;
+      case "userIG":
+        setUserIG(value);
+        break;
+      case "userTikTok":
+        setUserTikTok(value);
+        break;
+      case "follIG":
+        setFollIG(value);
+        break;
+      case "follTikTok":
+        setFollTikTok(value);
+        break;
+      case "ERIG":
+        setERIG(value);
+        break;
+      case "ERTikTok":
+        setERTikTok(value);
+        break;
+      default:
+        break;
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,8 +100,8 @@ function CreateTalents() {
       formData.append("categoryId", values.categoryId);
       formData.append("userIG", values.userIG);
       formData.append("userTikTok", values.userTikTok);
-      formData.append("startfromIG", values.startfromIG);
-      formData.append("startfromTikTok", values.startfromTikTok);
+      formData.append("startfromIG", startfromIGRaw);
+      formData.append("startfromTikTok", startfromTikTokRaw);
       formData.append("follIG", values.follIG);
       formData.append("follTikTok", values.follTikTok);
       formData.append("ERIG", values.ERIG);
@@ -90,10 +154,10 @@ function CreateTalents() {
     categoryId: yup.string().required("Field is required"),
     userIG: yup.string().required("Field is required"),
     userTikTok: yup.string().required("Field is required"),
-    startfromIG: yup.number().required("Field is required"),
-    startfromTikTok: yup.number().required("Field is required"),
-    follIG: yup.number().required("Field is required"),
-    follTikTok: yup.number().required("Field is required"),
+    startfromIG: yup.string().required("Field is required"),
+    startfromTikTok: yup.string().required("Field is required"),
+    follIG: yup.string().required("Field is required"),
+    follTikTok: yup.string().required("Field is required"),
     ERIG: yup.number().required("Field is required"),
     ERTikTok: yup.number().required("Field is required"),
     file: yup
@@ -120,20 +184,20 @@ function CreateTalents() {
   return (
     <>
       <Formik
+        enableReinitialize={true}
         validationSchema={schema}
         onSubmit={handleSubmit}
         initialValues={{
-          name: "",
-          categoryId: "",
-          userIG: "",
-          userTikTok: "",
-          startfromIG: "",
-          startfromTikTok: "",
-          follIG: "",
-          follTikTok: "",
-          ERIG: "",
-          ERTikTok: "",
-          file: "",
+          name: name,
+          categoryId: categoryId,
+          userIG: userIG,
+          userTikTok: userTikTok,
+          startfromIG: startfromIG,
+          startfromTikTok: startfromTikTok,
+          follIG: follIG,
+          follTikTok: follTikTok,
+          ERIG: ERIG,
+          ERTikTok: ERTikTok,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
@@ -149,7 +213,9 @@ function CreateTalents() {
                     name="name"
                     required
                     value={values.name}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
                     isInvalid={!!errors.name}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -162,7 +228,9 @@ function CreateTalents() {
                   <Form.Select
                     required
                     name="categoryId"
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
                     isInvalid={!!errors.categoryId}
                   >
                     <option value="">Select a category</option>
@@ -195,9 +263,12 @@ function CreateTalents() {
                           required
                           name="userIG"
                           value={values.userIG}
-                          onChange={handleChange}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
                           isInvalid={!!errors.userIG}
                         />
+
                         <Form.Control.Feedback type="invalid">
                           {errors.userIG}
                         </Form.Control.Feedback>
@@ -207,11 +278,13 @@ function CreateTalents() {
                       <Form.Label>Followers IG</Form.Label>
                       <Form.Control
                         required
-                        type="number"
+                        type="text"
                         placeholder="Followers IG"
                         name="follIG"
                         value={values.follIG}
-                        onChange={handleChange}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
                         isInvalid={!!errors.follIG}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -220,28 +293,37 @@ function CreateTalents() {
                     </Form.Group>
                     <Form.Group className="mb-4" controlId="validationCustom02">
                       <Form.Label>Engagements Rate IG</Form.Label>
-                      <Form.Control
-                        required
-                        type="text"
-                        placeholder="Engagements Rate IG"
-                        name="ERIG"
-                        value={values.ERIG}
-                        onChange={handleChange}
-                        isInvalid={!!errors.ERIG}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.ERIG}
-                      </Form.Control.Feedback>
+                      <InputGroup>
+                        <Form.Control
+                          required
+                          type="number"
+                          placeholder="Engagements Rate IG"
+                          name="ERIG"
+                          value={values.ERIG}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.ERIG}
+                        />
+                        <InputGroup.Text id="inputGroupPrepend">
+                          %
+                        </InputGroup.Text>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.ERIG}
+                        </Form.Control.Feedback>
+                      </InputGroup>
                     </Form.Group>
                     <Form.Group className="mb-4" controlId="validationCustom02">
                       <Form.Label>Start From IG</Form.Label>
                       <Form.Control
                         required
-                        type="text"
+                        type="text" // Change type to text
                         placeholder="Start From IG"
                         name="startfromIG"
                         value={values.startfromIG}
-                        onChange={handleChange}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
                         isInvalid={!!errors.startfromIG}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -267,7 +349,9 @@ function CreateTalents() {
                           required
                           name="userTikTok"
                           value={values.userTikTok}
-                          onChange={handleChange}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
                           isInvalid={!!errors.userTikTok}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -284,7 +368,9 @@ function CreateTalents() {
                         placeholder="Followers TikTok"
                         name="follTikTok"
                         value={values.follTikTok}
-                        onChange={handleChange}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
                         isInvalid={!!errors.follTikTok}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -294,28 +380,37 @@ function CreateTalents() {
 
                     <Form.Group className="mb-4" controlId="validationCustom02">
                       <Form.Label>Engagements Rate TikTok</Form.Label>
-                      <Form.Control
-                        required
-                        type="text"
-                        placeholder="Engagements Rate TikTok"
-                        name="ERTikTok"
-                        value={values.ERTikTok}
-                        onChange={handleChange}
-                        isInvalid={!!errors.ERTikTok}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.ERTikTok}
-                      </Form.Control.Feedback>
+                      <InputGroup>
+                        <Form.Control
+                          required
+                          type="number"
+                          placeholder="Engagements Rate TikTok"
+                          name="ERTikTok"
+                          value={values.ERTikTok}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.ERTikTok}
+                        />
+                        <InputGroup.Text id="inputGroupPrepend">
+                          %
+                        </InputGroup.Text>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.ERTikTok}
+                        </Form.Control.Feedback>
+                      </InputGroup>
                     </Form.Group>
                     <Form.Group className="mb-4" controlId="validationCustom02">
                       <Form.Label>Start from TikTok</Form.Label>
                       <Form.Control
                         required
-                        type="text"
+                        type="text" // Change type to text
                         placeholder="Start from TikTok"
                         name="startfromTikTok"
                         value={values.startfromTikTok}
-                        onChange={handleChange}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
                         isInvalid={!!errors.startfromTikTok}
                       />
                       <Form.Control.Feedback type="invalid">

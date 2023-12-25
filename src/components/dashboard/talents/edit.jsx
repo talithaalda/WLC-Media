@@ -1,4 +1,4 @@
-import { Card, Container } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CustomAlert from "../../AlertComponents";
 import axios from "axios";
+import currencyFormatter from "currency-formatter";
 function EditTalents() {
   const { Formik } = formik;
   const [talent, setTalent] = useState([]);
@@ -15,6 +16,69 @@ function EditTalents() {
   const router = useRouter();
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const { id } = router.query;
+  const [startfromTikTok, setStartfromTikTok] = useState("");
+  const [startfromIG, setStartfromIG] = useState("");
+  const [startfromTikTokRaw, setStartfromTikTokRaw] = useState("");
+  const [startfromIGRaw, setStartfromIGRaw] = useState("");
+  const [name, setName] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [userIG, setUserIG] = useState("");
+  const [userTikTok, setUserTikTok] = useState("");
+  const [follIG, setFollIG] = useState("");
+  const [follTikTok, setFollTikTok] = useState("");
+  const [ERIG, setERIG] = useState("");
+  const [ERTikTok, setERTikTok] = useState("");
+  const handleFormat = (event) => {
+    // General function for formatting fields
+    const { name, value } = event.target;
+    let numericValue, formattedValue;
+    console.log(name);
+    switch (name) {
+      case "startfromIG":
+        numericValue = value.replace(/\D/g, "");
+        formattedValue = currencyFormatter.format(numericValue, {
+          code: "IDR",
+        });
+        setStartfromIG(formattedValue);
+        setStartfromIGRaw(numericValue);
+        console.log(startfromIGRaw);
+        break;
+      case "startfromTikTok":
+        numericValue = value.replace(/\D/g, "");
+        formattedValue = currencyFormatter.format(numericValue, {
+          code: "IDR",
+        });
+        setStartfromTikTok(formattedValue);
+        setStartfromTikTokRaw(numericValue);
+        break;
+      case "name":
+        setName(value);
+        break;
+      case "categoryId":
+        setCategoryId(value);
+        break;
+      case "userIG":
+        setUserIG(value);
+        break;
+      case "userTikTok":
+        setUserTikTok(value);
+        break;
+      case "follIG":
+        setFollIG(value);
+        break;
+      case "follTikTok":
+        setFollTikTok(value);
+        break;
+      case "ERIG":
+        setERIG(value);
+        break;
+      case "ERTikTok":
+        setERTikTok(value);
+        break;
+      default:
+        break;
+    }
+  };
   useEffect(() => {
     const fetchDataById = async () => {
       try {
@@ -28,6 +92,23 @@ function EditTalents() {
         }
 
         const data = await response.json();
+        setName(data.name);
+        setCategoryId(data.categoryId);
+        setUserIG(data.userIG);
+        setUserTikTok(data.userTikTok);
+        setFollIG(data.follIG);
+        setFollTikTok(data.follTikTok);
+        setERIG(data.ERIG);
+        setERTikTok(data.ERTikTok);
+        setStartfromIG(
+          currencyFormatter.format(data.startfromIG, { code: "IDR" })
+        );
+        setStartfromTikTok(
+          currencyFormatter.format(data.startfromTikTok, { code: "IDR" })
+        );
+        setStartfromIGRaw(data.startfromIG);
+        setStartfromTikTokRaw(data.startfromTikTok);
+
         setTalent(data);
       } catch (error) {
         console.error("Error fetching talent data:", error);
@@ -73,10 +154,10 @@ function EditTalents() {
           categoryId: Number(values.categoryId),
           userIG: values.userIG,
           userTikTok: values.userTikTok,
-          startfromIG: Number(values.startfromIG),
-          startfromTikTok: Number(values.startfromTikTok),
-          follIG: Number(values.follIG),
-          follTikTok: Number(values.follTikTok),
+          startfromIG: Number(startfromIGRaw),
+          startfromTikTok: Number(startfromTikTokRaw),
+          follIG: values.follIG,
+          follTikTok: values.follTikTok,
           ERIG: Number(values.ERIG),
           ERTikTok: Number(values.ERTikTok),
           path: path,
@@ -88,10 +169,10 @@ function EditTalents() {
           categoryId: Number(values.categoryId),
           userIG: values.userIG,
           userTikTok: values.userTikTok,
-          startfromIG: Number(values.startfromIG),
-          startfromTikTok: Number(values.startfromTikTok),
-          follIG: Number(values.follIG),
-          follTikTok: Number(values.follTikTok),
+          startfromIG: Number(startfromIGRaw),
+          startfromTikTok: Number(startfromTikTokRaw),
+          follIG: values.follIG,
+          follTikTok: values.follTikTok,
           ERIG: Number(values.ERIG),
           ERTikTok: Number(values.ERTikTok),
         });
@@ -113,10 +194,10 @@ function EditTalents() {
     categoryId: yup.string().required("Field is required"),
     userIG: yup.string().required("Field is required"),
     userTikTok: yup.string().required("Field is required"),
-    startfromIG: yup.number().required("Field is required"),
-    startfromTikTok: yup.number().required("Field is required"),
-    follIG: yup.number().required("Field is required"),
-    follTikTok: yup.number().required("Field is required"),
+    startfromIG: yup.string().required("Field is required"),
+    startfromTikTok: yup.string().required("Field is required"),
+    follIG: yup.string().required("Field is required"),
+    follTikTok: yup.string().required("Field is required"),
     ERIG: yup.number().required("Field is required"),
     ERTikTok: yup.number().required("Field is required"),
     file: yup
@@ -146,21 +227,21 @@ function EditTalents() {
         validationSchema={schema}
         onSubmit={handleUpdate}
         initialValues={{
-          name: talent.name || "",
-          categoryId: talent.categoryId || "",
-          userIG: talent.userIG || "",
-          userTikTok: talent.userTikTok || "",
-          startfromIG: talent.startfromIG || "",
-          startfromTikTok: talent.startfromTikTok || "",
-          follIG: talent.follIG || "",
-          follTikTok: talent.follTikTok || "",
-          ERIG: talent.ERIG || "",
-          ERTikTok: talent.ERTikTok || "",
+          name: name,
+          categoryId: categoryId,
+          userIG: userIG,
+          userTikTok: userTikTok,
+          startfromIG: startfromIG,
+          startfromTikTok: startfromTikTok,
+          follIG: follIG,
+          follTikTok: follTikTok,
+          ERIG: ERIG,
+          ERTikTok: ERTikTok,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
-            <Container className="container-form">
+            <Container className="container-form-talent">
               <h4 className="pb-3">Edit Talent</h4>
               {updateSuccess && (
                 <CustomAlert
@@ -178,7 +259,9 @@ function EditTalents() {
                     name="name"
                     required
                     value={values.name}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
                     isInvalid={!!errors.name}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -191,8 +274,9 @@ function EditTalents() {
                   <Form.Select
                     required
                     name="categoryId"
-                    value={values.categoryId}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
                     isInvalid={!!errors.categoryId}
                   >
                     <option value="">Select a category</option>
@@ -206,145 +290,182 @@ function EditTalents() {
                     {errors.category}
                   </Form.Control.Feedback>
                 </Form.Group>
+                <Row>
+                  <Col>
+                    <Form.Group
+                      className="mb-4"
+                      controlId="validationCustomUsername"
+                    >
+                      <Form.Label>Username Instagram</Form.Label>
 
-                <Form.Group
-                  className="mb-4"
-                  controlId="validationCustomUsername"
-                >
-                  <Form.Label>Username Instagram</Form.Label>
+                      <InputGroup>
+                        <InputGroup.Text id="inputGroupPrepend">
+                          @
+                        </InputGroup.Text>
+                        <Form.Control
+                          type="text"
+                          placeholder="Username Instagram"
+                          aria-describedby="inputGroupPrepend"
+                          required
+                          name="userIG"
+                          value={values.userIG}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.userIG}
+                        />
 
-                  <InputGroup>
-                    <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                    <Form.Control
-                      type="text"
-                      placeholder="Username Instagram"
-                      aria-describedby="inputGroupPrepend"
-                      required
-                      name="userIG"
-                      value={values.userIG}
-                      onChange={handleChange}
-                      isInvalid={!!errors.userIG}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.userIG}
-                    </Form.Control.Feedback>
-                  </InputGroup>
-                </Form.Group>
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Followers IG</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Followers IG"
-                    name="follIG"
-                    value={values.follIG}
-                    onChange={handleChange}
-                    isInvalid={!!errors.follIG}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.follIG}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Engagements Rate IG</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Engagements Rate IG"
-                    name="ERIG"
-                    value={values.ERIG}
-                    onChange={handleChange}
-                    isInvalid={!!errors.ERIG}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.ERIG}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Start From IG</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Start From IG"
-                    name="startfromIG"
-                    value={values.startfromIG}
-                    onChange={handleChange}
-                    isInvalid={!!errors.startfromIG}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.startfromIG}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group
-                  className="mb-4"
-                  controlId="validationCustomUsername"
-                >
-                  <Form.Label>Username TikTok</Form.Label>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.userIG}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Followers IG</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Followers IG"
+                        name="follIG"
+                        value={values.follIG}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
+                        isInvalid={!!errors.follIG}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.follIG}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Engagements Rate IG</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          required
+                          type="number"
+                          placeholder="Engagements Rate IG"
+                          name="ERIG"
+                          value={values.ERIG}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.ERIG}
+                        />
+                        <InputGroup.Text id="inputGroupPrepend">
+                          %
+                        </InputGroup.Text>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.ERIG}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Start From IG</Form.Label>
+                      <Form.Control
+                        required
+                        type="text" // Change type to text
+                        placeholder="Start From IG"
+                        name="startfromIG"
+                        value={values.startfromIG}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
+                        isInvalid={!!errors.startfromIG}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.startfromIG}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group
+                      className="mb-4"
+                      controlId="validationCustomUsername"
+                    >
+                      <Form.Label>Username TikTok</Form.Label>
 
-                  <InputGroup>
-                    <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                    <Form.Control
-                      type="text"
-                      placeholder="Username TikTok"
-                      aria-describedby="inputGroupPrepend"
-                      required
-                      name="userTikTok"
-                      value={values.userTikTok}
-                      onChange={handleChange}
-                      isInvalid={!!errors.userTikTok}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.userTikTok}
-                    </Form.Control.Feedback>
-                  </InputGroup>
-                </Form.Group>
+                      <InputGroup>
+                        <InputGroup.Text id="inputGroupPrepend">
+                          @
+                        </InputGroup.Text>
+                        <Form.Control
+                          type="text"
+                          placeholder="Username TikTok"
+                          aria-describedby="inputGroupPrepend"
+                          required
+                          name="userTikTok"
+                          value={values.userTikTok}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.userTikTok}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.userTikTok}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
 
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Followers TikTok</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Followers TikTok"
-                    name="follTikTok"
-                    value={values.follTikTok}
-                    onChange={handleChange}
-                    isInvalid={!!errors.follTikTok}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.follTikTok}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Followers TikTok</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Followers TikTok"
+                        name="follTikTok"
+                        value={values.follTikTok}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
+                        isInvalid={!!errors.follTikTok}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.follTikTok}
+                      </Form.Control.Feedback>
+                    </Form.Group>
 
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Engagements Rate TikTok</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Engagements Rate TikTok"
-                    name="ERTikTok"
-                    value={values.ERTikTok}
-                    onChange={handleChange}
-                    isInvalid={!!errors.ERTikTok}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.ERTikTok}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-4" controlId="validationCustom02">
-                  <Form.Label>Start from TikTok</Form.Label>
-                  <Form.Control
-                    required
-                    type="text"
-                    placeholder="Start from TikTok"
-                    name="startfromTikTok"
-                    value={values.startfromTikTok}
-                    onChange={handleChange}
-                    isInvalid={!!errors.startfromTikTok}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.startfromTikTok}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Engagements Rate TikTok</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          required
+                          type="number"
+                          placeholder="Engagements Rate TikTok"
+                          name="ERTikTok"
+                          value={values.ERTikTok}
+                          onChange={(event) => {
+                            handleFormat(event);
+                          }}
+                          isInvalid={!!errors.ERTikTok}
+                        />
+                        <InputGroup.Text id="inputGroupPrepend">
+                          %
+                        </InputGroup.Text>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.ERTikTok}
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                    <Form.Group className="mb-4" controlId="validationCustom02">
+                      <Form.Label>Start from TikTok</Form.Label>
+                      <Form.Control
+                        required
+                        type="text" // Change type to text
+                        placeholder="Start from TikTok"
+                        name="startfromTikTok"
+                        value={values.startfromTikTok}
+                        onChange={(event) => {
+                          handleFormat(event);
+                        }}
+                        isInvalid={!!errors.startfromTikTok}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.startfromTikTok}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo Talent</Form.Label>
                   <div className="mb-3" style={{ width: "30%" }}>
@@ -371,7 +492,7 @@ function EditTalents() {
                 </Form.Group>
 
                 <Button className="btn btn-wlc" type="submit">
-                  Update Talent
+                  Create Talent
                 </Button>
               </Form>
             </Container>

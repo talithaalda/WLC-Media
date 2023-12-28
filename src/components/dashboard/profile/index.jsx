@@ -15,6 +15,7 @@ function DashboardProfile() {
   const [linkMaps, setLinkMaps] = useState("");
   const [email, setEmail] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,7 @@ function DashboardProfile() {
         setEmail(data.email);
         setInstagram(data.instagram);
         setProfile(data);
-        console.log(data);
+        setPhone(data.phone);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -58,6 +59,9 @@ function DashboardProfile() {
       case "instagram":
         setInstagram(value);
         break;
+      case "phone":
+        setPhone(value);
+        break;
       default:
         break;
     }
@@ -74,6 +78,7 @@ function DashboardProfile() {
           linkMaps: values.linkMaps,
           email: values.email,
           instagram: values.instagram,
+          phone: values.phone,
         });
       } else {
         // Jika data belum ada, lakukan create
@@ -83,6 +88,7 @@ function DashboardProfile() {
           linkMaps: values.linkMaps,
           email: values.email,
           instagram: values.instagram,
+          phone: values.phone,
         });
       }
 
@@ -102,6 +108,7 @@ function DashboardProfile() {
     email: yup.string().email().required("Email is required"),
     instagram: yup.string().required("Instagram is required"),
     linkMaps: yup.string().url().required("Link Maps is required"),
+    phone: yup.string().required("Phone is required"),
   });
 
   return (
@@ -116,6 +123,7 @@ function DashboardProfile() {
           linkMaps: linkMaps,
           email: email,
           instagram: instagram,
+          phone: phone,
         }}
       >
         {({ handleSubmit, handleChange, values, errors }) => (
@@ -170,7 +178,7 @@ function DashboardProfile() {
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     required
-                    type="Email"
+                    type="email"
                     placeholder="Email"
                     name="email"
                     value={values.email}
@@ -181,6 +189,23 @@ function DashboardProfile() {
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.email}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group className="mb-4" controlId="validationCustom02">
+                  <Form.Label>Phone</Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    placeholder="Phone"
+                    name="phone"
+                    value={values.phone}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
+                    isInvalid={!!errors.phone}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.phone}
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group

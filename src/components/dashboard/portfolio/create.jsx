@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import * as yup from "yup";
@@ -14,6 +14,7 @@ function CreatePortfolio() {
   const { Formik } = formik;
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -102,6 +103,7 @@ function CreatePortfolio() {
         pathname: "/dashboard/portfolio",
         query: { createSuccess: true },
       });
+      setPreviewImage(null);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -171,6 +173,20 @@ function CreatePortfolio() {
 
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo</Form.Label>
+                  <div className="mb-3">
+                    <div className="preview">
+                      {previewImage && (
+                        <div className="d-flex flex-column">
+                          <Card.Img
+                            key={values.file} // You can use file name as the key
+                            variant="top"
+                            src={previewImage}
+                            style={{ width: "200px" }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <Form.Control
                     type="file"
                     required
@@ -178,12 +194,22 @@ function CreatePortfolio() {
                     onChange={(event) => {
                       handleChange(event);
                       setFieldValue("file", event.currentTarget.files[0]);
+
+                      // Update the preview image
+                      const fileReader = new FileReader();
+                      fileReader.onloadend = () => {
+                        setPreviewImage(fileReader.result);
+                      };
+                      if (event.currentTarget.files[0]) {
+                        fileReader.readAsDataURL(event.currentTarget.files[0]);
+                      }
                     }}
                     isInvalid={!!errors.file}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.file}
                   </Form.Control.Feedback>
+                  {/* Display the preview image */}
                 </Form.Group>
 
                 <Button className="btn btn-wlc" type="submit">

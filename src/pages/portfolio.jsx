@@ -2,13 +2,32 @@
 import { Container, Row, Col } from "react-bootstrap";
 import ButtonComponents from "../components/ButtonComponents";
 import Masonry from "react-masonry-css";
+import { useEffect, useState } from "react";
 const PortfolioPage = () => {
+  const [porto, setPorto] = useState([]);
+
   const breakpoints = {
     default: 3,
     1200: 2,
     700: 2,
     500: 1,
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/portfolio");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setPorto(data);
+      } catch (error) {
+        console.error("Error fetching portfolio data:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       {/* HEADER */}

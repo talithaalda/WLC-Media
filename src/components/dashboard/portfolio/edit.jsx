@@ -16,6 +16,7 @@ function EditPortfolio() {
   const { id } = router.query;
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     const fetchDataById = async () => {
       try {
@@ -113,6 +114,7 @@ function EditPortfolio() {
           path: path,
           filename: filename,
         });
+        setPreviewImage(null);
       } else {
         responseCreate = await axios.put(`/api/portfolio/${id}`, {
           title: values.title,
@@ -200,7 +202,16 @@ function EditPortfolio() {
                   <Form.Label>Photo </Form.Label>
                   <div className="mb-3">
                     <div className="preview">
-                      {portfolio.filename && (
+                      {previewImage ? (
+                        <div className="d-flex flex-column">
+                          <img
+                            key={values.file} // You can use file name as the key
+                            src={previewImage}
+                            alt="Preview"
+                            style={{ width: "200px" }}
+                          />
+                        </div>
+                      ) : portfolio.filename ? (
                         <div className="d-flex flex-column">
                           <Card.Img
                             key={values.file} // You can use file name as the key
@@ -208,11 +219,8 @@ function EditPortfolio() {
                             src={`/api/portfolio/image/${portfolio.filename}`}
                             style={{ width: "200px" }}
                           />
-                          <Form.Text>
-                            Selected file: {portfolio.filename}
-                          </Form.Text>
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   </div>
                   <Form.Control
@@ -222,6 +230,15 @@ function EditPortfolio() {
                     onChange={(event) => {
                       handleChange(event);
                       setFieldValue("file", event.currentTarget.files[0]);
+
+                      // Update the preview image
+                      const fileReader = new FileReader();
+                      fileReader.onloadend = () => {
+                        setPreviewImage(fileReader.result);
+                      };
+                      if (event.currentTarget.files[0]) {
+                        fileReader.readAsDataURL(event.currentTarget.files[0]);
+                      }
                     }}
                     isInvalid={!!errors.file}
                   />

@@ -111,7 +111,6 @@ const DashboardPortfolio = () => {
                         <th>No.</th>
                         <th>Title</th>
                         <th>Category</th>
-                        <th>Photo</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -121,7 +120,6 @@ const DashboardPortfolio = () => {
                           <td>{index + 1}.</td>
                           <td>{porto.title}</td>
                           <td>{porto.category.name}</td>
-                          <td> 4</td>
                           <td>
                             <div className="d-flex gap-1">
                               <div className="d-flex gap-1">

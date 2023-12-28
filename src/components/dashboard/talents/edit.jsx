@@ -28,6 +28,8 @@ function EditTalents() {
   const [follTikTok, setFollTikTok] = useState("");
   const [ERIG, setERIG] = useState("");
   const [ERTikTok, setERTikTok] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
+
   const handleFormat = (event) => {
     // General function for formatting fields
     const { name, value } = event.target;
@@ -181,6 +183,7 @@ function EditTalents() {
       } else {
         throw new Error("Failed to update data");
       }
+      setPreviewImage(null);
     } catch (error) {
       console.error("Error updating data:", error);
     } finally {
@@ -467,12 +470,22 @@ function EditTalents() {
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo Talent</Form.Label>
                   <div className="mb-3" style={{ width: "30%" }}>
-                    {talent.path && (
-                      <Card.Img
-                        variant="top"
-                        src={`/api/talent/image/${talent.filename}`}
-                      />
-                    )}
+                    {previewImage ? (
+                      <div className="d-flex flex-column">
+                        <Card.Img
+                          key={values.file} // You can use file name as the key
+                          src={previewImage}
+                          alt="Preview"
+                        />
+                      </div>
+                    ) : talent.path ? (
+                      <div className="d-flex flex-column">
+                        <Card.Img
+                          variant="top"
+                          src={`/api/talent/image/${talent.filename}`}
+                        />
+                      </div>
+                    ) : null}
                   </div>
                   <Form.Control
                     type="file"
@@ -481,6 +494,15 @@ function EditTalents() {
                     onChange={(event) => {
                       handleChange(event);
                       setFieldValue("file", event.currentTarget.files[0]);
+
+                      // Update the preview image
+                      const fileReader = new FileReader();
+                      fileReader.onloadend = () => {
+                        setPreviewImage(fileReader.result);
+                      };
+                      if (event.currentTarget.files[0]) {
+                        fileReader.readAsDataURL(event.currentTarget.files[0]);
+                      }
                     }}
                     isInvalid={!!errors.file}
                   />

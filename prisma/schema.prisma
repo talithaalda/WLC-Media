@@ -59,6 +59,7 @@ model Profile{
   email String
   instagram String
   linkMaps String
+  phone String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
 }

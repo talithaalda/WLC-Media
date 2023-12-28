@@ -31,7 +31,8 @@ export default async function editProfile(req, res) {
       await prisma.$disconnect();
     }
   } else if (req.method === "PUT" || req.method === "PATCH") {
-    const { companyName, location, email, instagram, linkMaps } = req.body;
+    const { companyName, location, email, instagram, linkMaps, phone } =
+      req.body;
 
     try {
       // Periksa apakah ID yang diberikan valid
@@ -50,6 +51,7 @@ export default async function editProfile(req, res) {
           email,
           instagram,
           linkMaps,
+          phone,
           // tambahkan bidang lain sesuai kebutuhan
         },
       });

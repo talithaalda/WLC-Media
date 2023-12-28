@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 export default async function createProfile(req, res) {
   if (req.method === "POST") {
-    const { companyName, location, email, instagram, linkMaps } = req.body;
+    const { companyName, location, email, instagram, linkMaps, phone } =
+      req.body;
 
     try {
       // Simpan data Profile ke database
@@ -13,6 +14,8 @@ export default async function createProfile(req, res) {
           email,
           instagram,
           linkMaps,
+          phone,
+
           // file: filePath, // Gantilah ini dengan path atau URL file yang sesuai
         },
       });

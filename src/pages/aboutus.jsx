@@ -7,7 +7,27 @@ import {
   faLocationDot,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 const AbouUsPage = () => {
+  const [profile, setProfile] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/profile/1");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setProfile(data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="aboutus">
       {/* HEADER */}
@@ -61,22 +81,19 @@ const AbouUsPage = () => {
               <div className="line-text align-self-end mt-0 mb-4"></div>
               <div className="d-flex flex-column gap-4 ">
                 <div className="d-flex align-items-center gap-3 justify-content-end">
-                  <div className="desc-contact">
-                    Rasuna Complex Epiwalk Building Epicentrum 5th Floor, Karet
-                    Kuningan, Setiabudi - South Jakarta
-                  </div>
+                  <div className="desc-contact">{profile.location}</div>
                   <div className="icon-contact">
                     <FontAwesomeIcon icon={faLocationDot} />
                   </div>
                 </div>
                 <div className="d-flex align-items-center gap-3 justify-content-end">
-                  <div className="desc-contact">0812128219028</div>
+                  <div className="desc-contact">{profile.phone}</div>
                   <div className="icon-contact">
                     <FontAwesomeIcon icon={faPhone} />
                   </div>
                 </div>
                 <div className="d-flex align-items-center gap-3 justify-content-end">
-                  <div className="desc-contact">wlcmedia@gmail.com</div>
+                  <div className="desc-contact">{profile.email}</div>
                   <div className="icon-contact">
                     <FontAwesomeIcon icon={faEnvelope} />
                   </div>
@@ -91,7 +108,7 @@ const AbouUsPage = () => {
               <iframe
                 className="img-contact"
                 title="Google Maps"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1983.1687329274912!2d106.83148264442747!3d-6.219152999999992!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3f687547467%3A0x36e9611cdaa17aa5!2sKawasan%20Rasuna%20Epicentrum!5e0!3m2!1sid!2sid!4v1700491784393!5m2!1sid!2sid"
+                src={`${profile.linkMaps}`}
                 width="600"
                 height="450"
                 style={{ border: "0" }}
@@ -99,11 +116,6 @@ const AbouUsPage = () => {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-              {/* <img
-                className="img-contact"
-                src="/images/location.png"
-                alt="philoshophy"
-              /> */}
             </Col>
           </Row>
         </Container>

@@ -1,7 +1,26 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 const FooterComponents = () => {
+  const [profile, setProfile] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/profile/1");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setProfile(data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="footer w-100 mt-5">
       <Container
@@ -12,10 +31,7 @@ const FooterComponents = () => {
           <Col lg="5" className="footer-center-1">
             <div>
               <img src="/images/logo-horizontal.png" alt="logo-footer" />
-              <div className="footer-desc mt-3">
-                Gedung Epiwalk Komplek Rasuna Epicentrum Lantai 5, Karet
-                Kuningan, Setiabudi - Jakarta Selatan
-              </div>
+              <div className="footer-desc mt-3">{profile.location}</div>
             </div>
           </Col>
           <Col lg="3 " className="footer-center pt-lg-3 pt-5">
@@ -36,7 +52,7 @@ const FooterComponents = () => {
                   <span className="fa-li">
                     <FontAwesomeIcon icon={faPhone} />
                   </span>
-                  <span className="ms-2">0812122122</span>
+                  <span className="ms-2">{profile.phone}</span>
                 </li>
                 <li className="mb-3">
                   <span className="fa-li">
@@ -53,13 +69,13 @@ const FooterComponents = () => {
                       />
                     </svg>
                   </span>
-                  <span className="ms-2">twinscode</span>
+                  <span className="ms-2">{profile.instagram}</span>
                 </li>
                 <li className="mb-3">
                   <span className="fa-li">
                     <FontAwesomeIcon icon={faEnvelope} />
                   </span>
-                  <span className="ms-2">contact@example.com</span>
+                  <span className="ms-2">{profile.email}</span>
                 </li>
               </ul>
             </div>

@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -24,6 +24,8 @@ function CreateTalents() {
   const [follTikTok, setFollTikTok] = useState("");
   const [ERIG, setERIG] = useState("");
   const [ERTikTok, setERTikTok] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
+
   const handleFormat = (event) => {
     // General function for formatting fields
     const { name, value } = event.target;
@@ -131,6 +133,7 @@ function CreateTalents() {
           path,
           filename,
         });
+        setPreviewImage(null);
       } catch (error) {
         console.error("Axios error:", error);
       }
@@ -420,6 +423,20 @@ function CreateTalents() {
 
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo Talent</Form.Label>
+                  <div className="mb-3">
+                    <div className="preview">
+                      {previewImage && (
+                        <div className="d-flex flex-column">
+                          <Card.Img
+                            key={values.file} // You can use file name as the key
+                            variant="top"
+                            src={previewImage}
+                            style={{ width: "200px" }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <Form.Control
                     type="file"
                     required
@@ -427,6 +444,15 @@ function CreateTalents() {
                     onChange={(event) => {
                       handleChange(event);
                       setFieldValue("file", event.currentTarget.files[0]);
+
+                      // Update the preview image
+                      const fileReader = new FileReader();
+                      fileReader.onloadend = () => {
+                        setPreviewImage(fileReader.result);
+                      };
+                      if (event.currentTarget.files[0]) {
+                        fileReader.readAsDataURL(event.currentTarget.files[0]);
+                      }
                     }}
                     isInvalid={!!errors.file}
                   />

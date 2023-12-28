@@ -7,6 +7,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import * as formik from "formik";
 import { get } from "http";
+import Link from "next/link";
+import ButtonComponents from "@/components/ButtonComponents";
 
 function CreatePortfolio() {
   const [category, setCategory] = useState([]);
@@ -14,24 +16,25 @@ function CreatePortfolio() {
   const { Formik } = formik;
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [brand, setBrand] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/category-portfolio");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/api/category-portfolio");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
 
-        const data = await response.json();
-        setCategory(data);
-      } catch (error) {
-        console.error("Error fetching portfolio data:", error);
-      }
-    };
+  //       const data = await response.json();
+  //       setCategory(data);
+  //     } catch (error) {
+  //       console.error("Error fetching portfolio data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
   const handleError = (event) => {
     // General function for formatting fields
     const { name, value } = event.target;
@@ -42,13 +45,17 @@ function CreatePortfolio() {
       case "categoryId":
         setCategoryId(value);
         break;
+      case "brand":
+        setBrand(value);
+        break;
       default:
         break;
     }
   };
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
-    categoryId: yup.string().required("Category is required"),
+    // categoryId: yup.string().required("Category is required"),
+    brand: yup.string().required("Brand is required"),
     file: yup
       .mixed()
       .required("Photo is required")
@@ -74,8 +81,9 @@ function CreatePortfolio() {
     try {
       const formData = new FormData();
       formData.append("title", values.title);
-      formData.append("categoryId", values.categoryId);
+      // formData.append("categoryId", values.categoryId);
       formData.append("file", values.file);
+      formData.append("brand", values.brand);
 
       // Menggunakan API route upload yang telah Anda buat
 
@@ -93,9 +101,10 @@ function CreatePortfolio() {
       // Simpan informasi file ke dalam API route create
       const responseCreate = await axios.post("/api/portfolio/create", {
         title: formData.get("title"),
-        categoryId: Number(formData.get("categoryId")),
+        // categoryId: Number(formData.get("categoryId")),
         path,
         filename,
+        brand,
       });
 
       // console.log("Data berhasil ditambahkan:", responseCreate.data);
@@ -119,13 +128,19 @@ function CreatePortfolio() {
         onSubmit={handleSubmit}
         initialValues={{
           title: title,
-          categoryId: categoryId,
+          // categoryId: categoryId,
+          brand: brand,
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
-              <h4 className="pb-3">Create Portfolio</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Create Portfolio</h4>
+                <Link href="/dashboard/portfolio">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
               <Form
                 noValidate
                 onSubmit={handleSubmit}
@@ -148,8 +163,24 @@ function CreatePortfolio() {
                     {errors.title}
                   </Form.Control.Feedback>
                 </Form.Group>
-
-                <Form.Group className="mb-4" controlId="validationCustom02">
+                <Form.Group className="mb-4" controlId="validationCustom01">
+                  <Form.Label>Brand</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Brand"
+                    name="brand"
+                    required
+                    value={values.brand}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
+                    isInvalid={!!errors.brand}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.brand}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {/* <Form.Group className="mb-4" controlId="validationCustom02">
                   <Form.Label>Category</Form.Label>
                   <Form.Select
                     required
@@ -169,7 +200,7 @@ function CreatePortfolio() {
                   <Form.Control.Feedback type="invalid">
                     {errors.categoryId}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Form.Group md="6" className="mb-4" controlId="formFile">
                   <Form.Label>Photo</Form.Label>

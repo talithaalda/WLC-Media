@@ -5,15 +5,16 @@ import { PrismaClient } from "@prisma/client";
 export default async function handler(req, res) {
   const prisma = new PrismaClient();
   if (req.method === "POST") {
-    const { title, categoryId, path, filename } = req.body;
+    const { title, brand, path, filename } = req.body;
 
     try {
       // Simpan data portfolio ke database menggunakan Prisma
       const newPortfolio = await prisma.porto.create({
         data: {
           title,
-          categoryId: parseInt(categoryId),
+          // categoryId: parseInt(categoryId),
           path,
+          brand,
           filename,
         },
       });

@@ -49,76 +49,26 @@ const PortfolioPage = () => {
         </Container>
       </header>
       <Container className="d-flex flex-column justify-content-center">
-        <div className="w-100 d-flex justify-content-center list-category ">
+        {/* <div className="w-100 d-flex justify-content-center list-category ">
           <div className="category-portfolio">CATEGORY 1</div>
           <div className="category-portfolio">CATEGORY 2</div>
           <div className="category-portfolio">CATEGORY 3</div>
-        </div>
+        </div> */}
         <Masonry
           breakpointCols={breakpoints}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-lanscape.png" alt="img-lanscape" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
-          <div className="card-porto">
-            <img src="/images/img-potrait.png" alt="img-potrait" />
-            <div className="title-portfolio">Project ADS Video Instagram</div>
-            <div className="desc-portfolio">Unnpack</div>
-          </div>
+          {porto.map((item) => (
+            <div key={item.id} className="card-porto">
+              <img
+                src={`/api/portfolio/image/${item.filename}`}
+                alt="img-potrait"
+              />
+              <div className="title-portfolio">{item.title}</div>
+              <div className="desc-portfolio">{item.brand}</div>
+            </div>
+          ))}
         </Masonry>
         <div className="d-flex justify-content-center">
           <ButtonComponents textButton="View More"></ButtonComponents>

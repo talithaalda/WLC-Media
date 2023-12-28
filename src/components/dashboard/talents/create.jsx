@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import currencyFormatter from "currency-formatter";
+import ButtonComponents from "@/components/ButtonComponents";
+import Link from "next/link";
 
 function CreateTalents() {
   const [category, setCategory] = useState([]);
@@ -126,22 +128,23 @@ function CreateTalents() {
           userTikTok: formData.get("userTikTok"),
           startfromIG: Number(formData.get("startfromIG")),
           startfromTikTok: Number(formData.get("startfromTikTok")),
-          follIG: Number(formData.get("follIG")),
-          follTikTok: Number(formData.get("follTikTok")),
+          follIG: formData.get("follIG"),
+          follTikTok: formData.get("follTikTok"),
           ERIG: Number(formData.get("ERIG")),
           ERTikTok: Number(formData.get("ERTikTok")),
           path,
           filename,
         });
-        setPreviewImage(null);
+        if (response) {
+          setPreviewImage(null);
+          router.push({
+            pathname: "/dashboard/talents",
+            query: { createSuccess: true },
+          });
+        }
       } catch (error) {
         console.error("Axios error:", error);
       }
-
-      router.push({
-        pathname: "/dashboard/talents",
-        query: { createSuccess: true },
-      });
     } catch (error) {
       console.error("Gagal menambahkan data:", error);
     } finally {
@@ -204,7 +207,13 @@ function CreateTalents() {
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form-talent">
-              <h4 className="pb-3">Create Talent</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Create Talent</h4>
+                <Link href="/dashboard/talents">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
+
               <Form noValidate onSubmit={handleSubmit}>
                 <Form.Group className="mb-4" controlId="validationCustom01">
                   <Form.Label>Name</Form.Label>

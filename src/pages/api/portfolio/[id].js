@@ -13,9 +13,9 @@ export default async function handler(req, res) {
         where: {
           id: parseInt(id, 10),
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
       if (!portfolio) {
         return res.status(404).json({ error: "Portfolio not found" });
@@ -31,13 +31,10 @@ export default async function handler(req, res) {
   } else if (req.method === "PUT") {
     // Handle PUT request to update portfolio data
     try {
-      const { title, categoryId, filename, path } = req.body;
-
+      const { title, brand, filename, path } = req.body;
       // Validate that title and categoryId are present in the request body
-      if (!title || !categoryId) {
-        return res
-          .status(400)
-          .json({ error: "Title and categoryId are required" });
+      if (!title || !brand) {
+        return res.status(400).json({ error: "Title and brand are required" });
       }
 
       // Update the portfolio data
@@ -47,13 +44,14 @@ export default async function handler(req, res) {
         },
         data: {
           title,
-          categoryId: parseInt(categoryId, 10),
+          // categoryId: parseInt(categoryId, 10),
           filename,
+          brand,
           path,
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
 
       res.status(200).json(updatedPortfolio);
@@ -71,9 +69,9 @@ export default async function handler(req, res) {
         where: {
           id: parseInt(id, 10),
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
 
       res.status(204).end();

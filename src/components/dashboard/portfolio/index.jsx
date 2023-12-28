@@ -74,9 +74,9 @@ const DashboardPortfolio = () => {
         <Link href={"/dashboard/portfolio/create"} className="p-3">
           <ButtonComponents textButton="Add New" />
         </Link>
-        <Link href={"/dashboard/portfolio/addcategory"} className="p-3">
+        {/* <Link href={"/dashboard/portfolio/addcategory"} className="p-3">
           <button className="btn btn-success"> + Add New Category</button>
-        </Link>
+        </Link> */}
         <div className="container-fluid mt-3">
           {deleteSuccess && (
             <CustomAlert
@@ -110,7 +110,7 @@ const DashboardPortfolio = () => {
                       <tr>
                         <th>No.</th>
                         <th>Title</th>
-                        <th>Category</th>
+                        <th>Brand</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -119,7 +119,7 @@ const DashboardPortfolio = () => {
                         <tr key={porto.id}>
                           <td>{index + 1}.</td>
                           <td>{porto.title}</td>
-                          <td>{porto.category.name}</td>
+                          <td>{porto.brand}</td>
                           <td>
                             <div className="d-flex gap-1">
                               <div className="d-flex gap-1">

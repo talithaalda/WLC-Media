@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,7 @@ import TitleTextComponents from "@/components/TitleTextComponents";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import formatToRupiah from "../../FormatToRp";
+import ButtonComponents from "@/components/ButtonComponents";
 
 const ShowTalents = () => {
   const router = useRouter();
@@ -109,7 +110,6 @@ const ShowTalents = () => {
               src={`/api/talent/image/${talent.filename}`}
               alt="img-detail"
               width={"100%"}
-              height={"78%"}
             />
           )}
         </Col>
@@ -218,6 +218,11 @@ const ShowTalents = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="d-flex justify-content-center">
+        <Link href="/dashboard/talents">
+          <ButtonComponents textButton="Back"></ButtonComponents>
+        </Link>
       </div>
     </Container>
   );

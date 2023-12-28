@@ -3,6 +3,7 @@ import Link from "next/link";
 import CustomAlert from "../../AlertComponents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import formatToRupiah from "@/components/FormatToRp";
 
 const DashboardTalents = () => {
   const [talents, setTalents] = useState([]);
@@ -106,12 +107,11 @@ const DashboardTalents = () => {
                       <tr>
                         <th>No.</th>
                         <th>Name</th>
-                        <th>Photo</th>
                         <th>Category Talent</th>
                         <th>Username Instagram</th>
                         <th>Username Tiktok</th>
-                        <th>Start From TikTok</th>
                         <th>Start From Instagram</th>
+                        <th>Start From TikTok</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -120,12 +120,11 @@ const DashboardTalents = () => {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{talent.name}</td>
-                          <td></td>
                           <td>{talent.category.name}</td>
                           <td>{talent.userIG}</td>
                           <td>{talent.userTikTok}</td>
-                          <td>{talent.startfromTikTok}</td>
-                          <td>{talent.startfromIG}</td>
+                          <td> {formatToRupiah(talent.startfromIG)}</td>
+                          <td> {formatToRupiah(talent.startfromTikTok)}</td>
                           <td>
                             <div className="d-flex gap-1">
                               <div className="d-flex gap-1">

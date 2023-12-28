@@ -5,6 +5,7 @@ import TitleTextComponents from "../components/TitleTextComponents";
 import Masonry from "react-masonry-css";
 import SliderComponents from "../components/SliderComponents";
 import PhilosophyComponets from "../components/PhilosophyComponets";
+import SliderHomeComponents from "@/components/SIiderHomeComponents";
 
 export default function Home() {
   const breakpoints = {
@@ -115,7 +116,7 @@ export default function Home() {
         <div className="mt-5">
           <TitleTextComponents textTitle="Our Talents" />
         </div>
-        <SliderComponents></SliderComponents>
+        <SliderHomeComponents></SliderHomeComponents>
       </div>
 
       {/* Brand */}

@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import ButtonComponents from "@/components/ButtonComponents";
 
 const ShowPortfolio = () => {
   const router = useRouter();
@@ -114,11 +115,18 @@ const ShowPortfolio = () => {
           <Card.Body className="card-body-porto">
             <div className="card-text">
               <div className="title-portfolio">{portfolio.title}</div>
-              <div className="desc-portfolio">{portfolio.category?.name}</div>
+              <div className="desc-portfolio">{portfolio.brand}</div>
             </div>
           </Card.Body>
         </Card>
         <br />
+      </div>
+      <div className="d-flex justify-content-center mt-4">
+        <div className="d-flex justify-content-center">
+          <Link href="/dashboard/portfolio">
+            <ButtonComponents textButton="Back"></ButtonComponents>
+          </Link>
+        </div>
       </div>
     </main>
   );

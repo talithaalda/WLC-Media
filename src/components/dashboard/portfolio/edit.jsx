@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import CustomAlert from "../../AlertComponents";
+import Link from "next/link";
+import ButtonComponents from "@/components/ButtonComponents";
 function EditPortfolio() {
   const { Formik } = formik;
   const [category, setCategory] = useState([]);
@@ -16,6 +18,7 @@ function EditPortfolio() {
   const { id } = router.query;
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [brand, setBrand] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     const fetchDataById = async () => {
@@ -31,27 +34,28 @@ function EditPortfolio() {
 
         const data = await response.json();
         setTitle(data.title);
-        setCategoryId(data.categoryId);
+        // setCategoryId(data.categoryId);
         setPortfolio(data);
+        setBrand(data.brand);
       } catch (error) {
         console.error("Error fetching portfolio data:", error);
       }
     };
-    const fetchCategoryData = async () => {
-      try {
-        const response = await fetch("/api/category-portfolio");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+    // const fetchCategoryData = async () => {
+    //   try {
+    //     const response = await fetch("/api/category-portfolio");
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch data");
+    //     }
 
-        const data = await response.json();
-        setCategory(data);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
+    //     const data = await response.json();
+    //     setCategory(data);
+    //   } catch (error) {
+    //     console.error("Error fetching category data:", error);
+    //   }
+    // };
     fetchDataById();
-    fetchCategoryData();
+    // fetchCategoryData();
   }, [id]);
 
   const handleError = (event) => {
@@ -64,13 +68,17 @@ function EditPortfolio() {
       case "categoryId":
         setCategoryId(value);
         break;
+      case "brand":
+        setBrand(value);
+        break;
       default:
         break;
     }
   };
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
-    categoryId: yup.number().required("Category is required"),
+    brand: yup.string().required("Brand is required"),
+    // categoryId: yup.number().required("Category is required"),
     file: yup
       .mixed()
       .test(
@@ -110,15 +118,17 @@ function EditPortfolio() {
         const { path, filename } = responseUpload.data;
         responseCreate = await axios.put(`/api/portfolio/${id}`, {
           title: values.title,
-          categoryId: Number(values.categoryId),
+          // categoryId: Number(values.categoryId),
           path: path,
           filename: filename,
+          brand: brand,
         });
         setPreviewImage(null);
       } else {
         responseCreate = await axios.put(`/api/portfolio/${id}`, {
           title: values.title,
-          categoryId: Number(values.categoryId),
+          brand: values.brand,
+          // categoryId: Number(values.categoryId),
         });
       }
       // Simpan informasi file ke dalam API route create
@@ -139,14 +149,20 @@ function EditPortfolio() {
         onSubmit={handleUpdate}
         initialValues={{
           title: title,
-          categoryId: categoryId,
+          // categoryId: categoryId,
+          brand: brand,
           // file: {},
         }}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
-              <h4 className="pb-3">Edit Portfolio</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Edit Portfolio</h4>
+                <Link href="/dashboard/portfolio">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
               {updateSuccess && (
                 <CustomAlert
                   variant="success"
@@ -176,8 +192,24 @@ function EditPortfolio() {
                     {errors.title}
                   </Form.Control.Feedback>
                 </Form.Group>
-
                 <Form.Group className="mb-4">
+                  <Form.Label>Brand</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Brand"
+                    name="brand"
+                    required
+                    value={values.brand}
+                    onChange={(event) => {
+                      handleError(event);
+                    }}
+                    isInvalid={!!errors.brand}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.brand}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {/* <Form.Group className="mb-4">
                   <Form.Label>Category</Form.Label>
                   <Form.Select
                     required
@@ -197,7 +229,7 @@ function EditPortfolio() {
                   <Form.Control.Feedback type="invalid">
                     {errors.categoryId}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group md="6" className="mb-4">
                   <Form.Label>Photo </Form.Label>
                   <div className="mb-3">

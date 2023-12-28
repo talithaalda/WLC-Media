@@ -23,3 +23,8 @@ export default async function handler(req, res) {
     res.status(404).send("Not Found");
   }
 }
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};

@@ -28,7 +28,14 @@ const NavbarComponents = () => {
                 <Link
                   href={link.path}
                   passHref
-                  className={router.pathname === link.path ? "active" : ""}
+                  className={
+                    router.pathname === link.path
+                      ? "active"
+                      : router.pathname.startsWith(link.path) &&
+                        link.path !== "/"
+                      ? "active"
+                      : ""
+                  }
                 >
                   {link.text}
                 </Link>

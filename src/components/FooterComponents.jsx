@@ -39,11 +39,7 @@ const FooterComponents = () => {
               <div className="footer-title mb-3 ">Company</div>
               <ul className="footer-desc company">
                 <li className="mb-3 unlist">Portfolio</li>
-<<<<<<< HEAD
                 <li className="mb-3 unlist">Talents</li>
-=======
-                <li className="mb-3 unlist">Talens</li>
->>>>>>> d5d238922f38ae72b7f928186aaadf98511b822a
                 <li className="mb-3 unlist">About Us</li>
               </ul>
             </div>

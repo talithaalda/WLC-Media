@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import * as formik from "formik";
 import { get } from "http";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import Link from "next/link";
+import ButtonComponents from "@/components/ButtonComponents";
 
 function CreateUser() {
   const router = useRouter();
@@ -112,7 +114,12 @@ function CreateUser() {
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
-              <h4 className="pb-3">Create user</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Create User</h4>
+                <Link href="/dashboard/user">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
               <Form
                 noValidate
                 onSubmit={handleSubmit}

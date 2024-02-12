@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import CustomAlert from "../../AlertComponents";
 import axios from "axios";
 import currencyFormatter from "currency-formatter";
+import Link from "next/link";
+import ButtonComponents from "@/components/ButtonComponents";
 function EditTalents() {
   const { Formik } = formik;
   const [talent, setTalent] = useState([]);
@@ -243,7 +245,12 @@ function EditTalents() {
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form-talent">
-              <h4 className="pb-3">Edit Talent</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Edit Talent</h4>
+                <Link href="/dashboard/talents">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
               {updateSuccess && (
                 <CustomAlert
                   variant="success"

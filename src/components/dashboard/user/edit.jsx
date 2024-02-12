@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import CustomAlert from "../../AlertComponents";
+import Link from "next/link";
+import ButtonComponents from "@/components/ButtonComponents";
 function EditUser() {
   const { Formik } = formik;
   const [user, setUser] = useState([]);
@@ -97,7 +99,12 @@ function EditUser() {
         {({ handleSubmit, handleChange, values, errors, setFieldValue }) => (
           <main>
             <Container className="container-form">
-              <h4 className="pb-3">Edit user</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4>Edit User</h4>
+                <Link href="/dashboard/user">
+                  <ButtonComponents textButton="Back"></ButtonComponents>
+                </Link>
+              </div>
               {updateSuccess && (
                 <CustomAlert
                   variant="success"

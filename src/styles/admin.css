@@ -607,6 +607,15 @@ main .btn-send:hover {
 .header-admin {
   font-size: 18px;
 }
+.video-porto-admin {
+  width: 100%;
+  height: auto;
+}
+.img-porto-admin {
+  max-height: 500px;
+  width: auto;
+  object-fit: cover; /* Pastikan lebar gambar disesuaikan secara otomatis */
+}
 /* MAIN */
 /* CONTENT */
 

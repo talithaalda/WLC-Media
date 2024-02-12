@@ -13,12 +13,14 @@ datasource db {
 model Porto{
   id Int @id @default(autoincrement())
   title String 
+  sow String
+  talent String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
-  categoryId Int
+  categoryId Int?
   path String  
-  filename String 
-  category CategoryPorto @relation(fields: [categoryId], references: [id])
+  filename String
+  category CategoryPorto? @relation(fields: [categoryId], references: [id])
 }
 
 model CategoryPorto{
@@ -31,11 +33,11 @@ model Talent{
   id Int @id @default(autoincrement())
   name String 
   userIG String 
-  follIG Int 
+  follIG String 
   ERIG Float 
   startfromIG Int 
   userTikTok String 
-  follTikTok Int 
+  follTikTok String 
   ERTikTok Float 
   startfromTikTok Int 
   createdAt DateTime @default(now())

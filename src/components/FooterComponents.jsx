@@ -25,7 +25,7 @@ const FooterComponents = () => {
     <div className="footer w-100 mt-5">
       <Container
         className="footer-container mb-5"
-        style={{ paddingTop: "90px" }}
+        style={{ paddingTop: "50px" }}
       >
         <Row>
           <Col lg="5" className="footer-center-1">
@@ -38,9 +38,9 @@ const FooterComponents = () => {
             <div>
               <div className="footer-title mb-3 ">Company</div>
               <ul className="footer-desc company">
-                <li className="mb-3">Portfolio</li>
-                <li className="mb-3">Talens</li>
-                <li className="mb-3">About Us</li>
+                <li className="mb-3 unlist">Portfolio</li>
+                <li className="mb-3 unlist">Talents</li>
+                <li className="mb-3 unlist">About Us</li>
               </ul>
             </div>
           </Col>
@@ -48,7 +48,7 @@ const FooterComponents = () => {
             <div>
               <div className="footer-title mb-3">Contact Us</div>
               <ul className="fa-ul footer-desc contactus ">
-                <li className="mb-3">
+                <li className="mb-3 ">
                   <span className="fa-li">
                     <FontAwesomeIcon icon={faPhone} />
                   </span>

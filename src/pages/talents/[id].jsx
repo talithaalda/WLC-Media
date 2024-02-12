@@ -1,17 +1,67 @@
 // import React from "react";
 import TitleTextComponents from "@/components/TitleTextComponents";
+import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useRouter } from "next/router";
+import formatToRupiah from "@/components/FormatToRp";
+import Link from "next/link";
 const DetailTalentsPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [talent, setTalent] = useState([]);
+  let isMounted = true;
+  useEffect(() => {
+    // Set isMounted to false when the component is unmounted
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+  useEffect(() => {
+    // Hanya fetch data jika ID ada
+    if (id) {
+      fetchDataById();
+    }
+  }, [id]);
+  const fetchDataById = async () => {
+    try {
+      if (!id) {
+        return;
+      }
+      const rute = `/api/talent/${id}`;
+      const response = await fetch(rute);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const data = await response.json();
+      setTalent(data);
+    } catch (error) {
+      console.error("Error fetching talent data:", error);
+    }
+  };
   return (
     <Container className="">
       <Row className="img-detail">
-        <Col lg="5" className="justify-content-center d-flex">
-          <img src="/images/img-detail.png" alt="img-detail" />
+        <Col lg="5" className=" justify-content-center d-flex">
+          <div className="card-img-talent-detail">
+            {talent.path && (
+              <img
+                src={`/api/talent/image/${talent.filename}`}
+                alt="img-detail"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "20px",
+                }}
+              />
+            )}
+          </div>
         </Col>
         <Col lg="7" className="px-5 mt-lg-0 mt-5">
           <div style={{ fontSize: "24px", color: "#929292" }}>Hello I am </div>
-          <h1 className="detail-title">Jenny Wilson Allen</h1>
-          <h3 className="detail-category">Sport</h3>
+          <h1 className="detail-title">{talent.name}</h1>
+          <h3 className="detail-category">{talent.category?.name}</h3>
           <div
             className="mt-5 pt-5 pb-3"
             style={{ fontSize: "20px", color: "#414141", fontWeight: 700 }}
@@ -20,30 +70,34 @@ const DetailTalentsPage = () => {
           </div>
           <div className="d-flex gap-4 container-sosmed">
             <div className="card-sosmed">
-              <div className="d-flex justify-content-center gap-2 pb-2">
-                <img src="/images/logo-instagram.svg" alt="instagram" />
-                <div className="username">@jennywilson</div>
-              </div>
+              <Link href={`https://instagram.com/${talent.userIG}`}>
+                <div className="d-flex justify-content-center gap-2 pb-2">
+                  <img src="/images/logo-instagram.svg" alt="instagram" />
+                  <div className="username">@{talent.userIG}</div>
+                </div>
+              </Link>
               <div className="p-3">
-                <h1 className="count-foll">60.192k</h1>
+                <h1 className="count-foll">{talent.follIG}</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>
-                <h1 className="count-foll">1,45%</h1>
+                <h1 className="count-foll">{talent.ERIG}%</h1>
                 <div className="desc-foll">ENGAGEMENTS</div>
               </div>
             </div>
             <div className="card-sosmed">
-              <div className="d-flex justify-content-center gap-2">
-                <img src="/images/logo-tt.svg" alt="tiktok" />
-                <div className="username">@jennywilson</div>
-              </div>
+              <Link href={`https://tiktok.com/@${talent.userTikTok}`}>
+                <div className="d-flex justify-content-center gap-2">
+                  <img src="/images/logo-tt.svg" alt="tiktok" />
+                  <div className="username">@{talent.userTikTok}</div>
+                </div>
+              </Link>
               <div className="p-3">
-                <h1 className="count-foll">60.192k</h1>
+                <h1 className="count-foll">{talent.follTikTok}</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>
-                <h1 className="count-foll">1,45%</h1>
+                <h1 className="count-foll">{talent.ERTikTok}%</h1>
                 <div className="desc-foll">ENGAGEMENTS</div>
               </div>
             </div>
@@ -60,7 +114,9 @@ const DetailTalentsPage = () => {
               <img src="/images/price.svg" alt="price" />
               Start From
             </div>
-            <div className="text-price">Rp1.000.000</div>
+            <div className="text-price">
+              {formatToRupiah(talent.startfromIG)}
+            </div>
           </div>
           <div className="line-price"></div>
           <div className="pt-3 d-flex flex-column gap-2">
@@ -89,7 +145,9 @@ const DetailTalentsPage = () => {
               <img src="/images/price.svg" alt="price" />
               Start From
             </div>
-            <div className="text-price">Rp1.000.000</div>
+            <div className="text-price">
+              {formatToRupiah(talent.startfromTikTok)}
+            </div>
           </div>
           <div className="line-price"></div>
           <div className="pt-3 d-flex flex-column gap-2">
@@ -112,7 +170,7 @@ const DetailTalentsPage = () => {
           </div>
         </div>
       </div>
-      <div style={{ padding: "50px 0" }}>
+      {/* <div style={{ padding: "50px 0" }}>
         <TitleTextComponents textTitle="Gallery"></TitleTextComponents>
       </div>
       <div className="d-flex gap-5 justify-content-center container-sosmed">
@@ -137,7 +195,7 @@ const DetailTalentsPage = () => {
             className="img-gallery"
           />
         </div>
-      </div>
+      </div> */}
     </Container>
   );
 };

@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import ButtonComponents from "@/components/ButtonComponents";
 
 const ShowPortfolio = () => {
   const router = useRouter();
@@ -80,6 +81,11 @@ const ShowPortfolio = () => {
       console.error("Error deleting portfolio data:", error);
     }
   };
+  function isImage(filename) {
+    const extension = filename.split(".").pop().toLowerCase();
+    return ["jpg", "jpeg", "png", "gif"].includes(extension);
+  }
+
   return (
     <main className="">
       <div className="d-flex justify-content-center gap-2">
@@ -105,20 +111,45 @@ const ShowPortfolio = () => {
       <div className="d-flex justify-content-center">
         <Card className="mt-5 card-porto-admin">
           {portfolio.path && (
-            <Card.Img
-              variant="top"
-              src={`/api/portfolio/image/${portfolio.filename}`}
-              width="100%"
-            />
+            <>
+              {isImage(portfolio.filename) ? (
+                <Card.Img
+                  variant="top"
+                  src={`/api/portfolio/image/${portfolio.filename}`}
+                  width="100%"
+                  className="img-porto-admin"
+                />
+              ) : (
+                <video
+                  controls
+                  className="video-porto-admin"
+                  style={{ maxHeight: "500px" }}
+                >
+                  <source
+                    src={`/api/portfolio/image/${portfolio.filename}`}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+            </>
           )}
           <Card.Body className="card-body-porto">
             <div className="card-text">
               <div className="title-portfolio">{portfolio.title}</div>
-              <div className="desc-portfolio">{portfolio.category?.name}</div>
+              <div className="desc-portfolio">{portfolio.sow}</div>
+              <div className="created-portfolio">{portfolio.talent}</div>
             </div>
           </Card.Body>
         </Card>
         <br />
+      </div>
+      <div className="d-flex justify-content-center mt-4">
+        <div className="d-flex justify-content-center">
+          <Link href="/dashboard/portfolio">
+            <ButtonComponents textButton="Back"></ButtonComponents>
+          </Link>
+        </div>
       </div>
     </main>
   );

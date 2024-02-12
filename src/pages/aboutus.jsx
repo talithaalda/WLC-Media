@@ -8,6 +8,7 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import TitleTextComponents from "@/components/TitleTextComponents";
 const AbouUsPage = () => {
   const [profile, setProfile] = useState([]);
 
@@ -55,8 +56,12 @@ const AbouUsPage = () => {
       {/* DETAIL */}
 
       <div className="w-100 p-5 bg-grey mt-5">
-        <div className="d-flex gap-5 justify-content-center pt-5 pb-5 flex-wrap">
-          {aboutList.map((item) => (
+        <TitleTextComponents textTitle={"Our Testimonial"} />
+        <div
+          className="d-flex justify-content-center pt-5 pb-5 flex-wrap"
+          style={{ gap: "100px" }}
+        >
+          {/* {aboutList.map((item) => (
             <div key={item.id}>
               <div className="aboutlist pb-lg-0 pb-5">
                 <div>
@@ -65,7 +70,41 @@ const AbouUsPage = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))} */}
+
+          <div className="card-testi">
+            <img src="/images/quote.png" alt="testi" className="img-quote" />
+            <div className="card-testi2">
+              <div className="testi-name">James Pattinson</div>
+              <div className="testi-desc">
+                “Lobortis leo pretium facilisis amet nisl at nec. Scelerisque
+                risus tortor donec ipsum consequat semper consequat adipiscing
+                ultrices.”
+              </div>
+            </div>
+          </div>
+          <div className="card-testi">
+            <img src="/images/quote.png" alt="testi" className="img-quote" />
+            <div className="card-testi2">
+              <div className="testi-name">James Pattinson</div>
+              <div className="testi-desc">
+                “Lobortis leo pretium facilisis amet nisl at nec. Scelerisque
+                risus tortor donec ipsum consequat semper consequat adipiscing
+                ultrices.”
+              </div>
+            </div>
+          </div>
+          <div className="card-testi">
+            <img src="/images/quote.png" alt="testi" className="img-quote" />
+            <div className="card-testi2">
+              <div className="testi-name">James Pattinson</div>
+              <div className="testi-desc">
+                “Lobortis leo pretium facilisis amet nisl at nec. Scelerisque
+                risus tortor donec ipsum consequat semper consequat adipiscing
+                ultrices.”
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

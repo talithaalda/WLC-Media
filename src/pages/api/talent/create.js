@@ -22,7 +22,7 @@ export default async function createTalent(req, res) {
       const newTalent = await prisma.talent.create({
         data: {
           name,
-          categoryId,
+          category: parseInt(categoryId),
           userIG,
           follIG,
           ERIG,
@@ -33,7 +33,9 @@ export default async function createTalent(req, res) {
           startfromTikTok,
           path,
           filename,
-          // file: filePath, // Gantilah ini dengan path atau URL file yang sesuai
+          category: {
+            connect: { id: categoryId }, // Connect to an existing category by ID
+          },
         },
       });
 

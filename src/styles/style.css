@@ -80,9 +80,9 @@
 .header-home {
   background: conic-gradient(
     from 154deg at 74.55% 50%,
-    #ffebd8 109.62931752204895deg,
-    #edebe8 193.59360694885254deg,
-    #d8d8d6 360deg
+    #d8e0ff 109.62931752204895deg,
+    #cfdeff 193.59360694885254deg,
+    #7165a6 360deg
   );
   display: flex;
   align-items: center;
@@ -223,6 +223,8 @@
 }
 .card-porto img {
   max-width: 360px;
+  max-height: 720px;
+  border-radius: 20px;
 }
 .my-masonry-grid_column {
   padding-left: 30px; /* gutter size */
@@ -313,6 +315,10 @@
   font-size: 18px;
   font-weight: 400;
 }
+.unlist {
+  list-style: outside !important;
+  color: #ffffff !important;
+}
 .footer {
   background: var(--teracota);
 }
@@ -353,11 +359,16 @@
 }
 .header-box h1 {
   font-family: PF Handbook Pro;
-  font-size: 96px;
+  font-size: 85px;
   font-weight: 400;
 }
 .header-aboutus {
-  background: linear-gradient(154deg, #f4f5f7 0%, #e3eaee 50%, #cacecf 100%);
+  background: linear-gradient(to right, #d8e0ff, #cfdeff, #7165a6);
+  display: flex;
+  align-items: center;
+}
+.header-talent {
+  background: linear-gradient(154deg, #eeeeee 0%, #fefaed 50%, #c1fbc2 100%);
   display: flex;
   align-items: center;
 }
@@ -401,12 +412,7 @@
 
 /* PORTOFOLIO */
 .header-portfolio {
-  background: conic-gradient(
-    from 154deg at 74.55% 50%,
-    #f5ebe1 109.62931752204895deg,
-    #edebe8 193.59360694885254deg,
-    #d8d8d6 360deg
-  );
+  background: linear-gradient(154deg, #faf2eb 0%, #e0e0e0 50%, #e9c8be 100%);
   display: flex;
   align-items: center;
 }
@@ -513,7 +519,84 @@
   border-color: var(--teracota) !important;
   background-color: var(--teracota) !important;
 }
+.card-slider-portfolio {
+  width: 300px;
+  height: 450px;
+  border-radius: 20px;
+}
+.card-img-talent-detail {
+  width: 100%;
+  height: 40rem;
+}
+.img-porto-horizontal {
+  height: 100% !important;
+  object-fit: cover !important;
+  width: 100% !important;
+  border-radius: 10px;
+}
+.img-porto-potrait {
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 10px;
+}
+.vid-porto {
+  height: 100% !important;
+  object-fit: cover !important;
+  min-width: 350px !important;
+  border-radius: 10px;
+}
+.card-porto2 {
+  border: 0px !important;
+  margin: 0 50px 0 50px;
+}
+.card-body2 {
+  padding: 20px 50px !important;
+}
+.title-portfolio2 {
+  color: var(--gray-font);
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 20px;
+}
+.desc-portfolio2 {
+  color: var(--gray-font);
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+}
+.created-portfolio2 {
+  font-size: 17px;
+  font-weight: 400;
+  padding-bottom: 5px;
+}
 
+.card-testi {
+  width: 300px;
+  border-radius: 30px;
+  border: var(--teracota) 1px solid;
+  background-color: var(--base-color);
+}
+.card-testi2 {
+  padding: 5px 21px 35px 21px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.testi-name {
+  font-weight: 600;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+.testi-desc {
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+.img-quote {
+  margin: 20px 20px 0px 20px;
+}
 @media (min-width: 768px) {
   .gradient-form {
     height: 100vh !important;
@@ -529,13 +612,16 @@
   .card-porto img {
     max-width: 200px;
   }
+  .card-porto2 {
+    margin: 0 30px 0 60px;
+  }
 }
 @media screen and (max-width: 992px) {
   .header-box {
     margin-top: 8rem !important;
   }
   .header-home {
-    background: linear-gradient(to right, #ffebd8, #edebe8, #d8d8d6);
+    background: linear-gradient(to right, #d8e0ff, #cfdeff, #7165a6);
   }
   .homepage .header-box img {
     width: 100%;
@@ -573,7 +659,7 @@
     text-align: center;
   }
   .header-portfolio {
-    background: linear-gradient(154deg, #f5ebe1 0%, #edebe8 50%, #d8d8d6 100%);
+    background: linear-gradient(154deg, #faf2eb 0%, #e0e0e0 50%, #e9c8be 100%);
   }
   .list-category {
     gap: 0px;
@@ -581,9 +667,9 @@
   .custom-collapse {
     padding-bottom: 20px;
   }
-  /* .clients img {
-    max-width: 15%;
-  } */
+  .card-porto2 {
+    margin: 0;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -604,6 +690,9 @@
   }
   .desc-portfolio {
     font-size: 12px;
+  }
+  .card-body2 {
+    padding: 20px 10px !important;
   }
 }
 @media screen and (max-width: 576px) {

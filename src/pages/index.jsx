@@ -5,6 +5,7 @@ import TitleTextComponents from "../components/TitleTextComponents";
 import Masonry from "react-masonry-css";
 import SliderComponents from "../components/SliderComponents";
 import PhilosophyComponets from "../components/PhilosophyComponets";
+import SliderHomeComponents from "@/components/SIiderHomeComponents";
 
 export default function Home() {
   const breakpoints = {
@@ -29,7 +30,7 @@ export default function Home() {
               {/* <button className="btn btn-wlc">Join With Us</button> */}
               <ButtonComponents textButton="Join With Us" />
             </Col>
-            <Col lg="8" className="end-column pt-lg-0 pt-5">
+            <Col lg="7" className="end-column pt-lg-6 pt-5">
               <img
                 className="img-header"
                 src="/images/header-home.png"
@@ -115,7 +116,7 @@ export default function Home() {
         <div className="mt-5">
           <TitleTextComponents textTitle="Our Talents" />
         </div>
-        <SliderComponents></SliderComponents>
+        <SliderHomeComponents></SliderHomeComponents>
       </div>
 
       {/* Brand */}

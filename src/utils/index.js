@@ -6,7 +6,7 @@ export const navList = [
   },
   {
     id: 2,
-    path: "/portfolio",
+    path: "/portfolio/1",
     text: "Portfolio",
   },
   {

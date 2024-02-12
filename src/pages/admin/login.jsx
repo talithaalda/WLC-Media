@@ -27,7 +27,7 @@ export const RegisterPage = () => {
     if (session) {
       router.push("/dashboard/portfolio");
     }
-  }, [session, router]);
+  }, [session]);
   useEffect(() => {
     setLoginSuccess(router.query.loginSuccess === "true");
     if (router.query.loginSuccess === "true") {
@@ -103,7 +103,7 @@ export const RegisterPage = () => {
                       </div>
                       {loginSuccess && (
                         <Alert variant="success">
-                          Register successfully, please login!
+                          Register successfully, please login!!
                         </Alert>
                       )}
                       <Formik

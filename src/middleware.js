@@ -8,6 +8,7 @@ export async function middleware(req) {
   const token = await getToken({
     req,
     secret: process.env.NEXT_PUBLIC_SECRET_KEY,
+    secureCookie: true,
   });
   console.log("Session token:", token);
   if (token) {

@@ -56,6 +56,10 @@ export default NextAuth({
       }
       return Promise.resolve(token);
     },
+    async signIn(user, account, profile) {
+      console.log("User signed in:", user);
+      return true; // Redirect to the original URL after successful sign-in
+    },
     session: async (session, token) => {
       session.user = token;
       return Promise.resolve(session);

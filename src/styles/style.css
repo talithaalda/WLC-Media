@@ -225,6 +225,8 @@
   max-width: 360px;
   max-height: 720px;
   border-radius: 20px;
+  max-height: 720px;
+  border-radius: 20px;
 }
 .my-masonry-grid_column {
   padding-left: 30px; /* gutter size */
@@ -314,6 +316,10 @@
   color: var(--base-color);
   font-size: 18px;
   font-weight: 400;
+}
+.unlist {
+  list-style: outside !important;
+  color: #ffffff !important;
 }
 .unlist {
   list-style: outside !important;

@@ -98,12 +98,12 @@ export const RegisterPage = () => {
                           alt="logo"
                         />
                         <h4 className="mt-1 mb-5 pb-1">
-                          Login Dashboard Admin
+                          Login Dashboard Adminn
                         </h4>
                       </div>
                       {loginSuccess && (
                         <Alert variant="success">
-                          Register successfully, please login!!
+                          Register successfully, please login!
                         </Alert>
                       )}
                       <Formik

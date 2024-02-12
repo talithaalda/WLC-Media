@@ -27,7 +27,7 @@ export const RegisterPage = () => {
     if (session) {
       router.push("/dashboard/portfolio");
     }
-  }, [session]);
+  }, [session, router]);
   useEffect(() => {
     setLoginSuccess(router.query.loginSuccess === "true");
     if (router.query.loginSuccess === "true") {
@@ -36,7 +36,7 @@ export const RegisterPage = () => {
       delete newQuery.loginSuccess;
       router.replace({ pathname, query: newQuery });
     }
-  }, []);
+  }, [router.query.loginSuccess]);
 
   const handleLogin = async (values, { setSubmitting }) => {
     try {
@@ -98,7 +98,7 @@ export const RegisterPage = () => {
                           alt="logo"
                         />
                         <h4 className="mt-1 mb-5 pb-1">
-                          Login Dashboard Adminn
+                          Login Dashboard Admin
                         </h4>
                       </div>
                       {loginSuccess && (

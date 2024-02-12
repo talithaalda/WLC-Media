@@ -13,8 +13,12 @@ datasource db {
 model Porto{
   id Int @id @default(autoincrement())
   title String 
+<<<<<<< HEAD
   sow String
   talent String
+=======
+  brand String
+>>>>>>> d5d238922f38ae72b7f928186aaadf98511b822a
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
   categoryId Int?

@@ -34,10 +34,13 @@ const NavbarComponents = () => {
                       : router.pathname.startsWith(link.path) &&
                         link.path !== "/"
                       ? "active"
+<<<<<<< HEAD
                       : link.path === "/portfolio/1" &&
                         router.pathname.startsWith("/portfolio/") &&
                         link.path !== "/"
                       ? "active"
+=======
+>>>>>>> d5d238922f38ae72b7f928186aaadf98511b822a
                       : ""
                   }
                 >

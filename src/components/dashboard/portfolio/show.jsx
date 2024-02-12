@@ -137,12 +137,8 @@ const ShowPortfolio = () => {
           <Card.Body className="card-body-porto">
             <div className="card-text">
               <div className="title-portfolio">{portfolio.title}</div>
-<<<<<<< HEAD
               <div className="desc-portfolio">{portfolio.sow}</div>
               <div className="created-portfolio">{portfolio.talent}</div>
-=======
-              <div className="desc-portfolio">{portfolio.brand}</div>
->>>>>>> d5d238922f38ae72b7f928186aaadf98511b822a
             </div>
           </Card.Body>
         </Card>

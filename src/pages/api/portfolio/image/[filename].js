@@ -1,33 +1,30 @@
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
+import os from "os";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  // Destructure the filename from the request query parameters
+  const { filename } = req.query;
+
+  // Construct the absolute path to the file in the /tmp directory
+  const filePath = path.join(os.tmpdir(), filename); // Change the directory to /tmp
+
   try {
-    // Destructure the filename from the request query parameters
-    const { filename } = req.query;
+    // Read the file asynchronously
+    const fileContents = await fs.readFile(filePath);
 
-    // Construct the absolute path to the file in the /tmp directory
-    const filePath = path.join("/tmp", filename);
+    // Set the appropriate content type header based on file extension
+    const contentType = getContentType(filename);
+    res.setHeader("Content-Type", contentType);
 
-    // Check if the file exists
-    if (fs.existsSync(filePath)) {
-      // Set the appropriate content type header based on file extension
-      const contentType = getContentType(filename);
-      res.setHeader("Content-Type", contentType);
+    // Set Content-Disposition header to inline to prevent automatic download
+    res.setHeader("Content-Disposition", "inline");
 
-      // Set Content-Disposition header to inline to prevent automatic download
-      res.setHeader("Content-Disposition", "inline");
-
-      // Read the file synchronously and send it as response
-      const fileContents = fs.readFileSync(filePath);
-      res.end(fileContents);
-    } else {
-      // If file does not exist, send 404 response
-      res.status(404).send("File not found");
-    }
+    // Send the file contents as the response
+    res.end(fileContents);
   } catch (error) {
     console.error("Error handling file request:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(404).send("Not Found");
   }
 }
 

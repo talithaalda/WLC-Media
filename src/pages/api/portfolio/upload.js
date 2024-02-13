@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         encoding: file.encoding,
         mimetype: file.mimetype,
         filename: file.filename,
-        path: `/images/portfolio/${file.filename}`, // Add the path to the response
+        path: `/tmp/${file.filename}`, // Add the path to the response
       });
     } else {
       // Handle the case where file or file.buffer is undefined

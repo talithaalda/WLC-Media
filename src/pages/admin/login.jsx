@@ -98,7 +98,7 @@ export const RegisterPage = () => {
                           alt="logo"
                         />
                         <h4 className="mt-1 mb-5 pb-1">
-                          Login Dashboard Adminn
+                          Login Dashboard Admin
                         </h4>
                       </div>
                       {loginSuccess && (

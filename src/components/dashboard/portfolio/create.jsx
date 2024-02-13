@@ -11,13 +11,11 @@ import { usePortfolio } from "@/utils/portfolioContext";
 function CreatePortfolio() {
   // const [category, setCategory] = useState([]);
   const { Formik } = formik;
-  const [title, setTitle] = useState("");
   // const [categoryId, setCategoryId] = useState("");
-  const [sow, setSow] = useState("");
-  const [talent, setTalent] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   const [filename, setFileName] = useState(null);
-  const { handleSubmit, isImage } = usePortfolio();
+  const { handleSubmit, isImage, handleError, title, sow, talent } =
+    usePortfolio();
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -35,26 +33,7 @@ function CreatePortfolio() {
 
   //   fetchData();
   // }, []);
-  const handleError = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    switch (name) {
-      case "title":
-        setTitle(value);
-        break;
-      case "categoryId":
-        setCategoryId(value);
-        break;
-      case "sow":
-        setSow(value);
-        break;
-      case "talent":
-        setTalent(value);
-        break;
-      default:
-        break;
-    }
-  };
+
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
     // categoryId: yup.string().required("Category is required"),

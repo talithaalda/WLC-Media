@@ -9,24 +9,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import TitleTextComponents from "@/components/TitleTextComponents";
+import { useProfile } from "@/utils/profileContext";
 const AbouUsPage = () => {
-  const [profile, setProfile] = useState([]);
-
+  const { profile, fetchData } = useProfile();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/profile/1");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setProfile(data);
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    };
-
     fetchData();
   }, []);
   return (

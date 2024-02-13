@@ -5,196 +5,55 @@ import InputGroup from "react-bootstrap/InputGroup";
 import * as formik from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import CustomAlert from "../../AlertComponents";
-import axios from "axios";
-import currencyFormatter from "currency-formatter";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
+import { useTalent } from "@/utils/talentContext";
+import { useRouter } from "next/router";
 function EditTalents() {
   const { Formik } = formik;
-  const [talent, setTalent] = useState([]);
-  const [category, setCategory] = useState([]);
-  const router = useRouter();
-  const [updateSuccess, setUpdateSuccess] = useState(false);
-  const { id } = router.query;
-  const [startfromTikTok, setStartfromTikTok] = useState("");
-  const [startfromIG, setStartfromIG] = useState("");
-  const [startfromTikTokRaw, setStartfromTikTokRaw] = useState("");
-  const [startfromIGRaw, setStartfromIGRaw] = useState("");
-  const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [userIG, setUserIG] = useState("");
-  const [userTikTok, setUserTikTok] = useState("");
-  const [follIG, setFollIG] = useState("");
-  const [follTikTok, setFollTikTok] = useState("");
-  const [ERIG, setERIG] = useState("");
-  const [ERTikTok, setERTikTok] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
-
-  const handleFormat = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    let numericValue, formattedValue;
-    switch (name) {
-      case "startfromIG":
-        numericValue = value.replace(/\D/g, "");
-        formattedValue = currencyFormatter.format(numericValue, {
-          code: "IDR",
-        });
-        setStartfromIG(formattedValue);
-        setStartfromIGRaw(numericValue);
-        break;
-      case "startfromTikTok":
-        numericValue = value.replace(/\D/g, "");
-        formattedValue = currencyFormatter.format(numericValue, {
-          code: "IDR",
-        });
-        setStartfromTikTok(formattedValue);
-        setStartfromTikTokRaw(numericValue);
-        break;
-      case "name":
-        setName(value);
-        break;
-      case "categoryId":
-        setCategoryId(value);
-        break;
-      case "userIG":
-        setUserIG(value);
-        break;
-      case "userTikTok":
-        setUserTikTok(value);
-        break;
-      case "follIG":
-        setFollIG(value);
-        break;
-      case "follTikTok":
-        setFollTikTok(value);
-        break;
-      case "ERIG":
-        setERIG(value);
-        break;
-      case "ERTikTok":
-        setERTikTok(value);
-        break;
-      default:
-        break;
-    }
-  };
+  const router = useRouter();
+  const { id } = router.query;
+  const {
+    handleFormat,
+    handleUpdate,
+    fetchDataById,
+    name,
+    category,
+    userIG,
+    userTikTok,
+    startfromIG,
+    startfromTikTok,
+    follIG,
+    follTikTok,
+    ERIG,
+    ERTikTok,
+    updateSuccess,
+    setUpdateSuccess,
+    talent,
+  } = useTalent();
   useEffect(() => {
-    const fetchDataById = async () => {
-      try {
-        if (!id) {
-          return;
-        }
-        const rute = `/api/talent/${id}`;
-        const response = await fetch(rute);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch("/api/category-talent");
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch data");
+    //     }
 
-        const data = await response.json();
-        setName(data.name);
-        setCategoryId(data.categoryId);
-        setUserIG(data.userIG);
-        setUserTikTok(data.userTikTok);
-        setFollIG(data.follIG);
-        setFollTikTok(data.follTikTok);
-        setERIG(data.ERIG);
-        setERTikTok(data.ERTikTok);
-        setStartfromIG(
-          currencyFormatter.format(data.startfromIG, { code: "IDR" })
-        );
-        setStartfromTikTok(
-          currencyFormatter.format(data.startfromTikTok, { code: "IDR" })
-        );
-        setStartfromIGRaw(data.startfromIG);
-        setStartfromTikTokRaw(data.startfromTikTok);
-
-        setTalent(data);
-      } catch (error) {
-        console.error("Error fetching talent data:", error);
-      }
-    };
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/category-talent");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setCategory(data);
-      } catch (error) {
-        console.error("Error fetching talent data:", error);
-      }
-    };
+    //     const data = await response.json();
+    //     setCategory(data);
+    //   } catch (error) {
+    //     console.error("Error fetching talent data:", error);
+    //   }
+    // };
+    // fetchData();
     fetchDataById();
-    fetchData();
   }, [id]);
-  const handleUpdate = async (values, { setSubmitting, resetForm }) => {
-    let responseCreate = "";
 
-    try {
-      if (values.file) {
-        const formData = new FormData();
-        formData.append("file", values.file);
-        const responseUpload = await axios.post(
-          `/api/talent/image/edit/${id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        // Dapatkan path dan filename dari respons upload
-        const { path, filename } = responseUpload.data;
-        responseCreate = await axios.put(`/api/talent/${id}`, {
-          name: values.name,
-          categoryId: Number(values.categoryId),
-          userIG: values.userIG,
-          userTikTok: values.userTikTok,
-          startfromIG: Number(startfromIGRaw),
-          startfromTikTok: Number(startfromTikTokRaw),
-          follIG: values.follIG,
-          follTikTok: values.follTikTok,
-          ERIG: Number(values.ERIG),
-          ERTikTok: Number(values.ERTikTok),
-          path: path,
-          filename: filename,
-        });
-      } else {
-        responseCreate = await axios.put(`/api/talent/${id}`, {
-          name: values.name,
-          categoryId: Number(values.categoryId),
-          userIG: values.userIG,
-          userTikTok: values.userTikTok,
-          startfromIG: Number(startfromIGRaw),
-          startfromTikTok: Number(startfromTikTokRaw),
-          follIG: values.follIG,
-          follTikTok: values.follTikTok,
-          ERIG: Number(values.ERIG),
-          ERTikTok: Number(values.ERTikTok),
-        });
-      }
-      if (responseCreate.status === 200) {
-        setUpdateSuccess(true);
-        setTalent(responseCreate.data);
-      } else {
-        throw new Error("Failed to update data");
-      }
-      setPreviewImage(null);
-    } catch (error) {
-      console.error("Error updating data:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
   const schema = yup.object().shape({
     name: yup.string().required("Field is required"),
-    categoryId: yup.string().required("Field is required"),
+    category: yup.string().required("Field is required"),
     userIG: yup.string().required("Field is required"),
     userTikTok: yup.string().required("Field is required"),
     startfromIG: yup.string().required("Field is required"),
@@ -231,7 +90,8 @@ function EditTalents() {
         onSubmit={handleUpdate}
         initialValues={{
           name: name,
-          categoryId: categoryId,
+          category: category,
+          // categoryId: categoryId,
           userIG: userIG,
           userTikTok: userTikTok,
           startfromIG: startfromIG,
@@ -276,8 +136,24 @@ function EditTalents() {
                     {errors.name}
                   </Form.Control.Feedback>
                 </Form.Group>
-
-                <Form.Group className="mb-4" controlId="validationCustom02">
+                <Form.Group className="mb-4" controlId="validationCustom01">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Category"
+                    name="category"
+                    required
+                    value={values.category}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
+                    isInvalid={!!errors.category}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.category}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {/* <Form.Group className="mb-4" controlId="validationCustom02">
                   <Form.Label>Category</Form.Label>
                   <Form.Select
                     required
@@ -297,7 +173,7 @@ function EditTalents() {
                   <Form.Control.Feedback type="invalid">
                     {errors.category}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> */}
                 <Row>
                   <Col>
                     <Form.Group
@@ -519,7 +395,7 @@ function EditTalents() {
                 </Form.Group>
 
                 <Button className="btn btn-wlc" type="submit">
-                  Create Talent
+                  Update Talent
                 </Button>
               </Form>
             </Container>

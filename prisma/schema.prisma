@@ -32,6 +32,7 @@ model CategoryPorto{
 model Talent{
   id Int @id @default(autoincrement())
   name String 
+  category String
   userIG String 
   follIG String 
   ERIG Float 
@@ -42,17 +43,16 @@ model Talent{
   startfromTikTok Int 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
-  categoryId Int
+  // categoryId Int
   path String  
   filename String 
-  category CategoryTalent @relation(fields: [categoryId], references: [id])
 }
 
-model CategoryTalent{
-  id Int @id @default(autoincrement())
-  name String
-  talent Talent[]
-}
+// model CategoryTalent{
+//   id Int @id @default(autoincrement())
+//   name String
+//   talent Talent[]
+// }
 
 model Profile{
   id Int @id @default(autoincrement())

@@ -10,18 +10,22 @@ import { get } from "http";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
+import { useUser } from "@/utils/userContext";
 
 function CreateUser() {
-  const router = useRouter();
   const { Formik } = formik;
-  const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [retypePassword, setRetypePassword] = useState("");
-  const [role, setRole] = useState("");
+  const {
+    name,
+    email,
+    password,
+    retypePassword,
+    role,
+    handleSubmit,
+    handleError,
+    error,
+  } = useUser();
 
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
@@ -36,66 +40,6 @@ function CreateUser() {
       .required("Retype Password is required"),
     role: yup.string().required("Role is required"),
   });
-  const handleError = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "retypePassword":
-        setRetypePassword(value);
-        break;
-      case "role":
-        setRole(value);
-        break;
-      default:
-        break;
-    }
-  };
-  const handleSubmit = async (values) => {
-    try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (response.ok) {
-        // Registration successful
-        router.push({
-          pathname: "/dashboard/user",
-          query: { createSuccess: true },
-        });
-        // Handle success, e.g., redirect to login page
-      } else {
-        const errorData = await response.json();
-        if (
-          response.status === 400 &&
-          errorData.message === "Email already in use"
-        ) {
-          // Handle email already in use error
-          setError("Email is already in use");
-        } else {
-          // Handle other errors
-          setError("Registration failed. Please try again.");
-        }
-      }
-    } catch (error) {
-      console.error("Error submitting registration:", error);
-      // Handle other errors
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <>

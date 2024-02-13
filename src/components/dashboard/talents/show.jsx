@@ -7,81 +7,25 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import formatToRupiah from "../../FormatToRp";
 import ButtonComponents from "@/components/ButtonComponents";
+import { useTalent } from "@/utils/talentContext";
 
 const ShowTalents = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [talent, setTalent] = useState([]);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
-  let isMounted = true;
-  useEffect(() => {
-    // Set isMounted to false when the component is unmounted
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const {
+    talent,
+    deleteSuccess,
+    setDeleteSuccess,
+    fetchDataByIdShow,
+    handleDeleteShow,
+  } = useTalent();
   useEffect(() => {
     // Hanya fetch data jika ID ada
     if (id) {
-      fetchDataById();
+      fetchDataByIdShow();
     }
   }, [id]);
-  const fetchDataById = async () => {
-    try {
-      if (!id) {
-        return;
-      }
-      const rute = `/api/talent/${id}`;
-      const response = await fetch(rute);
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
 
-      const data = await response.json();
-      setTalent(data);
-    } catch (error) {
-      console.error("Error fetching talent data:", error);
-    }
-  };
-  const handleDelete = async (id) => {
-    try {
-      const imageInfoResponse = await fetch(
-        `/api/talent/image/${talent.filename}`
-      );
-      if (imageInfoResponse.ok) {
-        const deleteImageResponse = await fetch(
-          `/api/talent/image/edit/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        if (!deleteImageResponse.ok) {
-          throw new Error("Failed to delete image");
-        }
-      }
-      const deletetalentResponse = await fetch(`/api/talent/${id}`, {
-        method: "DELETE",
-      });
-      if (!deletetalentResponse.ok) {
-        throw new Error("Failed to delete talent data");
-      }
-      setDeleteSuccess(true);
-      if (isMounted) {
-        setTalent([]);
-      }
-      if (!deletetalentResponse.ok) {
-        throw new Error("Failed to delete data");
-      }
-      router.push({
-        pathname: "/dashboard/talents",
-        query: { deleteSuccess: true },
-      });
-      // Update the state to reflect the changes
-      setTalent((prevTalent) => prevTalent.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting talent data:", error);
-    }
-  };
   return (
     <Container className="">
       <div className="d-flex justify-content-center gap-2">
@@ -95,7 +39,7 @@ const ShowTalents = () => {
         </Link>
         <button
           className="btn btn-danger"
-          onClick={() => handleDelete(talent.id)}
+          onClick={() => handleDeleteShow(talent.id)}
         >
           <i>
             <FontAwesomeIcon icon={faTrash} />

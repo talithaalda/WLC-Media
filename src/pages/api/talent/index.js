@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   try {
     const talent = await prisma.talent.findMany({
-      include: {
-        category: true,
-      },
+      // include: {
+      //   category: true,
+      // },
     });
     res.status(200).json(talent);
   } catch (error) {

@@ -4,11 +4,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import CustomAlert from "../../AlertComponents";
 import { useRouter } from "next/router";
+import { useUser } from "@/utils/userContext";
 
 const DashboardUser = () => {
-  const [user, setUser] = useState([]);
-  let [deleteSuccess, setDeleteSuccess] = useState(false);
-  let [createSuccess, setCreateSuccess] = useState(false);
+  const {
+    user,
+    deleteSuccess,
+    createSuccess,
+    setCreateSuccess,
+    setDeleteSuccess,
+    handleDelete,
+    fetchData,
+  } = useUser();
   const router = useRouter();
   const sortedData = user.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -26,39 +33,10 @@ const DashboardUser = () => {
       delete newQuery.deleteSuccess;
       router.replace({ pathname, query: newQuery });
     }
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/user");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setUser(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
 
     fetchData();
   }, []);
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`/api/user/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete data");
-      } else {
-        setDeleteSuccess(true);
-      }
 
-      // Update the state to reflect the changes
-      setUser((prevuser) => prevuser.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting user data:", error);
-    }
-  };
   return (
     <main>
       <section className="content">

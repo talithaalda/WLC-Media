@@ -13,9 +13,9 @@ export default async function handler(req, res) {
         where: {
           id: parseInt(id, 10),
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
       if (!talent) {
         return res.status(404).json({ error: "talent not found" });
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         follTikTok,
         ERTikTok,
         startfromTikTok,
-        categoryId,
+        category,
         filename,
         path,
       } = req.body;
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       // Validate that name and categoryId are present in the request body
       if (
         !name ||
-        !categoryId ||
+        !category ||
         !userIG ||
         !follIG ||
         !ERIG ||
@@ -69,7 +69,8 @@ export default async function handler(req, res) {
         },
         data: {
           name,
-          categoryId: parseInt(categoryId, 10),
+          category,
+          // categoryId: parseInt(categoryId, 10),
           userIG,
           follIG,
           ERIG,
@@ -81,9 +82,9 @@ export default async function handler(req, res) {
           filename,
           path,
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
 
       res.status(200).json(updatedtalent);
@@ -101,9 +102,9 @@ export default async function handler(req, res) {
         where: {
           id: parseInt(id, 10),
         },
-        include: {
-          category: true,
-        },
+        // include: {
+        //   category: true,
+        // },
       });
 
       res.status(204).end();

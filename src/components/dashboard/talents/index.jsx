@@ -4,11 +4,18 @@ import CustomAlert from "../../AlertComponents";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import formatToRupiah from "@/components/FormatToRp";
+import { useTalent } from "@/utils/talentContext";
 
 const DashboardTalents = () => {
-  const [talents, setTalents] = useState([]);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
-  let [createSuccess, setCreateSuccess] = useState(false);
+  const {
+    talents,
+    deleteSuccess,
+    setDeleteSuccess,
+    createSuccess,
+    setCreateSuccess,
+    fetchData,
+    handleDelete,
+  } = useTalent();
   const router = useRouter();
   const sortedData = talents.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -26,54 +33,19 @@ const DashboardTalents = () => {
       delete newQuery.deleteSuccess;
       router.replace({ pathname, query: newQuery });
     }
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/talent");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setTalents(data);
-      } catch (error) {
-        console.error("Error fetching talents data:", error);
-      }
-    };
 
     fetchData();
   }, []);
-  const handleDelete = async (id) => {
-    try {
-      const deleteImageResponse = await fetch(`/api/talent/image/edit/${id}`, {
-        method: "DELETE",
-      });
-      if (!deleteImageResponse.ok) {
-        throw new Error("Failed to delete image");
-      }
-      const response = await fetch(`/api/talent/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete data");
-      } else {
-        setDeleteSuccess(true);
-      }
 
-      // Update the state to reflect the changes
-      setTalents((prevTalent) => prevTalent.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting talent data:", error);
-    }
-  };
   return (
     <main>
       <section className="content">
         <Link href={"/dashboard/talents/create"} className="p-3">
           <ButtonComponents textButton="Add New" />
         </Link>
-        <Link href={"/dashboard/talents/addcategory"} className="p-3">
+        {/* <Link href={"/dashboard/talents/addcategory"} className="p-3">
           <button className="btn btn-success"> + Add New Category</button>
-        </Link>
+        </Link> */}
         <div className="container-fluid mt-3">
           {deleteSuccess && (
             <CustomAlert

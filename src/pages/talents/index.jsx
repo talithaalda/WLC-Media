@@ -3,24 +3,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import TitleTextComponents from "../../components/TitleTextComponents";
 import SliderComponents from "@/components/SliderComponents";
 import { useEffect, useState } from "react";
+import { useTalent } from "@/utils/talentContext";
 
 const TalentsPage = () => {
-  const [talents, setTalents] = useState([]);
+  const { talents, fetchData } = useTalent();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/talent");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setTalents(data);
-      } catch (error) {
-        console.error("Error fetching talents data:", error);
-      }
-    };
-
     fetchData();
   }, []);
   const talentsPerPage = 9;

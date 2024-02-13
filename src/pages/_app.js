@@ -9,6 +9,9 @@ import AppShell from "@/layouts/AppShell";
 import FooterComponents from "../components/FooterComponents";
 import { useRouter } from "next/router";
 import { PortfolioProvider } from "@/utils/portfolioContext";
+import { TalentProvider } from "@/utils/talentContext";
+import { ProfileProvider } from "@/utils/profileContext";
+import { UserProvider } from "@/utils/userContext";
 
 function MyApp({ Component, pageProps }) {
   const { pathname } = useRouter();
@@ -17,12 +20,18 @@ function MyApp({ Component, pageProps }) {
   return (
     <SessionProvider session={pageProps.session}>
       <PortfolioProvider>
-        <div>
-          <AppShell />
-          <Component {...pageProps} />
-          <AppShell />
-          {!isDashboardRoute && <FooterComponents />}
-        </div>
+        <TalentProvider>
+          <ProfileProvider>
+            <UserProvider>
+              <div>
+                <AppShell />
+                <Component {...pageProps} />
+                <AppShell />
+                {!isDashboardRoute && <FooterComponents />}
+              </div>
+            </UserProvider>
+          </ProfileProvider>
+        </TalentProvider>
       </PortfolioProvider>
     </SessionProvider>
   );

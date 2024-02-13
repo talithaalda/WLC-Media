@@ -4,7 +4,7 @@ export default async function createTalent(req, res) {
   if (req.method === "POST") {
     const {
       name,
-      categoryId,
+      category,
       userIG,
       follIG,
       ERIG,
@@ -22,7 +22,8 @@ export default async function createTalent(req, res) {
       const newTalent = await prisma.talent.create({
         data: {
           name,
-          category: parseInt(categoryId),
+          // category: parseInt(categoryId),
+          category,
           userIG,
           follIG,
           ERIG,
@@ -33,9 +34,9 @@ export default async function createTalent(req, res) {
           startfromTikTok,
           path,
           filename,
-          category: {
-            connect: { id: categoryId }, // Connect to an existing category by ID
-          },
+          // category: {
+          //   connect: { id: categoryId }, // Connect to an existing category by ID
+          // },
         },
       });
 

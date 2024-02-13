@@ -9,80 +9,31 @@ import axios from "axios";
 import CustomAlert from "../../AlertComponents";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
+import { useUser } from "@/utils/userContext";
 function EditUser() {
   const { Formik } = formik;
-  const [user, setUser] = useState([]);
   const router = useRouter();
-  const [updateSuccess, setUpdateSuccess] = useState(false);
   const { id } = router.query;
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const {
+    name,
+    email,
+    role,
+    handleError,
+    handleUpdate,
+    fetchDataById,
+    updateSuccess,
+    setUpdateSuccess,
+  } = useUser();
+
   useEffect(() => {
-    const fetchDataById = async () => {
-      try {
-        if (!id) {
-          return;
-        }
-        const rute = `/api/user/${id}`;
-        const response = await fetch(rute);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setName(data.name);
-        setEmail(data.email);
-        setRole(data.role);
-        setUser(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     fetchDataById();
   }, [id]);
-  const handleError = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "role":
-        setRole(value);
-        break;
-      default:
-        break;
-    }
-  };
+
   const schema = yup.object().shape({
     name: yup.string().required("Name is required"),
     email: yup.string().email("Invalid email").required("Email is required"),
     role: yup.string().required("Role is required"),
   });
-
-  const handleUpdate = async (values, { setSubmitting }) => {
-    let response = "";
-    try {
-      response = await axios.put(`/api/user/${id}`, {
-        name: values.name,
-        email: values.email,
-        role: values.role,
-      });
-
-      // Simpan informasi file ke dalam API route create
-      setUser(response.data);
-      setUpdateSuccess(true);
-    } catch (error) {
-      console.error("Error updating data:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <>

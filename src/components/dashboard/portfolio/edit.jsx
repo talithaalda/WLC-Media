@@ -5,17 +5,15 @@ import * as formik from "formik";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import CustomAlert from "../../AlertComponents";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
 import { usePortfolio } from "@/utils/portfolioContext";
 function EditPortfolio() {
   const { Formik } = formik;
-  const [category, setCategory] = useState([]);
   const router = useRouter();
   const { id } = router.query;
-  const [categoryId, setCategoryId] = useState("");
+  // const [categoryId, setCategoryId] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   const [filename, setFileName] = useState(null);
   const {

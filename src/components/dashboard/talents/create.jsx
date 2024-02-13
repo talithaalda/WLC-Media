@@ -4,158 +4,52 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import * as formik from "formik";
 import * as yup from "yup";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import currencyFormatter from "currency-formatter";
 import ButtonComponents from "@/components/ButtonComponents";
 import Link from "next/link";
+import { useTalent } from "@/utils/talentContext";
+import { useState } from "react";
 
 function CreateTalents() {
-  const [category, setCategory] = useState([]);
-  const router = useRouter();
-  const [startfromTikTok, setStartfromTikTok] = useState("");
-  const [startfromIG, setStartfromIG] = useState("");
-  const [startfromTikTokRaw, setStartfromTikTokRaw] = useState("");
-  const [startfromIGRaw, setStartfromIGRaw] = useState("");
-  const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [userIG, setUserIG] = useState("");
-  const [userTikTok, setUserTikTok] = useState("");
-  const [follIG, setFollIG] = useState("");
-  const [follTikTok, setFollTikTok] = useState("");
-  const [ERIG, setERIG] = useState("");
-  const [ERTikTok, setERTikTok] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
+  const {
+    handleFormat,
+    handleSubmit,
+    name,
+    category,
+    userIG,
+    userTikTok,
+    startfromIG,
+    startfromTikTok,
+    follIG,
+    follTikTok,
+    ERIG,
+    ERTikTok,
+  } = useTalent();
 
-  const handleFormat = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    let numericValue, formattedValue;
-    switch (name) {
-      case "startfromIG":
-        numericValue = value.replace(/\D/g, "");
-        formattedValue = currencyFormatter.format(numericValue, {
-          code: "IDR",
-        });
-        setStartfromIG(formattedValue);
-        setStartfromIGRaw(numericValue);
-        break;
-      case "startfromTikTok":
-        numericValue = value.replace(/\D/g, "");
-        formattedValue = currencyFormatter.format(numericValue, {
-          code: "IDR",
-        });
-        setStartfromTikTok(formattedValue);
-        setStartfromTikTokRaw(numericValue);
-        break;
-      case "name":
-        setName(value);
-        break;
-      case "categoryId":
-        setCategoryId(value);
-        break;
-      case "userIG":
-        setUserIG(value);
-        break;
-      case "userTikTok":
-        setUserTikTok(value);
-        break;
-      case "follIG":
-        setFollIG(value);
-        break;
-      case "follTikTok":
-        setFollTikTok(value);
-        break;
-      case "ERIG":
-        setERIG(value);
-        break;
-      case "ERTikTok":
-        setERTikTok(value);
-        break;
-      default:
-        break;
-    }
-  };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/api/category-talent");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/category-talent");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+  //       const data = await response.json();
+  //       setCategory(data);
+  //     } catch (error) {
+  //       console.error("Error fetching talent data:", error);
+  //     }
+  //   };
 
-        const data = await response.json();
-        setCategory(data);
-      } catch (error) {
-        console.error("Error fetching talent data:", error);
-      }
-    };
+  //   fetchData();
+  // }, []);
 
-    fetchData();
-  }, []);
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("categoryId", values.categoryId);
-      formData.append("userIG", values.userIG);
-      formData.append("userTikTok", values.userTikTok);
-      formData.append("startfromIG", startfromIGRaw);
-      formData.append("startfromTikTok", startfromTikTokRaw);
-      formData.append("follIG", values.follIG);
-      formData.append("follTikTok", values.follTikTok);
-      formData.append("ERIG", values.ERIG);
-      formData.append("ERTikTok", values.ERTikTok);
-      formData.append("file", values.file);
-      try {
-        const responseUpload = await axios.post(
-          "/api/talent/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        // Dapatkan path dan filename dari respons upload
-        const { path, filename } = responseUpload.data;
-        const response = await axios.post("/api/talent/create", {
-          name: formData.get("name"),
-          categoryId: Number(formData.get("categoryId")),
-          userIG: formData.get("userIG"),
-          userTikTok: formData.get("userTikTok"),
-          startfromIG: Number(formData.get("startfromIG")),
-          startfromTikTok: Number(formData.get("startfromTikTok")),
-          follIG: formData.get("follIG"),
-          follTikTok: formData.get("follTikTok"),
-          ERIG: Number(formData.get("ERIG")),
-          ERTikTok: Number(formData.get("ERTikTok")),
-          path,
-          filename,
-        });
-        if (response) {
-          setPreviewImage(null);
-          router.push({
-            pathname: "/dashboard/talents",
-            query: { createSuccess: true },
-          });
-        }
-      } catch (error) {
-        console.error("Axios error:", error);
-      }
-    } catch (error) {
-      console.error("Gagal menambahkan data:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
   const { Formik } = formik;
 
   const schema = yup.object().shape({
     name: yup.string().required("Field is required"),
-    categoryId: yup.string().required("Field is required"),
+    // categoryId: yup.string().required("Field is required"),
+    category: yup.string().required("Field is required"),
     userIG: yup.string().required("Field is required"),
     userTikTok: yup.string().required("Field is required"),
     startfromIG: yup.string().required("Field is required"),
@@ -193,7 +87,8 @@ function CreateTalents() {
         onSubmit={handleSubmit}
         initialValues={{
           name: name,
-          categoryId: categoryId,
+          // categoryId: categoryId,
+          category: category,
           userIG: userIG,
           userTikTok: userTikTok,
           startfromIG: startfromIG,
@@ -232,8 +127,24 @@ function CreateTalents() {
                     {errors.name}
                   </Form.Control.Feedback>
                 </Form.Group>
-
-                <Form.Group className="mb-4" controlId="validationCustom02">
+                <Form.Group className="mb-4" controlId="validationCustom01">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Category"
+                    name="category"
+                    required
+                    value={values.category}
+                    onChange={(event) => {
+                      handleFormat(event);
+                    }}
+                    isInvalid={!!errors.category}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.category}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                {/* <Form.Group className="mb-4" controlId="validationCustom02">
                   <Form.Label>Category</Form.Label>
                   <Form.Select
                     required
@@ -253,7 +164,7 @@ function CreateTalents() {
                   <Form.Control.Feedback type="invalid">
                     {errors.category}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> */}
                 <Row>
                   <Col>
                     <Form.Group

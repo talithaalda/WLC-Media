@@ -26,7 +26,8 @@ export default async function editTalent(req, res) {
         },
         data: {
           name,
-          categoryId: category,
+          // categoryId: category,
+          category,
           userIG,
           follIG,
           ERIG,

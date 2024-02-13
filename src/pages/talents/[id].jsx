@@ -5,40 +5,19 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import formatToRupiah from "@/components/FormatToRp";
 import Link from "next/link";
+import { useTalent } from "@/utils/talentContext";
 const DetailTalentsPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [talent, setTalent] = useState([]);
-  let isMounted = true;
-  useEffect(() => {
-    // Set isMounted to false when the component is unmounted
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { talent, fetchDataByIdShow } = useTalent();
+
   useEffect(() => {
     // Hanya fetch data jika ID ada
     if (id) {
-      fetchDataById();
+      fetchDataByIdShow();
     }
   }, [id]);
-  const fetchDataById = async () => {
-    try {
-      if (!id) {
-        return;
-      }
-      const rute = `/api/talent/${id}`;
-      const response = await fetch(rute);
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
 
-      const data = await response.json();
-      setTalent(data);
-    } catch (error) {
-      console.error("Error fetching talent data:", error);
-    }
-  };
   return (
     <Container className="">
       <Row className="img-detail">

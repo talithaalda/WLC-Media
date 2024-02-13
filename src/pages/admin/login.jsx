@@ -82,7 +82,7 @@ export const RegisterPage = () => {
       </Navbar>
       <section
         className="h-100 gradient-form "
-        style={{ backgroundColor: "#eee" }}
+        style={{ backgroundColor: "#eee", marginBottom: "-50px" }}
       >
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100 mt-5">

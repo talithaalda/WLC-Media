@@ -10,7 +10,6 @@ export async function middleware(req) {
     secret: process.env.NEXT_PUBLIC_SECRET_KEY,
     secureCookie: true,
   });
-  console.log("Session token:", token);
   if (token) {
     return NextResponse.next();
   } else {

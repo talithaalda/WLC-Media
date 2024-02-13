@@ -5,8 +5,8 @@ export default async function handler(req, res) {
   // Destructure the filename from the request query parameters
   const { filename } = req.query;
 
-  // Construct the absolute path to the file
-  const filePath = path.join(process.cwd(), "images/portfolio", filename);
+  // Construct the absolute path to the file in the /tmp directory
+  const filePath = path.join("/tmp", filename); // Change the directory to /tmp
 
   try {
     // Read the file asynchronously

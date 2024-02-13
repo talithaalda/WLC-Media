@@ -70,7 +70,6 @@ function SliderComponents({ talentsData }) {
     beforeChange: (current, next) => {
       const adjustedNext = Math.floor(next / numSlidesToShow);
       setCurrentSlide(adjustedNext);
-      console.log(adjustedNext);
     },
     appendDots: (dots) => <CustomDots {...dots} />,
     responsive: [

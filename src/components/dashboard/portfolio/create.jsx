@@ -121,7 +121,6 @@ function CreatePortfolio() {
         // categoryId: Number(formData.get("categoryId")),
         path,
         filename,
-        brand,
       });
       console.log(path, filename);
       if (responseCreate) {

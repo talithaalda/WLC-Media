@@ -6,7 +6,7 @@ export default async function editPorto(req, res) {
   const { id } = req.query;
 
   if (req.method === "PUT" || req.method === "PATCH") {
-    const { title, category, brand, sow, talent } = req.body;
+    const { title, category, sow, talent } = req.body;
 
     try {
       const updatedPortfolio = await prisma.porto.update({
@@ -16,7 +16,6 @@ export default async function editPorto(req, res) {
         data: {
           title,
           categoryId: category,
-          brand,
           sow,
           talent,
           // tambahkan bidang lain sesuai kebutuhan

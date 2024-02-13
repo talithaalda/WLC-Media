@@ -34,7 +34,9 @@ export default async function handler(req, res) {
       const { title, sow, talent, filename, path } = req.body;
       // Validate that title and categoryId are present in the request body
       if (!title || !sow || !talent) {
-        return res.status(400).json({ error: "Title and brand are required" });
+        return res
+          .status(400)
+          .json({ error: "Title, sow, talent are required" });
       }
 
       // Update the portfolio data

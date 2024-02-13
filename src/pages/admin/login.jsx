@@ -36,7 +36,7 @@ export const RegisterPage = () => {
       delete newQuery.loginSuccess;
       router.replace({ pathname, query: newQuery });
     }
-  }, [router.query.loginSuccess]);
+  }, []);
 
   const handleLogin = async (values, { setSubmitting }) => {
     try {
@@ -103,7 +103,7 @@ export const RegisterPage = () => {
                       </div>
                       {loginSuccess && (
                         <Alert variant="success">
-                          Register successfully, please login!
+                          Reset successfully, please login!
                         </Alert>
                       )}
                       <Formik

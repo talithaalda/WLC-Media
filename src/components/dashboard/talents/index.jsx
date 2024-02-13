@@ -92,7 +92,7 @@ const DashboardTalents = () => {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{talent.name}</td>
-                          <td>{talent.category.name}</td>
+                          <td>{talent.category}</td>
                           <td>{talent.userIG}</td>
                           <td>{talent.userTikTok}</td>
                           <td> {formatToRupiah(talent.startfromIG)}</td>

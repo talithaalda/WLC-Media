@@ -11,7 +11,7 @@ const PortfolioPage = () => {
     isImage,
     fetchDataUser,
     portfolio,
-    fetchImageDimensions,
+    // fetchImageDimensions,
     currentPage,
     setCurrentPage,
     totalPages,
@@ -20,12 +20,12 @@ const PortfolioPage = () => {
     fetchDataUser();
   }, [currentPage]);
 
-  useEffect(() => {
-    if (!dataLoaded) {
-      fetchImageDimensions();
-      setDataLoaded(true);
-    }
-  }, []); // useEffect with empty dependency array to ensure it runs only once on component mount
+  // useEffect(() => {
+  //   if (!dataLoaded) {
+  //     fetchImageDimensions();
+  //     setDataLoaded(true);
+  //   }
+  // }, []); // useEffect with empty dependency array to ensure it runs only once on component mount
 
   useEffect(() => {
     setCurrentPage(parseInt(page) || 1); // Mengubah currentPage menjadi nilai dari "page" di URL

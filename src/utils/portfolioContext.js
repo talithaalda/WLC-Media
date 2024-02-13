@@ -68,41 +68,41 @@ export const PortfolioProvider = ({ children }) => {
       const data = await response.json();
       data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setTotalPages(Math.ceil(data.length / itemsPerPage));
-      setPortfolio(data.slice(startIndex, endIndex));
+
+      const updatedPorto = await Promise.all(
+        data.slice(startIndex, endIndex).map(async (item) => {
+          if (isImage(item.filename)) {
+            try {
+              const response = await fetch(
+                `/api/portfolio/image/${item.filename}`
+              );
+              if (!response.ok) {
+                throw new Error("Failed to fetch image");
+              }
+              const img = new Image();
+              img.src = URL.createObjectURL(await response.blob());
+              await img.decode();
+              return {
+                ...item,
+                width: img.width,
+                height: img.height,
+              };
+            } catch (error) {
+              console.error("Error fetching image dimensions:", error);
+              return item;
+            }
+          } else {
+            return item;
+          }
+        })
+      );
+
+      setPortfolio(updatedPorto);
     } catch (error) {
       console.error("Error fetching portfolio data:", error);
     }
   };
-  const fetchImageDimensions = async () => {
-    const updatedPorto = await Promise.all(
-      portfolio.map(async (item) => {
-        if (isImage(item.filename)) {
-          try {
-            const response = await fetch(
-              `/api/portfolio/image/${item.filename}`
-            );
-            if (!response.ok) {
-              throw new Error("Failed to fetch image");
-            }
-            const img = new Image();
-            img.src = URL.createObjectURL(await response.blob());
-            await img.decode();
-            return {
-              ...item,
-              width: img.width,
-              height: img.height,
-            };
-          } catch (error) {
-            console.error("Error fetching image dimensions:", error);
-            return item;
-          }
-        } else {
-          return item;
-        }
-      })
-    );
-    setPortfolio(updatedPorto);
-  };
+
   const handleDelete = async (id) => {
     try {
       const deleteImageResponse = await fetch(
@@ -308,7 +308,6 @@ export const PortfolioProvider = ({ children }) => {
         fetchDataById,
         handleDeleteShow,
         fetchDataUser,
-        fetchImageDimensions,
         currentPage,
         setCurrentPage,
         totalPages,

@@ -42,7 +42,10 @@ const ResetPassword = () => {
 
       if (response.ok) {
         // Reset password was successful
-        router.push("/admin/login?resetSuccess=true");
+        router.push({
+          pathname: "/admin/login",
+          query: { loginSuccess: true },
+        });
         console.log("Password reset successful");
       } else {
         if (response.status === 400) {

@@ -40,7 +40,7 @@ const DetailTalentsPage = () => {
         <Col lg="7" className="px-5 mt-lg-0 mt-5">
           <div style={{ fontSize: "24px", color: "#929292" }}>Hello I am </div>
           <h1 className="detail-title">{talent.name}</h1>
-          <h3 className="detail-category">{talent.category?.name}</h3>
+          <h3 className="detail-category">{talent.category}</h3>
           <div
             className="mt-5 pt-5 pb-3"
             style={{ fontSize: "20px", color: "#414141", fontWeight: 700 }}

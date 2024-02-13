@@ -1,23 +1,23 @@
 export const SidebarData = [
-  {
-    title: "Dashboard",
-    path: "/dashboard",
-    icon: (
-      <img
-        width="20"
-        src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/c64b38/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
-        alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
-      />
-    ),
-    hovericon: (
-      <img
-        width="20"
-        src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/ffffff/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
-        alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
-      />
-    ),
-    cName: "nav-text",
-  },
+  // {
+  //   title: "Dashboard",
+  //   path: "/dashboard",
+  //   icon: (
+  //     <img
+  //       width="20"
+  //       src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/c64b38/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
+  //       alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
+  //     />
+  //   ),
+  //   hovericon: (
+  //     <img
+  //       width="20"
+  //       src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/ffffff/external-dashboard-user-interface-kmg-design-glyph-kmg-design.png"
+  //       alt="external-dashboard-user-interface-kmg-design-glyph-kmg-design"
+  //     />
+  //   ),
+  //   cName: "nav-text",
+  // },
   {
     title: "Talents",
     path: "/dashboard/talents",

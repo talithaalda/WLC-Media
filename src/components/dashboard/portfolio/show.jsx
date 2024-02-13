@@ -5,21 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ButtonComponents from "@/components/ButtonComponents";
+import { usePortfolio } from "@/utils/portfolioContext";
 
 const ShowPortfolio = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [portfolio, setPortfolio] = useState([]);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  let isMounted = true;
-
-  useEffect(() => {
-    // Set isMounted to false when the component is unmounted
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { isImage, porto, fetchDataById, handleDeleteShow } = usePortfolio();
 
   useEffect(() => {
     // Hanya fetch data jika ID ada
@@ -28,68 +20,10 @@ const ShowPortfolio = () => {
     }
   }, [id]);
 
-  const fetchDataById = async () => {
-    try {
-      const rute = `/api/portfolio/${id}`;
-      const response = await fetch(rute);
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
-      const data = await response.json();
-      setPortfolio(data);
-    } catch (error) {
-      console.error("Error fetching portfolio data:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const imageInfoResponse = await fetch(
-        `/api/portfolio/image/${portfolio.filename}`
-      );
-      if (imageInfoResponse.ok) {
-        const deleteImageResponse = await fetch(
-          `/api/portfolio/image/edit/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        if (!deleteImageResponse.ok) {
-          throw new Error("Failed to delete image");
-        }
-      }
-
-      const deletePortfolioResponse = await fetch(`/api/portfolio/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!deletePortfolioResponse.ok) {
-        throw new Error("Failed to delete portfolio data");
-      }
-      setDeleteSuccess(true);
-      if (isMounted) {
-        setPortfolio([]);
-      }
-
-      // Redirect ke /dashboard/portfolio dengan parameter query deleteSuccess=true
-      router.push({
-        pathname: "/dashboard/portfolio",
-        query: { deleteSuccess: true },
-      });
-    } catch (error) {
-      console.error("Error deleting portfolio data:", error);
-    }
-  };
-  function isImage(filename) {
-    const extension = filename.split(".").pop().toLowerCase();
-    return ["jpg", "jpeg", "png", "gif"].includes(extension);
-  }
-
   return (
     <main className="">
       <div className="d-flex justify-content-center gap-2">
-        <Link href={`/dashboard/portfolio/${portfolio.id}/edit`} legacyBehavior>
+        <Link href={`/dashboard/portfolio/${porto.id}/edit`} legacyBehavior>
           <button className="btn btn-primary" href="">
             <i>
               <FontAwesomeIcon icon={faPenToSquare} />
@@ -100,7 +34,7 @@ const ShowPortfolio = () => {
 
         <button
           className="btn btn-danger"
-          onClick={() => handleDelete(portfolio.id)}
+          onClick={() => handleDeleteShow(porto.id)}
         >
           <i>
             <FontAwesomeIcon icon={faTrash} />
@@ -110,12 +44,12 @@ const ShowPortfolio = () => {
       </div>
       <div className="d-flex justify-content-center">
         <Card className="mt-5 card-porto-admin">
-          {portfolio.path && (
+          {porto.path && (
             <>
-              {isImage(portfolio.filename) ? (
+              {isImage(porto.filename) ? (
                 <Card.Img
                   variant="top"
-                  src={`/api/portfolio/image/${portfolio.filename}`}
+                  src={`/api/portfolio/image/${porto.filename}`}
                   width="100%"
                   className="img-porto-admin"
                 />
@@ -126,7 +60,7 @@ const ShowPortfolio = () => {
                   style={{ maxHeight: "500px" }}
                 >
                   <source
-                    src={`/api/portfolio/image/${portfolio.filename}`}
+                    src={`/api/portfolio/image/${porto.filename}`}
                     type="video/mp4"
                   />
                   Your browser does not support the video tag.
@@ -136,9 +70,9 @@ const ShowPortfolio = () => {
           )}
           <Card.Body className="card-body-porto">
             <div className="card-text">
-              <div className="title-portfolio">{portfolio.title}</div>
-              <div className="desc-portfolio">{portfolio.sow}</div>
-              <div className="created-portfolio">{portfolio.talent}</div>
+              <div className="title-portfolio">{porto.title}</div>
+              <div className="desc-portfolio">{porto.sow}</div>
+              <div className="created-portfolio">{porto.talent}</div>
             </div>
           </Card.Body>
         </Card>

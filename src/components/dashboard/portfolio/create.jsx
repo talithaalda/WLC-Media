@@ -2,24 +2,22 @@ import { Card, Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import * as formik from "formik";
-import { get } from "http";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
+import { usePortfolio } from "@/utils/portfolioContext";
 
 function CreatePortfolio() {
-  const [category, setCategory] = useState([]);
-  const router = useRouter();
+  // const [category, setCategory] = useState([]);
   const { Formik } = formik;
   const [title, setTitle] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  // const [categoryId, setCategoryId] = useState("");
   const [sow, setSow] = useState("");
   const [talent, setTalent] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   const [filename, setFileName] = useState(null);
+  const { handleSubmit, isImage } = usePortfolio();
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -64,7 +62,7 @@ function CreatePortfolio() {
     talent: yup.string().required("Talent is required"),
     file: yup
       .mixed()
-      .required("Photo is required")
+      .required("Photo/Video is required")
       .test(
         "fileFormat",
         "Invalid file format. Please upload a JPEG, PNG, or GIF file.",
@@ -86,66 +84,17 @@ function CreatePortfolio() {
           // Periksa tipe file berdasarkan "type" property pada berkas
           return allowedImageTypes.includes(value.type);
         }
-      ),
+      )
+      .test("fileSize", "File size must be less than 10MB", (value) => {
+        // Jika tidak ada berkas, validasi dilewati
+        if (!value) {
+          return true;
+        }
+        // Periksa ukuran berkas (dalam bytes)
+        return value.size <= 10 * 1024 * 1024; // 10MB
+      }),
   });
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      // formData.append("categoryId", values.categoryId);
-      formData.append("file", values.file);
-      formData.append("sow", values.sow);
-      formData.append("talent", values.talent);
-
-      // Menggunakan API route upload yang telah Anda buat
-
-      const responseUpload = await axios.post(
-        "/api/portfolio/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      // Dapatkan path dan filename dari respons upload
-      const { path, filename } = responseUpload.data;
-
-      // Simpan informasi file ke dalam API route create
-      const responseCreate = await axios.post("/api/portfolio/create", {
-        title: formData.get("title"),
-        sow: formData.get("sow"),
-        talent: formData.get("talent"),
-        // categoryId: Number(formData.get("categoryId")),
-        path,
-        filename,
-      });
-      console.log(path, filename);
-      if (responseCreate) {
-        router.push({
-          pathname: "/dashboard/portfolio",
-          query: { createSuccess: true },
-        });
-        setPreviewImage(null);
-      }
-      // console.log("Data berhasil ditambahkan:", responseCreate.data);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  function isImage(filename) {
-    const extension = filename.split(".").pop().toLowerCase();
-    return (
-      extension === "jpg" ||
-      extension === "jpeg" ||
-      extension === "png" ||
-      extension === "gif"
-    );
-  }
   return (
     <>
       <Formik
@@ -247,7 +196,7 @@ function CreatePortfolio() {
                 </Form.Group> */}
 
                 <Form.Group md="6" className="mb-4" controlId="formFile">
-                  <Form.Label>Photo</Form.Label>
+                  <Form.Label>Photo/Video</Form.Label>
                   <div className="mb-3">
                     <div className="preview">
                       {previewImage && (

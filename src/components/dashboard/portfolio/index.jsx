@@ -4,15 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import CustomAlert from "../../AlertComponents";
 import { useRouter } from "next/router";
+import { usePortfolio } from "@/utils/portfolioContext";
 
 const DashboardPortfolio = () => {
-  const [porto, setPorto] = useState([]);
-  let [deleteSuccess, setDeleteSuccess] = useState(false);
-  let [createSuccess, setCreateSuccess] = useState(false);
   const router = useRouter();
-  const sortedData = porto.sort(
+  const {
+    portfolio,
+    fetchData,
+    handleDelete,
+    deleteSuccess,
+    setDeleteSuccess,
+    setCreateSuccess,
+    createSuccess,
+  } = usePortfolio();
+  const sortedData = portfolio.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
+
   useEffect(() => {
     setDeleteSuccess(router.query.deleteSuccess === "true");
     setCreateSuccess(router.query.createSuccess === "true");
@@ -26,48 +34,9 @@ const DashboardPortfolio = () => {
       delete newQuery.deleteSuccess;
       router.replace({ pathname, query: newQuery });
     }
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/portfolio");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setPorto(data);
-      } catch (error) {
-        console.error("Error fetching portfolio data:", error);
-      }
-    };
-
     fetchData();
   }, []);
-  const handleDelete = async (id) => {
-    try {
-      const deleteImageResponse = await fetch(
-        `/api/portfolio/image/edit/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!deleteImageResponse.ok) {
-        throw new Error("Failed to delete image");
-      }
-      const response = await fetch(`/api/portfolio/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to delete data");
-      } else {
-        setDeleteSuccess(true);
-      }
 
-      // Update the state to reflect the changes
-      setPorto((prevPorto) => prevPorto.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting portfolio data:", error);
-    }
-  };
   return (
     <main>
       <section className="content">
@@ -116,17 +85,17 @@ const DashboardPortfolio = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedData?.map((porto, index) => (
-                        <tr key={porto.id}>
+                      {sortedData?.map((portfolio, index) => (
+                        <tr key={portfolio.id}>
                           <td>{index + 1}.</td>
-                          <td>{porto.title}</td>
-                          <td>{porto.sow}</td>
-                          <td>{porto.talent}</td>
+                          <td>{portfolio.title}</td>
+                          <td>{portfolio.sow}</td>
+                          <td>{portfolio.talent}</td>
                           <td>
                             <div className="d-flex gap-1">
                               <div className="d-flex gap-1">
                                 <Link
-                                  href={`/dashboard/portfolio/${porto.id}/show`}
+                                  href={`/dashboard/portfolio/${portfolio.id}/show`}
                                   legacyBehavior
                                 >
                                   <button className="btn btn-success" href="">
@@ -134,7 +103,7 @@ const DashboardPortfolio = () => {
                                   </button>
                                 </Link>
                                 <Link
-                                  href={`/dashboard/portfolio/${porto.id}/edit`}
+                                  href={`/dashboard/portfolio/${portfolio.id}/edit`}
                                   legacyBehavior
                                 >
                                   <button className="btn btn-primary" href="">
@@ -144,7 +113,7 @@ const DashboardPortfolio = () => {
 
                                 <button
                                   className="btn btn-danger"
-                                  onClick={() => handleDelete(porto.id)}
+                                  onClick={() => handleDelete(portfolio.id)}
                                 >
                                   Delete
                                 </button>

@@ -1,13 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
-import os from "os";
 
 export default async function handler(req, res) {
   // Destructure the filename from the request query parameters
   const { filename } = req.query;
 
-  // Construct the absolute path to the file in the /tmp directory
-  const filePath = path.join(os.tmpdir(), filename); // Change the directory to /tmp
+  // Construct the absolute path to the file
+  const filePath = path.join(process.cwd(), "images/portfolio", filename);
 
   try {
     // Read the file asynchronously

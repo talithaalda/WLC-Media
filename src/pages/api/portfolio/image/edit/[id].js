@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 // Specify the destination folder for file uploads
-const uploadDestination = os.tmpdir();
+const uploadDestination = path.join(process.cwd(), "images/portfolio");
 
 // Multer configuration
 const upload = multer({

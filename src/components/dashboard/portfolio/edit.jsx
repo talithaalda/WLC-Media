@@ -9,78 +9,33 @@ import axios from "axios";
 import CustomAlert from "../../AlertComponents";
 import Link from "next/link";
 import ButtonComponents from "@/components/ButtonComponents";
+import { usePortfolio } from "@/utils/portfolioContext";
 function EditPortfolio() {
   const { Formik } = formik;
   const [category, setCategory] = useState([]);
-  const [portfolio, setPortfolio] = useState([]);
   const router = useRouter();
-  const [updateSuccess, setUpdateSuccess] = useState(false);
   const { id } = router.query;
-  const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [sow, setSow] = useState("");
-  const [talent, setTalent] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
   const [filename, setFileName] = useState(null);
+  const {
+    isImage,
+    fetchDataById,
+    porto,
+    sow,
+    talent,
+    handleUpdate,
+    handleError,
+    title,
+    updateSuccess,
+    setUpdateSuccess,
+  } = usePortfolio();
+
   useEffect(() => {
-    const fetchDataById = async () => {
-      try {
-        if (!id) {
-          return;
-        }
-        const rute = `/api/portfolio/${id}`;
-        const response = await fetch(rute);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setTitle(data.title);
-        // setCategoryId(data.categoryId);
-        setPortfolio(data);
-        setSow(data.sow);
-        setTalent(data.talent);
-      } catch (error) {
-        console.error("Error fetching portfolio data:", error);
-      }
-    };
-    // const fetchCategoryData = async () => {
-    //   try {
-    //     const response = await fetch("/api/category-portfolio");
-    //     if (!response.ok) {
-    //       throw new Error("Failed to fetch data");
-    //     }
-
-    //     const data = await response.json();
-    //     setCategory(data);
-    //   } catch (error) {
-    //     console.error("Error fetching category data:", error);
-    //   }
-    // };
     fetchDataById();
     // fetchCategoryData();
   }, [id]);
 
-  const handleError = (event) => {
-    // General function for formatting fields
-    const { name, value } = event.target;
-    switch (name) {
-      case "title":
-        setTitle(value);
-        break;
-      case "categoryId":
-        setCategoryId(value);
-        break;
-      case "sow":
-        setSow(value);
-        break;
-      case "talent":
-        setTalent(value);
-        break;
-      default:
-        break;
-    }
-  };
   const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
     sow: yup.string().required("Brand is required"),
@@ -109,61 +64,17 @@ function EditPortfolio() {
           // Periksa tipe file berdasarkan "type" property pada berkas
           return allowedImageTypes.includes(value.type);
         }
-      ),
+      )
+      .test("fileSize", "File size must be less than 10MB", (value) => {
+        // Jika tidak ada berkas, validasi dilewati
+        if (!value) {
+          return true;
+        }
+        // Periksa ukuran berkas (dalam bytes)
+        return value.size <= 10 * 1024 * 1024; // 10MB
+      }),
   });
 
-  const handleUpdate = async (values, { setSubmitting }) => {
-    let responseCreate = "";
-    try {
-      if (values.file) {
-        const formData = new FormData();
-        formData.append("file", values.file);
-        const responseUpload = await axios.post(
-          `/api/portfolio/image/edit/${id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        // Dapatkan path dan filename dari respons upload
-        const { path, filename } = responseUpload.data;
-        responseCreate = await axios.put(`/api/portfolio/${id}`, {
-          title: values.title,
-          // categoryId: Number(values.categoryId),
-          path: path,
-          filename: filename,
-          sow: sow,
-          talent: talent,
-        });
-        setPreviewImage(null);
-      } else {
-        responseCreate = await axios.put(`/api/portfolio/${id}`, {
-          title: values.title,
-          sow: values.sow,
-          talent: values.talent,
-          // categoryId: Number(values.categoryId),
-        });
-      }
-      // Simpan informasi file ke dalam API route create
-      setPortfolio(responseCreate.data);
-      setUpdateSuccess(true);
-    } catch (error) {
-      console.error("Error updating data:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  function isImage(filename) {
-    const extension = filename.split(".").pop().toLowerCase();
-    return (
-      extension === "jpg" ||
-      extension === "jpeg" ||
-      extension === "png" ||
-      extension === "gif"
-    );
-  }
   return (
     <>
       <Formik
@@ -272,7 +183,7 @@ function EditPortfolio() {
                   </Form.Control.Feedback>
                 </Form.Group> */}
                 <Form.Group md="6" className="mb-4">
-                  <Form.Label>Photo </Form.Label>
+                  <Form.Label>Photo/Video</Form.Label>
                   <div className="mb-3">
                     <div className="preview">
                       {previewImage ? (
@@ -295,14 +206,14 @@ function EditPortfolio() {
                             </video>
                           )}
                         </div>
-                      ) : portfolio.filename ? (
+                      ) : porto.filename ? (
                         <>
-                          {isImage(portfolio.filename) ? (
+                          {isImage(porto.filename) ? (
                             <div className="d-flex flex-column">
                               <Card.Img
                                 key={values.file} // You can use file name as the key
                                 variant="top"
-                                src={`/api/portfolio/image/${portfolio.filename}`}
+                                src={`/api/portfolio/image/${porto.filename}`}
                                 style={{ width: "200px" }}
                               />
                             </div>
@@ -313,7 +224,7 @@ function EditPortfolio() {
                               style={{ maxHeight: "300px" }}
                             >
                               <source
-                                src={`/api/portfolio/image/${portfolio.filename}`}
+                                src={`/api/portfolio/image/${porto.filename}`}
                                 type="video/mp4"
                               />
                               Your browser does not support the video tag.

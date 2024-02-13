@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { usePortfolio } from "@/utils/portfolioContext";
 
 const PortfolioPage = () => {
   const router = useRouter();
   const { page } = router.query;
-  const [porto, setPorto] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
-  const [totalPages, setTotalPages] = useState(0);
   const [dataLoaded, setDataLoaded] = useState(false);
-
+  const {
+    isImage,
+    fetchDataUser,
+    portfolio,
+    fetchImageDimensions,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = usePortfolio();
   useEffect(() => {
-    fetchData();
+    fetchDataUser();
   }, [currentPage]);
 
   useEffect(() => {
@@ -25,60 +30,6 @@ const PortfolioPage = () => {
   useEffect(() => {
     setCurrentPage(parseInt(page) || 1); // Mengubah currentPage menjadi nilai dari "page" di URL
   }, [page]);
-
-  const fetchData = async () => {
-    try {
-      const startIndex = (currentPage - 1) * itemsPerPage;
-      const endIndex = startIndex + itemsPerPage;
-
-      const response = await fetch("/api/portfolio");
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-
-      setTotalPages(Math.ceil(data.length / itemsPerPage));
-      setPorto(data.slice(startIndex, endIndex));
-    } catch (error) {
-      console.error("Error fetching portfolio data:", error);
-    }
-  };
-
-  const fetchImageDimensions = async () => {
-    const updatedPorto = await Promise.all(
-      porto.map(async (item) => {
-        if (isImage(item.filename)) {
-          try {
-            const response = await fetch(
-              `/api/portfolio/image/${item.filename}`
-            );
-            if (!response.ok) {
-              throw new Error("Failed to fetch image");
-            }
-            const img = new Image();
-            img.src = URL.createObjectURL(await response.blob());
-            await img.decode();
-            return {
-              ...item,
-              width: img.width,
-              height: img.height,
-            };
-          } catch (error) {
-            console.error("Error fetching image dimensions:", error);
-            return item;
-          }
-        } else {
-          return item;
-        }
-      })
-    );
-    setPorto(updatedPorto);
-  };
-
-  const isImage = (filename) => {
-    const extension = filename.split(".").pop().toLowerCase();
-    return ["jpg", "jpeg", "png", "gif"].includes(extension);
-  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -117,8 +68,8 @@ const PortfolioPage = () => {
         </Container>
       </header>
       <Container className="d-flex flex-column justify-content-center mt-4">
-        {porto.length > 0 &&
-          porto.map((item) => (
+        {portfolio.length > 0 &&
+          portfolio.map((item) => (
             <div key={item.id}>
               <div className="card card-porto2 mb-3 mt-5">
                 <div className="row g-0">

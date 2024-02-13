@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AppShell from "@/layouts/AppShell";
 import FooterComponents from "../components/FooterComponents";
 import { useRouter } from "next/router";
+import { PortfolioProvider } from "@/utils/portfolioContext";
 
 function MyApp({ Component, pageProps }) {
   const { pathname } = useRouter();
@@ -15,12 +16,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <SessionProvider session={pageProps.session}>
-      <div>
-        <AppShell />
-        <Component {...pageProps} />
-        <AppShell />
-        {!isDashboardRoute && <FooterComponents />}
-      </div>
+      <PortfolioProvider>
+        <div>
+          <AppShell />
+          <Component {...pageProps} />
+          <AppShell />
+          {!isDashboardRoute && <FooterComponents />}
+        </div>
+      </PortfolioProvider>
     </SessionProvider>
   );
 }

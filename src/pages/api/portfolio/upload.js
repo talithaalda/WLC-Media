@@ -1,8 +1,10 @@
 import multer from "multer";
 import path from "path";
+import os from "os"; // Import modul os untuk akses ke direktori /tmp
 
 // Specify the destination folder for file uploads
-const uploadDestination = path.join(process.cwd(), "images/portfolio");
+// const uploadDestination = path.join(process.cwd(), "images/portfolio");
+const uploadDestination = os.tmpdir(); // Menggunakan /tmp sebagai tempat penyimpanan sementara
 
 // Multer configuration
 const upload = multer({

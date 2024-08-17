@@ -53,10 +53,16 @@ const ShowTalents = () => {
             <img
               src={`/api/talent/image/${talent.filename}`}
               alt="img-detail"
-              width={"100%"}
+              style={{
+                maxHeight: "35rem", // Adjust as needed
+                objectFit: "cover",
+                width: "100%",
+                borderRadius: "20px",
+              }}
             />
           )}
         </Col>
+
         <Col lg="7" className="px-2 mt-lg-0 mt-5">
           <h1 className="detail-title">{talent.name}</h1>
           <h3 className="detail-category">{talent.category?.name}</h3>
@@ -73,7 +79,7 @@ const ShowTalents = () => {
                 <div className="username">@{talent.userIG}</div>
               </div>
               <div className="p-3">
-                <h1 className="count-foll">{talent.follIG}k</h1>
+                <h1 className="count-foll">{talent.follIG}</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>
@@ -87,7 +93,7 @@ const ShowTalents = () => {
                 <div className="username">@{talent.userTikTok}</div>
               </div>
               <div className="p-3">
-                <h1 className="count-foll">{talent.follTikTok}k</h1>
+                <h1 className="count-foll">{talent.follTikTok}</h1>
                 <div className="desc-foll">FOLLOWERS</div>
               </div>
               <div>

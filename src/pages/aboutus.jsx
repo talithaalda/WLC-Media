@@ -19,8 +19,8 @@ const AbouUsPage = () => {
     <div className="aboutus">
       {/* HEADER */}
       <header className="header-aboutus">
-        <Container>
-          <Row className="header-box w-100 min-vh-100">
+        <Container className="container-header">
+          <Row className="header-box w-100" style={{ paddingTop: "10%" }} s>
             <Col lg="4" className="d-flex flex-column justify-content-center">
               <p>WE ARE</p>
               <h1>WLC MEDIA</h1>
@@ -30,6 +30,7 @@ const AbouUsPage = () => {
                 className="img-header"
                 src="/images/header-aboutus.png"
                 alt="header aboutus"
+                style={{ width: "80%" }}
               />
             </Col>
           </Row>

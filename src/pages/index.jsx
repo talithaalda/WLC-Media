@@ -6,8 +6,47 @@ import Masonry from "react-masonry-css";
 import SliderComponents from "../components/SliderComponents";
 import PhilosophyComponets from "../components/PhilosophyComponets";
 import SliderHomeComponents from "@/components/SIiderHomeComponents";
+import { useTalent } from "@/utils/talentContext";
+import { useEffect, useState } from "react";
+import { usePortfolio } from "@/utils/portfolioContext";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const { talents, fetchData } = useTalent();
+  const router = useRouter();
+  const { page } = router.query;
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const { isImage, fetchDataUser, portfolio, currentPage, setCurrentPage } =
+    usePortfolio();
+
+  useEffect(() => {
+    fetchDataUser();
+  }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(parseInt(page) || 1); // Mengubah currentPage menjadi nilai dari "page" di URL
+  }, [page]);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      router.push(`/portfolio/${currentPage - 1}`);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Function to get 3 random talents
+  const getRandomTalents = (count) => {
+    if (talents.length <= count) return talents;
+
+    const shuffledTalents = talents.sort(() => 0.5 - Math.random());
+    return shuffledTalents.slice(0, count);
+  };
+
+  // Get 3 random talents
+  const randomTalents = getRandomTalents(6);
   const breakpoints = {
     default: 3,
     1200: 2,
@@ -20,21 +59,23 @@ export default function Home() {
 
       <header className="header-home">
         <Container>
-          <Row className="header-box w-100 min-vh-100 ">
+          <Row className="header-box w-100  " style={{ paddingTop: "1%" }}>
             <Col lg="4" className="centered-column">
               <h1>Your One Call Away Solutions</h1>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Accusamus quos neque provident non pariatur eum!
+                We offer top-tier talent, carefully selected to meet your
+                project needs, ensuring exceptional quality and results every
+                time.
               </p>
               {/* <button className="btn btn-wlc">Join With Us</button> */}
               <ButtonComponents textButton="Join With Us" />
             </Col>
-            <Col lg="7" className="end-column pt-lg-6 pt-5">
+            <Col lg="8" className="end-column pt-lg-0 ">
               <img
                 className="img-header"
                 src="/images/header-home.png"
                 alt="header home"
+                width={"100%"}
               />
             </Col>
           </Row>
@@ -77,36 +118,30 @@ export default function Home() {
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            <div className="card-porto">
-              <img src="/images/img-lanscape.png" alt="img-lanscape" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
-            <div className="card-porto">
-              <img src="/images/img-potrait.png" alt="img-potrait" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
-            <div className="card-porto">
-              <img src="/images/img-lanscape.png" alt="img-lanscape" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
-            <div className="card-porto">
-              <img src="/images/img-potrait.png" alt="img-potrait" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
-            <div className="card-porto">
-              <img src="/images/img-lanscape.png" alt="img-lanscape" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
-            <div className="card-porto">
-              <img src="/images/img-potrait.png" alt="img-potrait" />
-              <div className="title-portfolio">Project ADS Video Instagram</div>
-              <div className="desc-portfolio">Unnpack</div>
-            </div>
+            {portfolio.length > 0 &&
+              portfolio.map((item) => (
+                <div className="card-porto" key={item.id}>
+                  {isImage(item.filename) ? (
+                    <img
+                      src={`/api/portfolio/image/${item.filename}`}
+                      alt={item.title}
+                    />
+                  ) : (
+                    <video
+                      className="img-fluid vid-porto"
+                      style={{ maxHeight: "450px" }}
+                      preload="metadata"
+                      src={`/api/portfolio/image/${item.filename}`}
+                      type="video/mp4"
+                      controls
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
+                  <div className="title-portfolio">{item.title}</div>
+                  <div className="desc-portfolio">{item.talent}</div>
+                </div>
+              ))}
           </Masonry>
         </Container>
       </div>
@@ -116,7 +151,7 @@ export default function Home() {
         <div className="mt-5">
           <TitleTextComponents textTitle="Our Talents" />
         </div>
-        <SliderHomeComponents></SliderHomeComponents>
+        <SliderComponents talentsData={randomTalents} />
       </div>
 
       {/* Brand */}

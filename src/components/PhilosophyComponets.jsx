@@ -8,6 +8,7 @@ const PhilosophyComponets = () => {
           <Col lg="7" className=""></Col>
           <img
             className="img-philosophy mb-4"
+            style={{ borderRadius: "20px" }}
             src="/images/philosophy.png"
             alt="philoshophy"
           />

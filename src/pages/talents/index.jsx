@@ -37,19 +37,21 @@ const TalentsPage = () => {
   };
   return (
     <div>
-      <header className="header-talent">
-        <Container>
-          <Row className="header-box w-100 min-vh-100">
-            <Col lg="4" className="d-flex flex-column justify-content-center">
+      <header className="header-aboutus">
+        <Container className="container-header">
+          <Row className="header-box w-100 " style={{ paddingTop: "10%" }}>
+            <Col lg="3" className="d-flex flex-column justify-content-center">
               <h1>TALENTS</h1>
-              <p>Lorem ipsum dolor sit amet.</p>
+              <p style={{ lineHeight: "40px" }}>
+                Expertly selected talent to elevate your projects.
+              </p>
             </Col>
-            <Col lg="8" className="end-column pt-lg-0 pt-5">
+            <Col lg="9" className="end-column pt-lg-0">
               <img
                 className="img-header"
-                style={{ marginRight: "-80px" }}
                 src="/images/header-talents.png"
-                alt="header aboutus "
+                alt="header talents"
+                width={"90%"}
               />
             </Col>
           </Row>

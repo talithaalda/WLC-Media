@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { usePortfolio } from "@/utils/portfolioContext";
+import TitleTextComponents from "@/components/TitleTextComponents";
 
 const PortfolioPage = () => {
   const router = useRouter();
@@ -49,25 +50,30 @@ const PortfolioPage = () => {
     <div>
       <header className="header-portfolio">
         <Container>
-          <Row className="header-box w-100 min-vh-100">
+          <Row
+            className="header-box w-100 min-vh-50"
+            style={{ paddingTop: "10%" }}
+          >
             <Col lg="4" className="d-flex flex-column justify-content-center">
               <h1>PORTFOLIO & GALLERY</h1>
-              <p>Lorem ipsum dolor sit amet.</p>
+              <p>Explore our diverse portfolio</p>
             </Col>
             <Col
               lg="8"
-              className="end-column d-flex align-items-center pt-lg-0 pt-5"
+              className="end-column d-flex align-items-center pt-lg-0 pt-5 pl-5"
             >
               <img
                 className="img-header"
                 src="/images/header-portfolio.png"
                 alt="header aboutus"
+                width={"70%"}
               />
             </Col>
           </Row>
         </Container>
       </header>
-      <Container className="d-flex flex-column justify-content-center mt-4">
+      <Container className="d-flex flex-column justify-content-center mt-5">
+        <TitleTextComponents textTitle="Our Portfolio" />
         {portfolio.length > 0 &&
           portfolio.map((item) => (
             <div key={item.id}>

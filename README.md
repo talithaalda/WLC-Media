@@ -66,10 +66,10 @@ To start the development server, run:
 npm run dev
 # or
 yarn dev
-
+```
 ### Admin Login
 
-To access the admin panel, navigate to:
+If you want to access dashboard admin, navigate to:
 
 - **URL**: `http://localhost:3000/admin/login`
 

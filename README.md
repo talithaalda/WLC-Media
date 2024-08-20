@@ -1,40 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img src="public/img/wlcmedia.png" alt="wlcmedia" width="100%">
 
-## Getting Started
+# Hi there, welcome to WLC Media 👋
 
-First, run the development server:
+WLC Media is a digital platform that connects brands with talent for social media product endorsements. The website includes an admin CMS feature that allows businesses to efficiently manage talent data and streamline their campaigns. If you would like to view the frontend design, you can clone the frontend branch from the repository.
+
+## Installation Instructions
+The tools that need to be installed are Node.js (version 14.x or higher), npm, and postgreSQL.
+
+1. Create a new folder with any name and navigate to the directory of the new folder.
+2. Right-click and select Open in Terminal.
+3. Clone the repository:
+
+    ```bash
+    git clone https://github.com/talithaalda/your-nextjs-project.git
+    ```
+
+4. Navigate into the project directory:
+
+    ```bash
+    cd your-nextjs-project
+    ```
+
+5. Install the dependencies:
+
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+### Connecting to PostgreSQL Database
+
+1. Create a new PostgreSQL database:
+
+    ```sql
+    CREATE DATABASE your_database_name;
+    ```
+
+2. Update the `.env` file in the root of your project with your PostgreSQL connection string:
+
+    ```env
+    DATABASE_URL=postgresql://user:password@localhost:5432/your_database_name
+    ```
+
+   Replace `user`, `password`, `localhost`, and `your_database_name` with your actual PostgreSQL credentials.
+
+### Running Database Migrations and Seed
+
+1. Run the Prisma migration to create your database schema:
+
+    ```bash
+    npx prisma migrate dev
+    ```
+
+2. Seed the database with initial data:
+
+    ```bash
+    npx prisma db seed
+    ```
+    
+### Development
+
+To start the development server, run:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Admin Login
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+To access the admin panel, navigate to:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- **URL**: `http://localhost:3000/admin/login`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Use the following credentials to log in:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Name**: `Admin`
+- **Email**: `wlcmedia@gmail.com`

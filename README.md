@@ -75,5 +75,5 @@ If you want to access dashboard admin, navigate to:
 
 Use the following credentials to log in:
 
-- **Name**: `Admin`
 - **Email**: `wlcmedia@gmail.com`
+- **Password**: `123456`

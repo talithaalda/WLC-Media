@@ -1,4 +1,4 @@
-<img src="public/images/wlcmedia.png" alt="wlcmedia" width="100%">
+<img src="images/wlcmedia.png" alt="wlcmedia" width="100%">
 
 # Hi there, welcome to WLC Media 👋
 

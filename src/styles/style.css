@@ -601,6 +601,45 @@
 .container-header {
   padding-left: 10rem !important;
 }
+.btn-filter {
+  background-color: var(--base-color) !important;
+  border-color: var(--teracota) !important;
+  border-radius: 10px !important;
+  color: var(--teracota) !important;
+}
+.btn-filter:hover {
+  background-color: var(--base-gray) !important;
+}
+.text-teracota {
+  color: var(--teracota) !important;
+}
+.dropdown-toggle::after {
+  content: none !important;
+}
+.btn-add-filter {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 10px;
+  padding: 2px 0;
+}
+.btn-add-filter:hover {
+  background-color: rgba(55, 53, 47, 0.06) !important;
+  border-color: var(--teracota) !important;
+  transition: all 0.3s ease;
+}
+.floating-filter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--base-color);
+  border: 1px solid rgba(0, 0, 0, 0.175);
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* RESPONSIVE */
 @media (min-width: 768px) {
   .gradient-form {
     height: 100vh !important;

@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 
 const useTalentFilter = (talents) => {
-  const [filters, setFilters] = useState([
+  const [filterGroups, setFilterGroups] = useState([
     {
-      attribute: "Name",
-      method: "Contains",
-      value: "",
-      category: "All",
-      minPriceIG: "",
-      maxPriceIG: "",
-      minPriceTikTok: "",
-      maxPriceTikTok: "",
+      filters: [
+        {
+          attribute: "Name",
+          method: "Contains",
+          value: "",
+          category: "All",
+          minPriceIG: "",
+          maxPriceIG: "",
+          minPriceTikTok: "",
+          maxPriceTikTok: "",
+          relation: "",
+        },
+      ],
       relation: "",
     },
   ]);
@@ -18,70 +23,156 @@ const useTalentFilter = (talents) => {
   const filterTalents = (talents) => {
     return talents.filter((talent) => {
       let overallResult = true;
+      if (filterGroups.length > 0) {
+        const firstGroup = filterGroups[0];
+        let firstGroupResult = true;
 
-      for (let i = 0; i < filters.length; i++) {
-        const filter = filters[i];
-        const filterValueLower = filter.value.toLowerCase();
-        let match = false;
+        for (let i = 0; i < firstGroup.filters.length; i++) {
+          const filter = firstGroup.filters[i];
+          const filterValueLower = filter.value.toLowerCase();
+          let match = false;
 
-        switch (filter.attribute) {
-          case "Name":
-            match = applyTextFilter(
-              talent.name.toLowerCase(),
-              filterValueLower,
-              filter.method
-            );
-            break;
-          case "Category":
-            match =
-              filter.category === "All" ||
-              talent.category.toLowerCase() === filter.category.toLowerCase();
-            break;
-          case "Username IG":
-            match = applyTextFilter(
-              talent.userIG.toLowerCase(),
-              filterValueLower,
-              filter.method
-            );
-            break;
-          case "Username TikTok":
-            match = applyTextFilter(
-              talent.userTikTok.toLowerCase(),
-              filterValueLower,
-              filter.method
-            );
-            break;
-          case "Start from IG":
-            match = applyPriceFilter(
-              talent.startfromIG,
-              filter.minPriceIG,
-              filter.maxPriceIG
-            );
-            break;
-          case "Start from TikTok":
-            match = applyPriceFilter(
-              talent.startfromTikTok,
-              filter.minPriceTikTok,
-              filter.maxPriceTikTok
-            );
-            break;
-          default:
-            match = true;
-            break;
-        }
+          switch (filter.attribute) {
+            case "Name":
+              match = applyTextFilter(
+                talent.name.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Category":
+              match =
+                filter.category === "All" ||
+                talent.category.toLowerCase() === filter.category.toLowerCase();
+              break;
+            case "Username IG":
+              match = applyTextFilter(
+                talent.userIG.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Username TikTok":
+              match = applyTextFilter(
+                talent.userTikTok.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Start from IG":
+              match = applyPriceFilter(
+                talent.startfromIG,
+                filter.minPriceIG,
+                filter.maxPriceIG
+              );
+              break;
+            case "Start from TikTok":
+              match = applyPriceFilter(
+                talent.startfromTikTok,
+                filter.minPriceTikTok,
+                filter.maxPriceTikTok
+              );
+              break;
+            default:
+              match = true;
+              break;
+          }
 
-        if (i === 0) {
-          overallResult = match;
-        } else {
-          if (filters[i].relation === "And") {
-            overallResult = overallResult && match;
-          } else if (filters[i].relation === "Or") {
-            overallResult = overallResult || match;
+          if (i === 0) {
+            firstGroupResult = match;
+          } else {
+            if (firstGroup.filters[i].relation === "And") {
+              firstGroupResult = firstGroupResult && match;
+            } else if (firstGroup.filters[i].relation === "Or") {
+              firstGroupResult = firstGroupResult || match;
+            }
+          }
+
+          if (firstGroup.filters[i].relation === "And" && !firstGroupResult) {
+            break;
           }
         }
 
-        if (filters[i].relation === "And" && !overallResult) {
-          return false;
+        overallResult = firstGroupResult;
+      }
+
+      for (let g = 1; g < filterGroups.length; g++) {
+        const group = filterGroups[g];
+        let groupResult = group.relation === "And";
+
+        for (let i = 0; i < group.filters.length; i++) {
+          const filter = group.filters[i];
+          const filterValueLower = filter.value.toLowerCase();
+          let match = false;
+
+          switch (filter.attribute) {
+            case "Name":
+              match = applyTextFilter(
+                talent.name.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Category":
+              match =
+                filter.category === "All" ||
+                talent.category.toLowerCase() === filter.category.toLowerCase();
+              break;
+            case "Username IG":
+              match = applyTextFilter(
+                talent.userIG.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Username TikTok":
+              match = applyTextFilter(
+                talent.userTikTok.toLowerCase(),
+                filterValueLower,
+                filter.method
+              );
+              break;
+            case "Start from IG":
+              match = applyPriceFilter(
+                talent.startfromIG,
+                filter.minPriceIG,
+                filter.maxPriceIG
+              );
+              break;
+            case "Start from TikTok":
+              match = applyPriceFilter(
+                talent.startfromTikTok,
+                filter.minPriceTikTok,
+                filter.maxPriceTikTok
+              );
+              break;
+            default:
+              match = true;
+              break;
+          }
+
+          if (i === 0) {
+            groupResult = match;
+          } else {
+            if (group.filters[i].relation === "And") {
+              groupResult = groupResult && match;
+            } else if (group.filters[i].relation === "Or") {
+              groupResult = groupResult || match;
+            }
+          }
+
+          if (group.filters[i].relation === "And" && !groupResult) {
+            break;
+          }
+        }
+        if (group.relation === "And") {
+          overallResult = overallResult && groupResult;
+        } else if (group.relation === "Or") {
+          overallResult = overallResult || groupResult;
+        }
+
+        if (group.relation === "And" && !overallResult) {
+          break;
         }
       }
 
@@ -122,12 +213,12 @@ const useTalentFilter = (talents) => {
 
   useEffect(() => {
     setFilteredTalents(filterTalents(talents));
-  }, [talents, filters]);
+  }, [talents, filterGroups]);
 
-  const handleAddFilter = () => {
-    setFilters([
-      ...filters,
-      {
+  const handleAddFilter = (groupIndex) => {
+    const updatedGroups = [...filterGroups];
+    if (updatedGroups[groupIndex]) {
+      updatedGroups[groupIndex].filters.push({
         attribute: "Name",
         method: "Contains",
         value: "",
@@ -136,21 +227,59 @@ const useTalentFilter = (talents) => {
         maxPriceIG: "",
         minPriceTikTok: "",
         maxPriceTikTok: "",
-        relation: "And", // Default relation for new filters
+        relation: "Or",
+      });
+      setFilterGroups(updatedGroups);
+    }
+  };
+
+  const handleRemoveFilter = (groupIndex, filterIndex) => {
+    const updatedGroups = [...filterGroups];
+    updatedGroups[groupIndex].filters.splice(filterIndex, 1);
+    if (updatedGroups[groupIndex].filters.length === 0) {
+      updatedGroups.splice(groupIndex, 1);
+    }
+    setFilterGroups(updatedGroups);
+  };
+  const handleAddGroup = () => {
+    setFilterGroups([
+      ...filterGroups,
+      {
+        relation: "Or",
+        filters: [
+          {
+            attribute: "Name",
+            method: "Contains",
+            value: "",
+            category: "All",
+            minPriceIG: "",
+            maxPriceIG: "",
+            minPriceTikTok: "",
+            maxPriceTikTok: "",
+            relation: "Or",
+          },
+        ],
       },
     ]);
   };
 
-  const handleRemoveFilter = (index) => {
-    setFilters(filters.filter((_, i) => i !== index));
+  const handleRemoveGroup = (index) => {
+    setFilterGroups(filterGroups.filter((_, i) => i !== index));
   };
-
+  const handleGroupRelationChange = (groupIndex, relation) => {
+    const updatedGroups = [...filterGroups];
+    updatedGroups[groupIndex].relation = relation;
+    setFilterGroups(updatedGroups);
+  };
   return {
-    filters,
-    setFilters,
+    filterGroups,
+    setFilterGroups,
     filteredTalents,
     handleAddFilter,
     handleRemoveFilter,
+    handleAddGroup,
+    handleRemoveGroup,
+    handleGroupRelationChange,
   };
 };
 

@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import formatToRupiah from "@/components/FormatToRp";
 import { useTalent } from "@/utils/talentContext";
 import FilterComponents from "@/components/FilterComponents";
-import { CiCirclePlus } from "react-icons/ci";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import useTalentFilter from "@/utils/talentFilter"; // Import custom hook
 import { useEffect, useRef, useState } from "react";
@@ -27,15 +26,16 @@ const DashboardTalents = () => {
   } = useTalent();
   const router = useRouter();
   const [openFilter, setOpenFilter] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
-
+  const [searchTerm, setSearchTerm] = useState("");
   const filterRef = useRef(null);
   const {
-    filters,
-    setFilters,
+    filterGroups,
+    setFilterGroups,
     filteredTalents,
     handleAddFilter,
     handleRemoveFilter,
+    handleRemoveGroup,
+    handleAddGroup,
   } = useTalentFilter(talents);
 
   const attributes = [
@@ -125,7 +125,7 @@ const DashboardTalents = () => {
 
   return (
     <main>
-      <section className="content">
+      <section className="content min-vh-100">
         <Link href={"/dashboard/talents/create"} className="p-3">
           <ButtonComponents textButton="Add New" />
         </Link>
@@ -184,84 +184,153 @@ const DashboardTalents = () => {
                         ref={filterRef}
                         className="d-flex flex-column floating-filter p-4"
                       >
-                        {filters.map((filter, index) => (
-                          <div key={index} className="mb-2 d-flex gap-2 ">
-                            <FilterComponents
-                              attributes={attributes}
-                              selectedAttribute={filter.attribute}
-                              handleAttributeSelect={(attribute) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].attribute = attribute;
-                                setFilters(updatedFilters);
-                              }}
-                              methods={methods}
-                              selectedMethod={filter.method}
-                              handleMethodSelect={(method) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].method = method;
-                                setFilters(updatedFilters);
-                              }}
-                              filterValue={filter.value}
-                              setFilterValue={(value) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].value = value;
-                                setFilters(updatedFilters);
-                              }}
-                              categories={categories}
-                              selectedCategory={filter.category}
-                              handleCategorySelect={(category) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].category = category;
-                                setFilters(updatedFilters);
-                              }}
-                              setMinPriceIG={(value) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].minPriceIG = value;
-                                setFilters(updatedFilters);
-                              }}
-                              setMaxPriceIG={(value) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].maxPriceIG = value;
-                                setFilters(updatedFilters);
-                              }}
-                              setMinPriceTikTok={(value) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].minPriceTikTok = value;
-                                setFilters(updatedFilters);
-                              }}
-                              setMaxPriceTikTok={(value) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].maxPriceTikTok = value;
-                                setFilters(updatedFilters);
-                              }}
-                              minPriceIG={filter.minPriceIG}
-                              maxPriceIG={filter.maxPriceIG}
-                              minPriceTikTok={filter.minPriceTikTok}
-                              maxPriceTikTok={filter.maxPriceTikTok}
-                              relations={relations}
-                              selectedRelation={filter.relation}
-                              handleRelationSelect={(relation) => {
-                                const updatedFilters = [...filters];
-                                updatedFilters[index].relation = relation;
-                                setFilters(updatedFilters);
-                              }}
-                              index={index}
-                            />
-                            <button
-                              className="border-0 bg-transparent"
-                              onClick={() => handleRemoveFilter(index)}
-                            >
-                              <IoMdRemoveCircleOutline
-                                size={24}
-                                className="text-danger"
+                        {filterGroups.map((group, groupIndex) => (
+                          <div
+                            key={groupIndex}
+                            className="filter-groupmb-2 d-flex flex-column gap-2"
+                          >
+                            <div className="d-flex justify-content-between ">
+                              {filterGroups[groupIndex].filters.length > 0 &&
+                                filterGroups[groupIndex] && (
+                                  <>
+                                    <h6>
+                                      <b>Filter Group {groupIndex + 1}</b>
+                                    </h6>
+                                    {groupIndex > 0 && (
+                                      <button
+                                        className="border-0 bg-transparent"
+                                        onClick={() =>
+                                          handleRemoveGroup(groupIndex)
+                                        }
+                                      >
+                                        <IoMdRemoveCircleOutline
+                                          size={24}
+                                          className="text-danger"
+                                        />
+                                      </button>
+                                    )}
+                                  </>
+                                )}
+                            </div>
+                            {group.filters.map((filter, index) => (
+                              <div key={index} className="d-flex gap-2">
+                                <FilterComponents
+                                  attributes={attributes}
+                                  selectedAttribute={filter.attribute}
+                                  handleAttributeSelect={(attribute) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].attribute = attribute;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  methods={methods}
+                                  selectedMethod={filter.method}
+                                  handleMethodSelect={(method) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].method = method;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  filterValue={filter.value}
+                                  setFilterValue={(value) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].value = value;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  categories={categories}
+                                  selectedCategory={filter.category}
+                                  handleCategorySelect={(category) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].category = category;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  setMinPriceIG={(value) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].minPriceIG = value;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  setMaxPriceIG={(value) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].maxPriceIG = value;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  setMinPriceTikTok={(value) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].minPriceTikTok = value;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  setMaxPriceTikTok={(value) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].maxPriceTikTok = value;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  minPriceIG={filter.minPriceIG}
+                                  maxPriceIG={filter.maxPriceIG}
+                                  minPriceTikTok={filter.minPriceTikTok}
+                                  maxPriceTikTok={filter.maxPriceTikTok}
+                                  relations={relations}
+                                  selectedRelation={filter.relation}
+                                  handleRelationSelect={(relation) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].filters[
+                                      index
+                                    ].relation = relation;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  selectedGroupRelation={group.relation}
+                                  handleRelationGroupSelect={(relation) => {
+                                    const updatedFilters = [...filterGroups];
+                                    updatedFilters[groupIndex].relation =
+                                      relation;
+                                    setFilterGroups(updatedFilters);
+                                  }}
+                                  groupIndex={groupIndex}
+                                  index={index}
+                                />
+                                <button
+                                  className="border-0 bg-transparent"
+                                  onClick={() =>
+                                    handleRemoveFilter(groupIndex, index)
+                                  }
+                                >
+                                  <IoMdRemoveCircleOutline
+                                    size={24}
+                                    className="text-danger"
+                                  />
+                                </button>
+                              </div>
+                            ))}
+
+                            {filterGroups[groupIndex].filters.length > 0 && (
+                              <DropdownAddFilter
+                                groupIndex={groupIndex}
+                                handleAddFilter={handleAddFilter}
+                                handleAddFilterGroup={handleAddGroup}
                               />
-                            </button>
+                            )}
+                            {filterGroups[0].filters.length == 0 && (
+                              <DropdownAddFilter
+                                groupIndex={groupIndex}
+                                handleAddFilter={handleAddFilter}
+                                handleAddFilterGroup={handleAddGroup}
+                              />
+                            )}
                           </div>
                         ))}
-                        <DropdownAddFilter
-                          handleAddFilter={handleAddFilter}
-                          // handleAddFilterGroup={handleAddFilterGroup}
-                        />
                       </div>
                     )}
                   </div>

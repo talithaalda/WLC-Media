@@ -25,7 +25,10 @@ const FilterComponents = ({
   relations,
   selectedRelation,
   handleRelationSelect,
+  selectedGroupRelation,
+  handleRelationGroupSelect,
   index,
+  groupIndex,
 }) => {
   const handlePriceChange = (event) => {
     const { name, value } = event.target;
@@ -130,7 +133,7 @@ const FilterComponents = ({
       );
     }
 
-    return null; // Default case if no attribute matches
+    return null;
   };
 
   return (
@@ -139,11 +142,12 @@ const FilterComponents = ({
         className="d-flex align-items-center justify-content-center"
         style={{ width: "12%" }}
       >
-        {index == 0 ? (
+        {index == 0 && groupIndex == 0 && (
           <div className="d-flex justify-content-center w-100 px-4 ">
             Filter
           </div>
-        ) : (
+        )}
+        {index > 0 && (
           <div className="d-flex justify-content-center w-100">
             <DropdownComponent
               array={relations}
@@ -151,6 +155,13 @@ const FilterComponents = ({
               onSelect={handleRelationSelect}
             />
           </div>
+        )}
+        {groupIndex > 0 && index == 0 && (
+          <DropdownComponent
+            array={relations}
+            title={selectedGroupRelation}
+            onSelect={handleRelationGroupSelect}
+          />
         )}
       </div>
 

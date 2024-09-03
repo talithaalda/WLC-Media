@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { CiCirclePlus } from "react-icons/ci";
-import { IoMdArrowDropdown } from "react-icons/io";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 
-const DropdownAddFilter = ({ handleAddFilter, handleAddFilterGroup }) => {
+const DropdownAddFilter = ({
+  handleAddFilter,
+  handleAddFilterGroup,
+  groupIndex,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -48,7 +51,7 @@ const DropdownAddFilter = ({ handleAddFilter, handleAddFilterGroup }) => {
           <button
             className="dropdown-item"
             onClick={() => {
-              handleAddFilter();
+              handleAddFilter(groupIndex);
               toggleDropdown();
             }}
           >

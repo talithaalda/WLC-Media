@@ -12,22 +12,18 @@ const TalentsPage = () => {
   }, []);
   const talentsPerPage = 9;
 
-  // Render SliderComponents based on the talents data
   const renderSliderComponents = () => {
     const totalTalents = talents.length;
 
-    // Calculate the number of SliderComponents needed
     const totalSliderComponents = Math.ceil(totalTalents / talentsPerPage);
 
     const sliderComponents = [];
 
     for (let i = 0; i < totalSliderComponents; i++) {
-      // Calculate the range of talents to pass to each SliderComponent
       const startIdx = i * talentsPerPage;
       const endIdx = startIdx + talentsPerPage;
       const talentsSlice = talents.slice(startIdx, endIdx);
 
-      // Push a SliderComponent with the sliced talents data
       sliderComponents.push(
         <SliderComponents key={i} talentsData={talentsSlice} />
       );

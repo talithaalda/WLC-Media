@@ -618,7 +618,7 @@
 }
 .btn-add-filter {
   cursor: pointer;
-  width: 100%;
+  width: 30%;
   border-radius: 10px;
   padding: 2px 0;
 }
@@ -626,6 +626,11 @@
   background-color: rgba(55, 53, 47, 0.06) !important;
   border-color: var(--teracota) !important;
   transition: all 0.3s ease;
+}
+
+.dropdown-menu {
+  --bs-dropdown-link-active-color: black !important;
+  --bs-dropdown-link-active-bg: transparent !important;
 }
 .floating-filter {
   position: absolute;

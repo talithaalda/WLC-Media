@@ -13,6 +13,7 @@ import useTalentFilter from "@/utils/talentFilter"; // Import custom hook
 import { useEffect, useRef, useState } from "react";
 import { IoFilter } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
+import DropdownAddFilter from "@/components/DropdownAddFilter";
 
 const DashboardTalents = () => {
   const {
@@ -257,15 +258,10 @@ const DashboardTalents = () => {
                             </button>
                           </div>
                         ))}
-                        <div
-                          className="d-flex align-items-center gap-2 justify-content-center btn-add-filter"
-                          onClick={handleAddFilter}
-                        >
-                          <div>
-                            <CiCirclePlus size={24} />
-                          </div>
-                          <div>Add Filter</div>
-                        </div>
+                        <DropdownAddFilter
+                          handleAddFilter={handleAddFilter}
+                          // handleAddFilterGroup={handleAddFilterGroup}
+                        />
                       </div>
                     )}
                   </div>

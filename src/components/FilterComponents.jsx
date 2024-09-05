@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownComponent from "./DropdownComponent";
 import formatToRupiah from "./FormatToRp";
 
@@ -26,7 +26,6 @@ const FilterComponents = ({
   selectedRelation,
   handleRelationSelect,
   index,
-  groupIndex,
 }) => {
   const handlePriceChange = (event) => {
     const { name, value } = event.target;
@@ -142,16 +141,23 @@ const FilterComponents = ({
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-between w-100">
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ width: "12%" }}
-      >
+    <div className="d-flex  align-items-center justify-content-between w-100">
+      <div className="d-flex align-items-center justify-content-center">
         {index == 0 && (
-          <div className="d-flex justify-content-center w-100 ">Filter</div>
+          <div
+            className="d-flex justify-content-center "
+            style={{
+              width: "82px",
+            }}
+          >
+            Filter
+          </div>
         )}
         {index > 0 && (
-          <div className="d-flex justify-content-center w-100">
+          <div
+            className="d-flex justify-content-center "
+            style={{ width: "82px" }}
+          >
             <DropdownComponent
               array={relations}
               title={selectedRelation}

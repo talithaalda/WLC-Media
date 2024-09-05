@@ -3,6 +3,7 @@ import FilterComponents from "./FilterComponents";
 import DropdownAddFilter from "./DropdownAddFilter";
 import DropdownComponent from "./DropdownComponent";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { CiCirclePlus } from "react-icons/ci";
 
 const FilterGroup = ({
   group,
@@ -21,9 +22,10 @@ const FilterGroup = ({
 }) => {
   const first = {
     border: parentGroupIndex.length === 0 ? "none" : "1px solid #ddd",
+    padding: parentGroupIndex.length === 0 ? "20px" : "10px",
   };
   return (
-    <div className="filter-group w-100 gap-2 d-flex flex-column" style={first}>
+    <div className="filter-group w-100 gap-1 d-flex flex-column" style={first}>
       <div className="d-flex justify-content-end align-items-center">
         {parentGroupIndex.length > 0 && (
           <button
@@ -135,8 +137,8 @@ const FilterGroup = ({
               setFilterGroups(updatedGroups);
             }}
             selectedGroupRelation={group.relation}
-            groupIndex={groupIndex}
             index={index}
+            parentGroupIndex={parentGroupIndex}
           />
           <button
             className="border-0 bg-transparent"
@@ -188,13 +190,31 @@ const FilterGroup = ({
             </div>
           </>
         ))}
-      {group.filters.length !== 0 && (
+      {group.filters.length !== 0 && parentGroupIndex.length < 2 && (
         <DropdownAddFilter
           groupIndex={groupIndex}
           handleAddFilter={handleAddFilter}
           handleAddFilterGroup={handleAddGroup}
           parentGroupIndex={parentGroupIndex}
         />
+      )}
+      {parentGroupIndex.length > 1 && (
+        <div className="d-flex gap-2 justify-content-center">
+          <button
+            className="dropdown-item gap-2 btn-add-filter rounded-4 d-flex justify-content-center align-items-center  py-1"
+            style={{
+              width: "150px",
+            }}
+            onClick={() => {
+              handleAddFilter(groupIndex, parentGroupIndex);
+            }}
+          >
+            <span>
+              <CiCirclePlus size={24} />
+            </span>
+            Add Filter
+          </button>
+        </div>
       )}
     </div>
   );

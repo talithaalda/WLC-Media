@@ -236,14 +236,24 @@ const useTalentFilter = (talents) => {
   };
 
   const handleRemoveGroup = (groupIndex, parentGroupIndex) => {
-    let currentGroup = filterGroups;
+    const updatedGroups = [...filterGroups];
+
+    let currentGroup = updatedGroups;
     parentGroupIndex.forEach((i) => {
       currentGroup = currentGroup[i].subGroups;
     });
     currentGroup.splice(groupIndex, 1);
-    setFilterGroups([...filterGroups]);
-  };
+    if (currentGroup.length === 0 && parentGroupIndex.length > 0) {
+      let parentGroup = updatedGroups;
+      parentGroupIndex.slice(0, -1).forEach((i) => {
+        parentGroup = parentGroup[i].subGroups;
+      });
 
+      parentGroup[parentGroupIndex[parentGroupIndex.length - 1]].relation =
+        "And";
+    }
+    setFilterGroups(updatedGroups);
+  };
   return {
     filterGroups,
     setFilterGroups,

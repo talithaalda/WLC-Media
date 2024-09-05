@@ -23,7 +23,7 @@ const DropdownAddFilter = ({
       className="position-relative d-flex justify-content-center"
     >
       <div
-        className="d-flex align-items-center gap-2 justify-content-center btn-add-filter"
+        className="d-flex align-items-center gap-1 justify-content-center btn-add-filter "
         onClick={toggleDropdown}
         style={{ cursor: "pointer" }}
       >
@@ -44,9 +44,10 @@ const DropdownAddFilter = ({
           position: "absolute",
           top: "100%",
           marginTop: "5px",
+          fontSize: "14px",
         }}
       >
-        <div className="mt-1 border-xs text-teracota w-100">
+        <div className="border-xs text-teracota w-100">
           <button
             className="dropdown-item"
             onClick={() => {

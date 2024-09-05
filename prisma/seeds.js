@@ -172,6 +172,21 @@ async function main() {
       filename: "minju_photo.jpg",
     },
     {
+      name: "Rei",
+      category: "Singer",
+      userIG: "reiofficial95",
+      follIG: "8M",
+      ERIG: 9.5,
+      startfromIG: 190000000,
+      userTikTok: "reiofficial95",
+      follTikTok: "3.2M",
+      ERTikTok: 8.5,
+      startfromTikTok: 120000000,
+      path: "/images/talent/rei_photo.jpg",
+      filename: "rei_photo.jpg",
+    },
+
+    {
       name: "Jisoo",
       category: "K-pop Idol",
       userIG: "jisooofficial95",

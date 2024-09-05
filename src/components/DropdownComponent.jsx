@@ -17,7 +17,7 @@ const DropdownComponent = ({ array = [], title, onSelect }) => {
   return (
     <Dropdown show={isOpen} onToggle={handleToggle} className="w-100">
       <Dropdown.Toggle
-        className="btn btn-filter justify-content-center d-flex align-items-center custom-dropdown-toggle py-1 w-100"
+        className="btn btn-filter justify-content-center d-flex align-items-center py-1 w-100"
         id="dropdown-basic"
       >
         {title}
@@ -33,7 +33,8 @@ const DropdownComponent = ({ array = [], title, onSelect }) => {
         style={{
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           left: "50%",
-          transform: "translateX(-50%)", // Posisikan di tengah secara horizontal
+          transform: "translateX(-50%)",
+          fontSize: "14px",
         }}
       >
         {Array.isArray(array) &&

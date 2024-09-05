@@ -1,3 +1,4 @@
+// components/DropdownAddFilter.js
 import { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { CiCirclePlus } from "react-icons/ci";
@@ -7,28 +8,26 @@ const DropdownAddFilter = ({
   handleAddFilter,
   handleAddFilterGroup,
   groupIndex,
+  parentGroupIndex = [],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
 
   return (
     <Dropdown
       onToggle={toggleDropdown}
       show={isOpen}
-      className="position-relative d-flex  justify-content-center "
+      className="position-relative d-flex justify-content-center"
     >
       <div
         className="d-flex align-items-center gap-2 justify-content-center btn-add-filter"
         onClick={toggleDropdown}
         style={{ cursor: "pointer" }}
       >
-        <div>
-          <CiCirclePlus size={24} />
-        </div>
+        <CiCirclePlus size={24} />
         <div>Add Filter</div>
         {isOpen ? (
           <RiArrowDropUpLine color="black" size={30} />
@@ -51,7 +50,7 @@ const DropdownAddFilter = ({
           <button
             className="dropdown-item"
             onClick={() => {
-              handleAddFilter(groupIndex);
+              handleAddFilter(groupIndex, parentGroupIndex);
               toggleDropdown();
             }}
           >
@@ -60,7 +59,7 @@ const DropdownAddFilter = ({
           <button
             className="dropdown-item"
             onClick={() => {
-              handleAddFilterGroup();
+              handleAddFilterGroup(groupIndex, parentGroupIndex);
               toggleDropdown();
             }}
           >

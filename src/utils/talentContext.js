@@ -203,7 +203,6 @@ export const TalentProvider = ({ children }) => {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      // formData.append("categoryId", values.categoryId);
       formData.append("category", values.category);
       formData.append("userIG", values.userIG);
       formData.append("userTikTok", values.userTikTok);
@@ -224,12 +223,9 @@ export const TalentProvider = ({ children }) => {
             },
           }
         );
-        // Dapatkan path dan filename dari respons upload
         const { path, filename } = responseUpload.data;
         const response = await axios.post("/api/talent/create", {
           name: formData.get("name"),
-          category: formData.get("category"),
-          // categoryId: Number(formData.get("categoryId")),
           userIG: formData.get("userIG"),
           userTikTok: formData.get("userTikTok"),
           startfromIG: Number(formData.get("startfromIG")),
@@ -273,12 +269,10 @@ export const TalentProvider = ({ children }) => {
             },
           }
         );
-        // Dapatkan path dan filename dari respons upload
         const { path, filename } = responseUpload.data;
         responseCreate = await axios.put(`/api/talent/${id}`, {
           name: values.name,
           category: values.category,
-          // categoryId: Number(values.categoryId),
           userIG: values.userIG,
           userTikTok: values.userTikTok,
           startfromIG: Number(startfromIGRaw),
@@ -294,7 +288,6 @@ export const TalentProvider = ({ children }) => {
         responseCreate = await axios.put(`/api/talent/${id}`, {
           name: values.name,
           category: values.category,
-          // categoryId: Number(values.categoryId),
           userIG: values.userIG,
           userTikTok: values.userTikTok,
           startfromIG: Number(startfromIGRaw),

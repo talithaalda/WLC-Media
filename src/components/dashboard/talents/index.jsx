@@ -1,19 +1,16 @@
 // pages/dashboard/talents.js
-
-import ButtonComponents from "@/components/ButtonComponents";
-import Link from "next/link";
-import CustomAlert from "../../AlertComponents";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { IoFilter } from "react-icons/io5";
+import ButtonComponents from "@/components/ButtonComponents";
+import CustomAlert from "../../AlertComponents";
 import formatToRupiah from "@/components/FormatToRp";
 import { useTalent } from "@/utils/talentContext";
-import FilterComponents from "@/components/FilterComponents";
-import { IoMdRemoveCircleOutline } from "react-icons/io";
-import useTalentFilter from "@/utils/talentFilter"; // Import custom hook
-import { useEffect, useRef, useState } from "react";
-import { IoFilter } from "react-icons/io5";
+import useTalentFilter from "@/utils/talentFilter";
 import { IoIosSearch } from "react-icons/io";
-import DropdownAddFilter from "@/components/DropdownAddFilter";
-
+import FilterGroup from "@/components/FilterGroup";
+import { CiCirclePlus } from "react-icons/ci";
 const DashboardTalents = () => {
   const {
     talents,
@@ -63,6 +60,7 @@ const DashboardTalents = () => {
     "Actor",
     "Influencer",
     "Model",
+    "Rapper",
   ];
 
   const relations = ["And", "Or"];
@@ -103,6 +101,7 @@ const DashboardTalents = () => {
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
+
   const filteredTalentsWithSearch = filteredTalents
     .filter((talent) => {
       const lowercasedSearchTerm = searchTerm.toLowerCase();
@@ -168,169 +167,54 @@ const DashboardTalents = () => {
                         type="text"
                         className="form-control"
                         placeholder="Search..."
-                        style={{ paddingLeft: "35px" }} // Beri padding kiri tambahan untuk memberi ruang pada ikon
+                        style={{ paddingLeft: "35px" }}
                         onChange={(e) => handleSearch(e.target.value)}
                       />
                     </div>
                     {!openFilter ? (
-                      <IoFilter
-                        className="justify-content-center"
-                        size={26}
-                        onClick={handleOpenFilter}
-                        style={{ cursor: "pointer" }}
-                      />
+                      <>
+                        <IoFilter
+                          className="justify-content-center"
+                          size={26}
+                          onClick={handleOpenFilter}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </>
                     ) : (
                       <div
                         ref={filterRef}
-                        className="d-flex flex-column floating-filter p-4"
+                        className="d-flex flex-column floating-filter"
                       >
                         {filterGroups.map((group, groupIndex) => (
-                          <div
+                          <FilterGroup
                             key={groupIndex}
-                            className="filter-groupmb-2 d-flex flex-column gap-2"
-                          >
-                            <div className="d-flex justify-content-between ">
-                              {filterGroups[groupIndex].filters.length > 0 &&
-                                filterGroups[groupIndex] && (
-                                  <>
-                                    <h6>
-                                      <b>Filter Group {groupIndex + 1}</b>
-                                    </h6>
-                                    {groupIndex > 0 && (
-                                      <button
-                                        className="border-0 bg-transparent"
-                                        onClick={() =>
-                                          handleRemoveGroup(groupIndex)
-                                        }
-                                      >
-                                        <IoMdRemoveCircleOutline
-                                          size={24}
-                                          className="text-danger"
-                                        />
-                                      </button>
-                                    )}
-                                  </>
-                                )}
-                            </div>
-                            {group.filters.map((filter, index) => (
-                              <div key={index} className="d-flex gap-2">
-                                <FilterComponents
-                                  attributes={attributes}
-                                  selectedAttribute={filter.attribute}
-                                  handleAttributeSelect={(attribute) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].attribute = attribute;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  methods={methods}
-                                  selectedMethod={filter.method}
-                                  handleMethodSelect={(method) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].method = method;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  filterValue={filter.value}
-                                  setFilterValue={(value) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].value = value;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  categories={categories}
-                                  selectedCategory={filter.category}
-                                  handleCategorySelect={(category) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].category = category;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  setMinPriceIG={(value) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].minPriceIG = value;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  setMaxPriceIG={(value) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].maxPriceIG = value;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  setMinPriceTikTok={(value) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].minPriceTikTok = value;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  setMaxPriceTikTok={(value) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].maxPriceTikTok = value;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  minPriceIG={filter.minPriceIG}
-                                  maxPriceIG={filter.maxPriceIG}
-                                  minPriceTikTok={filter.minPriceTikTok}
-                                  maxPriceTikTok={filter.maxPriceTikTok}
-                                  relations={relations}
-                                  selectedRelation={filter.relation}
-                                  handleRelationSelect={(relation) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].filters[
-                                      index
-                                    ].relation = relation;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  selectedGroupRelation={group.relation}
-                                  handleRelationGroupSelect={(relation) => {
-                                    const updatedFilters = [...filterGroups];
-                                    updatedFilters[groupIndex].relation =
-                                      relation;
-                                    setFilterGroups(updatedFilters);
-                                  }}
-                                  groupIndex={groupIndex}
-                                  index={index}
-                                />
-                                <button
-                                  className="border-0 bg-transparent"
-                                  onClick={() =>
-                                    handleRemoveFilter(groupIndex, index)
-                                  }
-                                >
-                                  <IoMdRemoveCircleOutline
-                                    size={24}
-                                    className="text-danger"
-                                  />
-                                </button>
-                              </div>
-                            ))}
-
-                            {filterGroups[groupIndex].filters.length > 0 && (
-                              <DropdownAddFilter
-                                groupIndex={groupIndex}
-                                handleAddFilter={handleAddFilter}
-                                handleAddFilterGroup={handleAddGroup}
-                              />
-                            )}
-                            {filterGroups[0].filters.length == 0 && (
-                              <DropdownAddFilter
-                                groupIndex={groupIndex}
-                                handleAddFilter={handleAddFilter}
-                                handleAddFilterGroup={handleAddGroup}
-                              />
-                            )}
-                          </div>
+                            group={group}
+                            groupIndex={groupIndex}
+                            handleAddFilter={handleAddFilter}
+                            handleRemoveFilter={handleRemoveFilter}
+                            handleRemoveGroup={handleRemoveGroup}
+                            handleAddGroup={handleAddGroup}
+                            attributes={attributes}
+                            methods={methods}
+                            categories={categories}
+                            relations={relations}
+                            setFilterGroups={setFilterGroups}
+                            filterGroups={filterGroups}
+                          />
                         ))}
+                        {!filterGroups[0] && (
+                          <button
+                            className="dropdown-item gap-2 d-flex align-items-center py-3 px-4"
+                            onClick={() => {
+                              handleAddGroup(0, []);
+                            }}
+                          >
+                            <span>
+                              <CiCirclePlus size={24} />
+                            </span>
+                            Add Filter
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -353,7 +237,7 @@ const DashboardTalents = () => {
                       <tbody>
                         {filteredTalentsWithSearch.length > 0 ? (
                           filteredTalentsWithSearch.map((talent, index) => (
-                            <tr key={index}>
+                            <tr key={talent.id}>
                               <td>{index + 1}</td>
                               <td>{talent.name}</td>
                               <td>{talent.category}</td>
@@ -367,7 +251,7 @@ const DashboardTalents = () => {
                                     href={`/dashboard/talents/${talent.id}/show`}
                                     legacyBehavior
                                   >
-                                    <button className="btn btn-success" href="">
+                                    <button className="btn btn-success">
                                       Show
                                     </button>
                                   </Link>
@@ -375,7 +259,7 @@ const DashboardTalents = () => {
                                     href={`/dashboard/talents/${talent.id}/edit`}
                                     legacyBehavior
                                   >
-                                    <button className="btn btn-primary" href="">
+                                    <button className="btn btn-primary">
                                       Edit
                                     </button>
                                   </Link>
@@ -391,7 +275,7 @@ const DashboardTalents = () => {
                             </tr>
                           ))
                         ) : (
-                          <tr c>
+                          <tr>
                             <td colSpan="8" className="text-center">
                               No talents found
                             </td>

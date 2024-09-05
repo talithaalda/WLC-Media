@@ -639,9 +639,12 @@
   z-index: 1000;
   background: var(--base-color);
   border: 1px solid rgba(0, 0, 0, 0.175);
-  padding: 10px;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.filter-group {
+  padding: 20px;
+  border-radius: 20px;
 }
 
 /* RESPONSIVE */

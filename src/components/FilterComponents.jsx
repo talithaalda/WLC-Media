@@ -25,8 +25,6 @@ const FilterComponents = ({
   relations,
   selectedRelation,
   handleRelationSelect,
-  selectedGroupRelation,
-  handleRelationGroupSelect,
   index,
   groupIndex,
 }) => {
@@ -78,11 +76,18 @@ const FilterComponents = ({
 
     if (selectedAttribute === "Category") {
       return (
-        <DropdownComponent
-          array={categories}
-          title={selectedCategory}
-          onSelect={handleCategorySelect}
-        />
+        <div className="d-flex gap-2 w-100">
+          <DropdownComponent
+            array={methods}
+            title={selectedMethod}
+            onSelect={handleMethodSelect}
+          />
+          <DropdownComponent
+            array={categories}
+            title={selectedCategory}
+            onSelect={handleCategorySelect}
+          />
+        </div>
       );
     }
 
@@ -142,10 +147,8 @@ const FilterComponents = ({
         className="d-flex align-items-center justify-content-center"
         style={{ width: "12%" }}
       >
-        {index == 0 && groupIndex == 0 && (
-          <div className="d-flex justify-content-center w-100 px-4 ">
-            Filter
-          </div>
+        {index == 0 && (
+          <div className="d-flex justify-content-center w-100 ">Filter</div>
         )}
         {index > 0 && (
           <div className="d-flex justify-content-center w-100">
@@ -155,13 +158,6 @@ const FilterComponents = ({
               onSelect={handleRelationSelect}
             />
           </div>
-        )}
-        {groupIndex > 0 && index == 0 && (
-          <DropdownComponent
-            array={relations}
-            title={selectedGroupRelation}
-            onSelect={handleRelationGroupSelect}
-          />
         )}
       </div>
 
